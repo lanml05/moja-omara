@@ -539,6 +539,7 @@ function renderGrid() {
   $('pend').innerHTML = p ? `<div class="card pend"><div><h3>${p} ${kosov(p)} ${p === 1 ? 'čaka' : p === 2 ? 'čakata' : p <= 4 ? 'čakajo' : 'čaka'} na oznako</h3><p>Samo izbereš, kaj je, barvo ugane sam.</p></div><button class="btn sm" data-tag="1">Označi</button></div>` : '';
   const wash = all.filter(i => i.laundry).length;
   if (cat === 'pranje' && !wash) cat = 'vse';
+  if (cat !== 'vse' && cat !== 'pranje' && !all.some(i => i.cat === cat)) cat = 'vse';
   $('catTabs').innerHTML = [['vse','Vse']].concat(CATS.map(c => [c.id, c.name])).map(c => {
     const n = c[0] === 'vse' ? all.length : all.filter(i => i.cat === c[0]).length;
     if (c[0] !== 'vse' && !n) return '';
@@ -728,6 +729,7 @@ function renderQ() {
   $('qcount').textContent = done + ' / ' + Q.length;
   $('queue').innerHTML = Q.slice().reverse().map(q => {
     const it = q.itemId && ITEMS.find(i => i.id === q.itemId); const tagged = it && it.status === 'ready';
+    if (q.itemId && !it) return `<div class="qrow"><div class="qi"></div><div class="t"><b>Izbrisano</b><small>Slika je izbrisana</small></div></div>`;
     return `<div class="qrow ${q.st}">
       <div class="qi">${it ? `<img src="${url(it, 'thumb')}"${it.cut ? ' class="cut"' : ''} alt="">` : q.prev ? `<img src="${q.prev}" alt="">` : ''}</div>
       <div class="t"><b>${tagged ? esc(it.name) : 'Nov kos'}</b><small>${tagged ? 'V omari' : q.st === 'err' ? esc(q.err) : QST[q.st]}${q.st === 'bg' && q.t ? ' · ' + q.t : ''}</small></div>
@@ -794,7 +796,7 @@ function drawTag() {
   box.querySelectorAll('[data-tsub]').forEach(b => b.onclick = () => saveTag(b.dataset.tsub));
   if ($('tSave')) $('tSave').onclick = () => saveTag('');
   if ($('tSkip')) $('tSkip').onclick = () => { const i = P.indexOf(it); const nx = P[(i + 1) % P.length]; TAG = {id:nx.id, color:nx.color, cat:null, keep:false}; drawTag() };
-  $('tDel').onclick = async () => { await del('items', it.id); dropUrls(it.id); ITEMS = ITEMS.filter(x => x.id !== it.id); renderGrid(); if (view === 'dodaj') renderAdd(); openTag() };
+  $('tDel').onclick = async () => { const b = $('tDel'); if (!b.dataset.sure) { b.dataset.sure = '1'; b.textContent = 'Res izbrišem?'; setTimeout(() => { if (b.isConnected) { delete b.dataset.sure; b.textContent = 'Izbriši' } }, 3000); return } await del('items', it.id); dropUrls(it.id); ITEMS = ITEMS.filter(x => x.id !== it.id); renderGrid(); if (view === 'dodaj') renderAdd(); openTag() };
 }
 async function saveTag(sub) {
   const it = ITEMS.find(x => x.id === TAG.id); const c = CAT[TAG.cat]; const s = sub ? c.subs.find(x => x[0] === sub) : null;
@@ -917,6 +919,7 @@ function layerScore(slot, m, T, rain) {
   if (rain) s += 1.5; return s;
 }
 function harmony(sl, ms) {
+  ms = ms.filter(m => m.slot !== 'watch');
   let s = 0; const acc = [...new Set(ms.filter(m => m.col.kind === 'a').map(m => m.col.name))];
   s += acc.length === 0 ? .9 : acc.length === 1 ? 1.5 : acc.length === 2 ? (sameFamily(acc[0], acc[1]) ? -.4 : -1.4) : -3;
   if (acc.length && ms.some(m => m.col.kind === 's')) s -= .3;
@@ -990,6 +993,7 @@ function buildOutfit(ctx) {
 }
 function dominantStyle(ms) { const n = {}; for (const m of ms) n[m.style] = (n[m.style] || 0) + (m.slot === 'acc' || m.slot === 'watch' ? .5 : 1); return Object.keys(n).sort((a, b) => n[b] - n[a])[0] || 'casual' }
 function lookName(ms, ctx) {
+  ms = ms.filter(m => m.slot !== 'watch');
   const acc = [...new Set(ms.filter(m => m.col.kind === 'a').map(m => m.col.name))];
   const darks = ms.filter(m => m.L < 30).length, earth = ms.filter(m => m.col.kind === 'e').length;
   const layers = ms.filter(m => ['top','mid','outer'].includes(m.slot)).length, st = dominantStyle(ms);
@@ -1008,12 +1012,13 @@ function explain(ms, ctx) {
   const ups = ms.filter(m => ['top','mid','outer'].includes(m.slot)).length, outer = ms.find(m => m.slot === 'outer');
   if (T >= 2 || ctx.rain) S.push(`Za ${ctx.label}${ctx.rain ? ' in dež' : ''} imaš ${NUM[ups] || ups} ${ups === 1 ? 'plast' : 'plasti'}${outer ? ', zadnja je ' + subNoun(outer.it) : ''}.`);
   else if (T === 0) S.push(`Za ${ctx.label} samo lahki kosi, brez dodatnih plasti.`);
-  const acc = [...new Set(ms.filter(m => m.col.kind === 'a').map(m => m.col.name))];
-  const darks = ms.filter(m => m.L < 30).length, earth = ms.filter(m => m.col.kind === 'e').length;
+  const cm = ms.filter(m => m.slot !== 'watch');
+  const acc = [...new Set(cm.filter(m => m.col.kind === 'a').map(m => m.col.name))];
+  const darks = cm.filter(m => m.L < 30).length, earth = cm.filter(m => m.col.kind === 'e').length;
   if (acc.length === 1) S.push(`Nevtralna osnova z enim barvnim poudarkom (${acc[0]}) deluje premišljeno.`);
   else if (!acc.length && darks >= 3) S.push('Temni toni dajo čist, oster obris.');
   else if (!acc.length && earth >= 2) S.push('Zemeljski toni se med sabo lepo ujemajo.');
-  else if (!acc.length) S.push(`Nevtralne barve (${[...new Set(ms.map(m => m.col.name))].slice(0, 3).join(', ')}) gredo vedno skupaj.`);
+  else if (!acc.length) S.push(`Nevtralne barve (${[...new Set(cm.map(m => m.col.name))].slice(0, 3).join(', ')}) gredo vedno skupaj.`);
   else S.push(`Dva barvna poudarka (${acc.slice(0, 2).join(' in ')}) sta drzna izbira.`);
   const vis = ms.find(m => m.slot === 'outer') || ms.find(m => m.slot === 'mid') || ms.find(m => m.slot === 'top'), bot = ms.find(m => m.slot === 'bottom');
   if (S.length < 3 && vis && bot && Math.abs(vis.L - bot.L) >= 30) S.push('Svetlo in temno med zgornjim in spodnjim delom da lep kontrast.');
@@ -1061,7 +1066,9 @@ function makeCtx() {
 function toggleLock(id) { locks = locks.includes(id) ? locks.filter(x => x !== id) : locks.concat(id) }
 function renderOutfit() {
   renderWx();
-  locks = locks.filter(id => byId(id));
+  const here = new Set(closet().map(i => i.id));
+  locks = locks.filter(id => here.has(id));
+  if (lastFit && !lastFit.items.every(id => byId(id) && (here.has(id) || !byId(id).ex))) lastFit = null;
   $('locks').innerHTML = locks.map(id => { const it = byId(id); return `<div class="mini">${ph(it)}<button data-unlock="${esc(id)}" aria-label="Odstrani">${icon('i-x')}</button></div>` }).join('') + `<button class="addl" id="addLock" aria-label="Izberi kos">${icon('i-plus')}</button>`;
   $('lockHint').hidden = locks.length > 0;
   $('occPills').innerHTML = OCC.map(o => `<button class="pill${o === occ ? ' on' : ''}" data-o="${esc(o)}">${esc(o)}</button>`).join('');
@@ -1205,12 +1212,17 @@ async function openSettings(focusCity) {
 const blobToData = b => new Promise(r => { if (!b) return r(null); const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b) });
 const dataToBlob = async d => d ? (await fetch(d)).blob() : null;
 async function exportAll() {
-  toast('Pripravljam kopijo…');
+  const btn = $('sExp'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Pripravljam…';
   const items = []; for (const it of ITEMS) items.push({...it, img:await blobToData(it.img), thumb:await blobToData(it.thumb)});
   const data = {app:'moja-omara', v:1, at:new Date().toISOString(), items, looks:LOOKS, worn:Object.values(WORN), loc:LOC};
   const name = 'moja-omara-' + todayKey() + '.json', blob = new Blob([JSON.stringify(data)], {type:'application/json'});
-  try { const file = new File([blob], name, {type:'application/json'}); if (navigator.canShare && navigator.canShare({files:[file]})) { await navigator.share({files:[file], title:'My Wardrobe kopija'}); return } } catch (e) { if (e.name === 'AbortError') return }
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove() }, 3000);
+  const file = new File([blob], name, {type:'application/json'});
+  btn.disabled = false; btn.innerHTML = icon('i-down') + 'Shrani datoteko';
+  btn.onclick = async () => {
+    try { if (navigator.canShare && navigator.canShare({files:[file]})) { await navigator.share({files:[file], title:'My Wardrobe kopija'}); toast('Kopija shranjena'); return } } catch (e) { if (e.name === 'AbortError') return }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove() }, 3000); toast('Kopija shranjena');
+  };
+  toast('Kopija je pripravljena, klikni Shrani datoteko');
 }
 async function importAll(file) {
   try {
