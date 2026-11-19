@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="sl">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>My Wardrobe</title>
-<meta name="description" content="Tvoja omara na telefonu: slikaj oblačila, sestavi outfit z enim klikom.">
+<meta name="description" content="Your closet on your phone: photograph your clothes, build an outfit in one tap.">
 <meta name="theme-color" content="#F7F7F5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0C0C0D" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
@@ -179,7 +179,7 @@ nav.bar .shutter b{position:absolute;top:-2px;right:-2px;min-width:20px;height:2
 .collage .c .sil{position:absolute;inset:14% 12%;display:grid;place-items:center}
 .collage .c .sil svg{width:100%;height:100%}
 .collage .c span{position:absolute;left:10px;bottom:10px;right:10px;font-size:11.5px;font-weight:500;color:var(--ink);background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:5px 9px;border-radius:999px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.collage .c.mine::after{content:"Tvoj izbor";position:absolute;top:10px;left:10px;font:500 10px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;background:var(--accent);color:var(--bg);padding:4px 8px;border-radius:999px}
+.collage .c.mine::after{content:"Your pick";position:absolute;top:10px;left:10px;font:500 10px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;background:var(--accent);color:var(--bg);padding:4px 8px;border-radius:999px}
 .collage.n1{grid-template-columns:1fr}.collage.n1 .c:first-child,.collage.n2 .c:first-child{grid-row:auto;aspect-ratio:3/4}
 .notes div{display:grid;grid-template-columns:92px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--line);font-size:14.5px}
 .notes div:last-child{border-bottom:1px solid var(--line)}
@@ -265,10 +265,10 @@ label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-t
 
 <div class="wrap">
   <header class="top">
-    <div><div class="eyebrow" id="eyebrow">My Wardrobe</div><h1 id="title">Omara</h1></div>
+    <div><div class="eyebrow" id="eyebrow">My Wardrobe</div><h1 id="title">Closet</h1></div>
     <div class="right">
-      <div class="cnt"><span class="num" id="num">0</span><span class="eyebrow" id="numlbl">kosov</span></div>
-      <button class="iconbtn" id="setBtn" aria-label="Nastavitve"><svg class="i"><use href="#i-gear"/></svg></button>
+      <div class="cnt"><span class="num" id="num">0</span><span class="eyebrow" id="numlbl">items</span></div>
+      <button class="iconbtn" id="setBtn" aria-label="Settings"><svg class="i"><use href="#i-gear"/></svg></button>
     </div>
   </header>
 
@@ -284,27 +284,27 @@ label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-t
   <section class="view" id="v-dodaj" hidden>
     <div class="studio">
       <div class="vf"><i></i><i></i><i></i><i></i><svg viewBox="0 0 100 100"><path d="M30 18 42 12q8 6 16 0l12 6 12 14-10 8-4-4v52H32V36l-4 4-10-8Z"/></svg></div>
-      <h2>Slikaj celo omaro.</h2>
-      <p>Kos za kosom, brez čakanja. Ozadje se odstrani samo, ti pa samo izbereš, kaj je.</p>
+      <h2>Shoot your whole closet.</h2>
+      <p>Piece after piece, no waiting. The background disappears on its own, you just pick what it is.</p>
       <div style="display:grid;gap:10px">
-        <label class="btn wide" for="file"><svg class="i"><use href="#i-cam"/></svg>Odpri kamero</label>
-        <label class="btn line wide" for="file2"><svg class="i"><use href="#i-gallery"/></svg>Uvozi več slik iz galerije</label>
+        <label class="btn wide" for="file"><svg class="i"><use href="#i-cam"/></svg>Open camera</label>
+        <label class="btn line wide" for="file2"><svg class="i"><use href="#i-gallery"/></svg>Import photos from gallery</label>
       </div>
     </div>
     <div class="tips">
-      <div><b>Svetlo ozadje</b>Postelja, tla ali vrata.</div>
-      <div><b>En kos</b>Ena slika, en kos.</div>
-      <div><b>Cel kos</b>Naj bo ves v kadru. Ure slikaj od blizu.</div>
+      <div><b>Plain background</b>A bed, the floor or a door.</div>
+      <div><b>One item</b>One photo, one item.</div>
+      <div><b>All of it</b>Keep the whole item in frame. Shoot watches up close.</div>
     </div>
     <div class="setrow" style="margin-top:8px">
-      <div class="t"><b>Odstrani ozadje</b><small id="bgInfo">Kos izgleda kot v spletni trgovini. Prvič se prenese 44 MB, potem dela brez interneta.</small><div class="bar2" id="bgBar" hidden><i></i></div></div>
-      <button class="tg on" id="bgTg" aria-label="Odstrani ozadje"></button>
+      <div class="t"><b>Remove background</b><small id="bgInfo">Items look like they do in an online store. 44 MB downloads the first time, then it works offline.</small><div class="bar2" id="bgBar" hidden><i></i></div></div>
+      <button class="tg on" id="bgTg" aria-label="Remove background"></button>
     </div>
     <input type="file" id="file" accept="image/*" capture="environment" hidden>
     <input type="file" id="file2" accept="image/*" multiple hidden>
     <div id="pendAdd"></div>
     <div id="qwrap" hidden>
-      <div class="qhead"><h2>Obdelava</h2><span class="eyebrow" id="qcount"></span></div>
+      <div class="qhead"><h2>Processing</h2><span class="eyebrow" id="qcount"></span></div>
       <div class="qlist" id="queue"></div>
     </div>
   </section>
@@ -312,33 +312,33 @@ label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-t
   <section class="view" id="v-outfit" hidden>
     <div id="wxCard"></div>
     <div class="sec">
-      <div class="hrow"><span class="eyebrow">Vreme za outfit</span><button class="link" id="wxAuto" hidden>Samodejno</button></div>
+      <div class="hrow"><span class="eyebrow">Weather</span><button class="link" id="wxAuto" hidden>Auto</button></div>
       <div class="pills" id="wxPills"></div>
     </div>
     <div class="sec">
-      <div class="eyebrow">Tvoj izbor</div>
+      <div class="eyebrow">Your picks</div>
       <div class="sel-row" id="locks"></div>
-      <div class="muted" style="font-size:13px" id="lockHint">Dodaj kos, ki ga hočeš nositi, ostalo se doda samo. Brez izbora dobiš celoten outfit.</div>
+      <div class="muted" style="font-size:13px" id="lockHint">Add a piece you want to wear and the rest is filled in. With no picks you get a full outfit.</div>
     </div>
     <div class="sec">
-      <div class="eyebrow">Priložnost</div>
+      <div class="eyebrow">Occasion</div>
       <div class="pills" id="occPills"></div>
     </div>
     <div style="display:grid;gap:10px;padding-top:18px">
-      <button class="btn wide" id="go"><svg class="i"><use href="#i-spark"/></svg><span id="goTxt">Sestavi outfit</span></button>
+      <button class="btn wide" id="go"><svg class="i"><use href="#i-spark"/></svg><span id="goTxt">Build outfit</span></button>
       <div class="status" id="fitStatus"></div>
     </div>
     <div id="fit"></div>
-    <h2 class="sect">Ta teden</h2>
+    <h2 class="sect">This week</h2>
     <div class="week" id="week"></div>
-    <h2 class="sect">Shranjeni looki</h2>
+    <h2 class="sect">Saved looks</h2>
     <div id="saved"></div>
   </section>
 </div>
 
 <nav class="bar" id="bar">
-  <button data-v="omara" class="on"><svg class="i"><use href="#i-hanger"/></svg>Omara</button>
-  <button data-v="dodaj" class="shutter" aria-label="Dodaj kos"><svg class="i"><use href="#i-cam"/></svg><b id="pendDot" hidden></b></button>
+  <button data-v="omara" class="on"><svg class="i"><use href="#i-hanger"/></svg>Closet</button>
+  <button data-v="dodaj" class="shutter" aria-label="Add item"><svg class="i"><use href="#i-cam"/></svg><b id="pendDot" hidden></b></button>
   <button data-v="outfit"><svg class="i"><use href="#i-spark"/></svg>Outfit</button>
 </nav>
 
@@ -350,21 +350,21 @@ label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-t
 const TF_URL = 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
 // subtype: [label, noun, gender, style, warmth]
 const CATS = [
-  {id:'majica', name:'Majice', one:'Majica', noun:'majica', g:'f', style:'casual', w:1, subs:[
+  {id:'majica', name:'Tops', one:'Top', noun:'majica', g:'f', style:'casual', w:1, subs:[
     ['T-shirt','majica','f','casual',1],['Srajca','srajca','f','smart casual',2],['Polo','polo majica','f','smart casual',1],['Dolgi rokavi','majica z dolgimi rokavi','f','casual',2],['Športna','športna majica','f','športno',1]]},
-  {id:'pulover', name:'Puloverji', one:'Pulover', noun:'pulover', g:'m', style:'casual', w:3, subs:[
+  {id:'pulover', name:'Sweaters', one:'Sweater', noun:'pulover', g:'m', style:'casual', w:3, subs:[
     ['Hoodie','hoodie','m','streetwear',4],['Pulover','pulover','m','casual',3],['Jopa','jopa','f','casual',3],['Športni','športni pulover','m','športno',3]]},
-  {id:'jakna', name:'Jakne', one:'Jakna', noun:'jakna', g:'f', style:'casual', w:4, subs:[
+  {id:'jakna', name:'Jackets', one:'Jacket', noun:'jakna', g:'f', style:'casual', w:4, subs:[
     ['Bomber','bomber jakna','f','streetwear',3],['Puhovka','puhovka','f','casual',5],['Jeans','jeans jakna','f','casual',3],['Usnjena','usnjena jakna','f','streetwear',3],['Plašč','plašč','m','elegantno',4],['Vetrovka','vetrovka','f','športno',2]]},
-  {id:'hlace', name:'Hlače', one:'Hlače', noun:'hlače', g:'fp', style:'casual', w:3, subs:[
+  {id:'hlace', name:'Pants', one:'Pants', noun:'hlače', g:'fp', style:'casual', w:3, subs:[
     ['Kavbojke','kavbojke','fp','casual',3],['Cargo','cargo hlače','fp','streetwear',3],['Chino','chino hlače','fp','smart casual',2],['Trenirka','trenirka','f','športno',3],['Elegantne','elegantne hlače','fp','elegantno',2]]},
-  {id:'kratke', name:'Kratke', one:'Kratke hlače', noun:'kratke hlače', g:'fp', style:'casual', w:1, subs:[
+  {id:'kratke', name:'Shorts', one:'Shorts', noun:'kratke hlače', g:'fp', style:'casual', w:1, subs:[
     ['Kratke','kratke hlače','fp','casual',1],['Jeans','jeans kratke hlače','fp','casual',1],['Športne','športne kratke hlače','fp','športno',1]]},
-  {id:'cevlji', name:'Obutev', one:'Čevlji', noun:'čevlji', g:'mp', style:'casual', w:2, subs:[
+  {id:'cevlji', name:'Shoes', one:'Shoes', noun:'čevlji', g:'mp', style:'casual', w:2, subs:[
     ['Superge','superge','fp','casual',2],['Športni','športni copati','mp','športno',2],['Škornji','škornji','mp','casual',4],['Chelsea','chelsea škornji','mp','smart casual',3],['Elegantni','elegantni čevlji','mp','elegantno',2],['Mokasini','mokasini','mp','smart casual',2],['Sandali','sandali','mp','casual',1],['Natikači','natikači','mp','casual',1]]},
-  {id:'dodatek', name:'Dodatki', one:'Dodatek', noun:'dodatek', g:'m', style:'casual', w:0, subs:[
+  {id:'dodatek', name:'Accessories', one:'Accessory', noun:'dodatek', g:'m', style:'casual', w:0, subs:[
     ['Kapa','kapa','f','streetwear',3],['Šilt kapa','šilt kapa','f','streetwear',1],['Šal','šal','m','casual',4],['Verižica','verižica','f','streetwear',0],['Pas','pas','m','smart casual',0],['Torba','torba','f','casual',0]]},
-  {id:'ura', name:'Ure', one:'Ura', noun:'ura', g:'f', style:'smart casual', w:0, subs:[
+  {id:'ura', name:'Watches', one:'Watch', noun:'ura', g:'f', style:'smart casual', w:0, subs:[
     ['Klasična','klasična ura','f','smart casual',0],['Elegantna','elegantna ura','f','elegantno',0],['Kovinska','kovinska ura','f','smart casual',0],['Športna','športna ura','f','športno',0],['Pametna','pametna ura','f','casual',0]]}
 ];
 const CAT = Object.fromEntries(CATS.map(c => [c.id, c]));
@@ -398,8 +398,8 @@ const METAL = ['srebrna','zlata'];
 const COL = Object.fromEntries(COLORS.map(c => [c[0], {name:c[0], hex:c[1], forms:c[2], kind:c[3]}]));
 const GI = {m:0, f:1, fp:2, mp:3};
 const OCC = ['Vsakdan','Šola / faks','Izhod zvečer','Zmenek','Šport','Družinsko'];
-const TEMPS = [['Toplo','i-sun'],['Srednje','i-cloud'],['Hladno','i-cloud'],['Mraz','i-snow']];
-const T_LABEL = ['toplo vreme','srednje vreme','hladno vreme','mraz'];
+const TEMPS = [['Warm','i-sun'],['Mild','i-cloud'],['Cool','i-cloud'],['Cold','i-snow']];
+const T_LABEL = ['warm weather','mild weather','cool weather','freezing cold'];
 const SIL = {
   majica:'M30 18 42 12q8 6 16 0l12 6 12 14-10 8-4-4v52H32V36l-4 4-10-8Z',
   pulover:'M36 14q14-10 28 0l14 8 10 50-10 2-6-34v50H28V40l-6 34-10-2 10-50Z',
@@ -409,7 +409,8 @@ const SIL = {
   cevlji:'M10 64q2-14 15-16l18-3q8 11 23 11l18 4q7 2 7 10v4H10Z',
   dodatek:'M20 62q0-28 30-30 28 2 30 28l13 4v4H20Z',
   ura:'M41 6h18l3 20a25 25 0 0 1 0 48l-3 20H41l-3-20a25 25 0 0 1 0-48Z'};
-// item names are written in English (Lan's choice); the rest of the app stays Slovenian
+// everything on screen is English; the stored keys (category ids, types, colours, styles, occasions) stay
+// Slovenian so clothes tagged in older versions keep working
 const EN_COLOR = {'črna':'black','bela':'white','siva':'grey','temno siva':'charcoal','temno modra':'navy','denim':'denim','bež':'beige','krem':'cream','rjava':'brown','kaki':'khaki','olivna':'olive','svetlo modra':'light blue','modra':'blue','zelena':'green','bordo':'burgundy','rdeča':'red','roza':'pink','vijolična':'purple','rumena':'yellow','oranžna':'orange','srebrna':'silver','zlata':'gold'};
 const EN_CAT = {majica:'T-shirt', pulover:'sweater', jakna:'jacket', hlace:'pants', kratke:'shorts', cevlji:'shoes', dodatek:'accessory', ura:'watch'};
 const EN_SUB = {
@@ -421,6 +422,22 @@ const EN_SUB = {
   cevlji:{'Superge':'sneakers','Športni':'running shoes','Škornji':'boots','Chelsea':'Chelsea boots','Elegantni':'dress shoes','Mokasini':'loafers','Sandali':'sandals','Natikači':'slides'},
   dodatek:{'Kapa':'beanie','Šilt kapa':'cap','Šal':'scarf','Verižica':'chain','Pas':'belt','Torba':'bag'},
   ura:{'Klasična':'classic watch','Elegantna':'dress watch','Kovinska':'metal watch','Športna':'sports watch','Pametna':'smartwatch'}};
+// short type labels for chips and lists (keys that are already English fall through)
+const SUB_EN = {
+  majica:{'Srajca':'Shirt','Dolgi rokavi':'Long sleeve','Športna':'Sports'},
+  pulover:{'Pulover':'Sweater','Jopa':'Cardigan','Športni':'Track top'},
+  jakna:{'Puhovka':'Puffer','Jeans':'Denim','Usnjena':'Leather','Plašč':'Coat','Vetrovka':'Windbreaker'},
+  hlace:{'Kavbojke':'Jeans','Chino':'Chinos','Trenirka':'Joggers','Elegantne':'Dress pants'},
+  kratke:{'Kratke':'Shorts','Jeans':'Denim','Športne':'Sports'},
+  cevlji:{'Superge':'Sneakers','Športni':'Running','Škornji':'Boots','Elegantni':'Dress shoes','Mokasini':'Loafers','Sandali':'Sandals','Natikači':'Slides'},
+  dodatek:{'Kapa':'Beanie','Šilt kapa':'Cap','Šal':'Scarf','Verižica':'Chain','Pas':'Belt','Torba':'Bag'},
+  ura:{'Klasična':'Classic','Elegantna':'Dress','Kovinska':'Metal','Športna':'Sports','Pametna':'Smart'}};
+const STYLE_EN = {casual:'Casual', streetwear:'Streetwear', 'športno':'Sporty', 'smart casual':'Smart casual', elegantno:'Formal'};
+const OCC_EN = {'Vsakdan':'Everyday', 'Šola / faks':'School / uni', 'Izhod zvečer':'Night out', 'Zmenek':'Date', 'Šport':'Sport', 'Družinsko':'Family'};
+const subLabel = (cat, sub) => (SUB_EN[cat] && SUB_EN[cat][sub]) || sub;
+const colorLabel = n => cap(EN_COLOR[n] || n || '');
+const styleLabel = st => STYLE_EN[st] || st;
+const occLabel = o => OCC_EN[o] || o || '';
 const EXAMPLES = [
   {id:'ex1',cat:'majica',sub:'T-shirt',color:'bela',style:'casual',warmth:1},
   {id:'ex2',cat:'hlace',sub:'Kavbojke',color:'svetlo modra',style:'casual',warmth:3},
@@ -442,7 +459,7 @@ const icon = id => `<svg class="i"><use href="#${id}"/></svg>`;
 const pad2 = n => String(n).padStart(2, '0');
 const todayKey = (d = new Date()) => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
 const dayDiff = (a, b) => Math.round((new Date(b + 'T12:00') - new Date(a + 'T12:00')) / 864e5);
-const kosov = n => n === 1 ? 'kos' : n === 2 ? 'kosa' : n <= 4 && n > 0 ? 'kosi' : 'kosov';
+const kosov = n => n === 1 ? 'item' : 'items';
 const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v) } catch (e) { return d } };
 const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch (e) {} };
 function colorInfo(n) { return COL[n] || COL['siva'] }
@@ -462,7 +479,7 @@ function nearestColor(lab) { let best = 'siva', bd = 1e9; for (const p of PAL_GU
 function subOf(it) { const c = CAT[it.cat]; return c && it.sub ? c.subs.find(s => s[0] === it.sub) : null }
 function seasonOf(w, cat) { w = +w; if (cat === 'majica' || cat === 'dodatek') return 'vse leto'; return w === 0 ? 'vse leto' : w <= 1 ? 'poletje' : w <= 3 ? 'vse leto' : w === 4 ? 'pomlad/jesen' : 'zima' }
 function makeName(it) {
-  if (!CAT[it.cat]) return 'Nov kos';
+  if (!CAT[it.cat]) return 'New item';
   const noun = (EN_SUB[it.cat] && EN_SUB[it.cat][it.sub]) || EN_CAT[it.cat];
   const col = EN_COLOR[it.color];
   if (!col || (it.color === 'denim' && (noun === 'jeans' || noun.startsWith('denim')))) return cap(noun);
@@ -476,7 +493,7 @@ function makeNameSl(it) {
   if (it.color === 'denim' && (noun === 'kavbojke' || noun.startsWith('jeans'))) return cap(noun);
   return cap(col.forms[GI[g]] + ' ' + noun);
 }
-function subNoun(it) { const s = subOf(it); return s ? s[1] : (CAT[it.cat] ? CAT[it.cat].noun : 'kos') }
+function enNoun(it) { return (EN_SUB[it.cat] && EN_SUB[it.cat][it.sub]) || EN_CAT[it.cat] || 'item' }
 
 /* ===================== storage (IndexedDB, only on this phone) ===================== */
 let dbp = null;
@@ -516,7 +533,7 @@ function ph(it, badge, kind) { return `<div class="ph">${pic(it, kind)}${badge |
 
 /* ===================== header + nav ===================== */
 function head() {
-  const T = {omara:['My Wardrobe','Omara'], dodaj:['Nov kos','Dodaj'], outfit:['Stilist','Outfit']}[view];
+  const T = {omara:['My Wardrobe','Closet'], dodaj:['New item','Add'], outfit:['Stylist','Outfit']}[view];
   $('eyebrow').textContent = T[0]; $('title').textContent = T[1];
   const n = ready().length; $('num').textContent = n; $('numlbl').textContent = kosov(n);
   const p = pending().length; $('pendDot').hidden = !p; $('pendDot').textContent = p;
@@ -534,30 +551,30 @@ $('bar').addEventListener('click', e => { const b = e.target.closest('button'); 
 /* ===================== closet ===================== */
 function renderGrid() {
   const all = closet(), ex = usingExamples();
-  $('intro').innerHTML = ex && !pending().length ? `<div class="card"><div class="art">${icon('i-hanger')}</div><div><h3>Tvoja omara je prazna</h3><p>Spodaj je primer, kako bo izgledala. Slikaj svoje kose in ozadje se odstrani samo.</p><button class="btn sm" data-go="dodaj">${icon('i-cam')}Začni slikati</button></div></div>` : '';
+  $('intro').innerHTML = ex && !pending().length ? `<div class="card"><div class="art">${icon('i-hanger')}</div><div><h3>Your closet is empty</h3><p>Below is an example of how it will look. Photograph your clothes and the background is removed for you.</p><button class="btn sm" data-go="dodaj">${icon('i-cam')}Start shooting</button></div></div>` : '';
   const p = pending().length;
-  $('pend').innerHTML = p ? `<div class="card pend"><div><h3>${p} ${kosov(p)} ${p === 1 ? 'čaka' : p === 2 ? 'čakata' : p <= 4 ? 'čakajo' : 'čaka'} na oznako</h3><p>Samo izbereš, kaj je, barvo ugane sam.</p></div><button class="btn sm" data-tag="1">Označi</button></div>` : '';
+  $('pend').innerHTML = p ? `<div class="card pend"><div><h3>${p} ${kosov(p)} waiting to be tagged</h3><p>Just pick what it is, the color is guessed for you.</p></div><button class="btn sm" data-tag="1">Tag</button></div>` : '';
   const wash = all.filter(i => i.laundry).length;
   if (cat === 'pranje' && !wash) cat = 'vse';
   if (cat !== 'vse' && cat !== 'pranje' && !all.some(i => i.cat === cat)) cat = 'vse';
-  $('catTabs').innerHTML = [['vse','Vse']].concat(CATS.map(c => [c.id, c.name])).map(c => {
+  $('catTabs').innerHTML = [['vse','All']].concat(CATS.map(c => [c.id, c.name])).map(c => {
     const n = c[0] === 'vse' ? all.length : all.filter(i => i.cat === c[0]).length;
     if (c[0] !== 'vse' && !n) return '';
     return `<button class="${cat === c[0] ? 'on' : ''}" data-c="${c[0]}">${esc(c[1])}<sup>${n}</sup></button>`;
-  }).join('') + (wash ? `<button class="wash${cat === 'pranje' ? ' on' : ''}" data-c="pranje">V pranju<sup>${wash}</sup></button>` : '');
-  $('washBar').innerHTML = cat === 'pranje' ? `<div class="card pend"><div><h3>${wash} ${kosov(wash)} v pranju</h3><p>Ti kosi se ne pojavijo v outfitih.</p></div><button class="btn sm" id="allClean">Vse oprano</button></div>` : '';
+  }).join('') + (wash ? `<button class="wash${cat === 'pranje' ? ' on' : ''}" data-c="pranje">Laundry<sup>${wash}</sup></button>` : '');
+  $('washBar').innerHTML = cat === 'pranje' ? `<div class="card pend"><div><h3>${wash} ${kosov(wash)} in the wash</h3><p>These won't show up in outfits.</p></div><button class="btn sm" id="allClean">All clean</button></div>` : '';
   const xs = cat === 'vse' ? all : cat === 'pranje' ? all.filter(i => i.laundry) : all.filter(i => i.cat === cat);
   $('grid').innerHTML = xs.map(it => tile(it)).join('');
   head();
 }
 function tile(it, extra) {
-  const b = it.ex ? '<span class="badge">Primer</span>' : locks.includes(it.id) ? '<span class="badge acc">Izbrano</span>' : it.laundry ? '<span class="badge acc">V pranju</span>' : '';
-  return `<button class="tile${it.laundry ? ' wash' : ''}${extra || ''}" data-id="${esc(it.id)}">${ph(it, b)}<div><div class="nm">${esc(it.name)}</div><div class="sub"><i class="sw" style="background:${colorInfo(it.color).hex}"></i><span>${esc(it.color)}${it.sub ? ' · ' + esc(it.sub) : ''}</span></div></div></button>`;
+  const b = it.ex ? '<span class="badge">Example</span>' : locks.includes(it.id) ? '<span class="badge acc">Picked</span>' : it.laundry ? '<span class="badge acc">In the wash</span>' : '';
+  return `<button class="tile${it.laundry ? ' wash' : ''}${extra || ''}" data-id="${esc(it.id)}">${ph(it, b)}<div><div class="nm">${esc(it.name)}</div><div class="sub"><i class="sw" style="background:${colorInfo(it.color).hex}"></i><span>${esc(colorLabel(it.color))}${it.sub ? ' · ' + esc(subLabel(it.cat, it.sub)) : ''}</span></div></div></button>`;
 }
 $('catTabs').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; cat = b.dataset.c; renderGrid() });
 $('intro').addEventListener('click', e => { if (e.target.closest('[data-go]')) show('dodaj') });
 $('pend').addEventListener('click', e => { if (e.target.closest('[data-tag]')) openTag() });
-$('washBar').addEventListener('click', async e => { if (!e.target.closest('#allClean')) return; for (const it of ITEMS.filter(i => i.laundry)) { it.laundry = false; await put('items', it) } toast('Vse oprano'); renderGrid() });
+$('washBar').addEventListener('click', async e => { if (!e.target.closest('#allClean')) return; for (const it of ITEMS.filter(i => i.laundry)) { it.laundry = false; await put('items', it) } toast('All clean'); renderGrid() });
 $('grid').addEventListener('click', e => { const b = e.target.closest('.tile'); if (b) openItem(b.dataset.id) });
 
 /* ===================== sheets ===================== */
@@ -570,58 +587,61 @@ function wearStats(id) {
   for (const w of Object.values(WORN)) if (w.items.includes(id)) { n++; const d = dayDiff(w.date, tk); if (d >= 0 && (last === null || d < last)) last = d }
   return {n, last};
 }
-const agoTxt = d => d === null ? 'še nikoli' : d === 0 ? 'danes' : d === 1 ? 'včeraj' : `pred ${d} ${d === 2 ? 'dnevoma' : 'dnevi'}`;
+const agoTxt = d => d === null ? 'never' : d === 0 ? 'today' : d === 1 ? 'yesterday' : `${d} days ago`;
 
 function openItem(id) {
   const it = byId(id); if (!it) return;
   const inSel = locks.includes(it.id), ws = wearStats(it.id);
   openSheet(`<div class="grab"></div>
     <div class="hero ph">${pic(it, 'img')}</div>
-    <div style="display:grid;gap:6px"><div class="eyebrow">${esc(CAT[it.cat] ? CAT[it.cat].one : '')}${it.sub ? ' · ' + esc(it.sub) : ''}${it.ex ? ' · primer' : ''}</div><h2>${esc(it.name)}</h2></div>
+    <div style="display:grid;gap:6px"><div class="eyebrow">${esc(CAT[it.cat] ? CAT[it.cat].one : '')}${it.sub ? ' · ' + esc(subLabel(it.cat, it.sub)) : ''}${it.ex ? ' · example' : ''}</div><h2>${esc(it.name)}</h2></div>
     <div class="specs">
-      <div><span>Barva</span><span style="display:flex;gap:8px;align-items:center"><i class="sw" style="background:${colorInfo(it.color).hex}"></i>${esc(it.color)}</span></div>
-      <div><span>Stil</span><span>${esc(it.style)}</span></div>
-      <div><span>Toplota</span>${dots(it.warmth)}</div>
-      ${it.ex ? '' : `<div><span>Nošeno</span><span>${ws.n}× · ${agoTxt(ws.last)}</span></div>`}
+      <div><span>Color</span><span style="display:flex;gap:8px;align-items:center"><i class="sw" style="background:${colorInfo(it.color).hex}"></i>${esc(colorLabel(it.color))}</span></div>
+      <div><span>Style</span><span>${esc(styleLabel(it.style))}</span></div>
+      <div><span>Warmth</span>${dots(it.warmth)}</div>
+      ${it.ex ? '' : `<div><span>Worn</span><span>${ws.n}× · ${agoTxt(ws.last)}</span></div>`}
     </div>
-    ${it.ex ? '' : `<div class="setrow" style="padding-top:4px"><div class="t"><b>V pranju</b><small>Kos se ne pojavi v outfitih, dokler ni opran.</small></div><button class="tg${it.laundry ? ' on' : ''}" id="sWash" aria-label="V pranju"></button></div>`}
-    <button class="btn wide" id="sFit">${icon('i-spark')}Sestavi outfit s tem kosom</button>
-    <div class="row"><button class="btn line" id="sLock">${icon(inSel ? 'i-x' : 'i-plus')}${inSel ? 'Iz izbora' : 'K izboru'}</button>${it.ex ? '' : `<button class="btn line" id="sWear">${icon('i-shirt')}Danes nosim</button>`}</div>
-    ${it.ex ? '<div class="note">To je primer. Ko dodaš svoje kose, primeri izginejo.</div>' : `<div style="display:flex;justify-content:space-between"><button class="link" id="sEditT">Uredi podatke</button><button class="link bad" id="sDel">Izbriši kos</button></div><div id="sEdit"></div><div id="sConfirm"></div>`}`);
+    ${it.ex ? '' : `<div class="setrow" style="padding-top:4px"><div class="t"><b>In the wash</b><small>It won't show up in outfits until it's clean.</small></div><button class="tg${it.laundry ? ' on' : ''}" id="sWash" aria-label="In the wash"></button></div>`}
+    <button class="btn wide" id="sFit">${icon('i-spark')}Build an outfit with this</button>
+    <div class="row"><button class="btn line" id="sLock">${icon(inSel ? 'i-x' : 'i-plus')}${inSel ? 'Unpick' : 'Add to picks'}</button>${it.ex ? '' : `<button class="btn line" id="sWear">${icon('i-shirt')}Wearing today</button>`}</div>
+    ${it.ex ? '<div class="note">This is an example. Examples disappear once you add your own items.</div>' : `<div style="display:flex;justify-content:space-between"><button class="link" id="sEditT">Edit details</button><button class="link bad" id="sDel">Delete item</button></div><div id="sEdit"></div><div id="sConfirm"></div>`}`);
   $('sFit').onclick = () => { locks = [it.id]; lastFit = null; prevKeys = []; closeSheet(); show('outfit'); generate() };
-  $('sLock').onclick = () => { toggleLock(it.id); closeSheet(); renderGrid(); toast(locks.includes(it.id) ? 'Dodano k izboru · ' + locks.length : 'Odstranjeno iz izbora') };
+  $('sLock').onclick = () => { toggleLock(it.id); closeSheet(); renderGrid(); toast(locks.includes(it.id) ? 'Added to picks · ' + locks.length : 'Removed from picks') };
   if (it.ex) return;
-  $('sWash').onclick = async () => { it.laundry = !it.laundry; await put('items', it); $('sWash').classList.toggle('on', it.laundry); renderGrid(); toast(it.laundry ? 'V pranju' : 'Oprano') };
-  $('sWear').onclick = async () => { const tk = todayKey(); const e = WORN[tk] ? {...WORN[tk], items:[...new Set(WORN[tk].items.concat(it.id))]} : {date:tk, items:[it.id], name:'Moj outfit', created:Date.now()}; await put('worn', e); WORN[tk] = e; toast('Dodano v današnji outfit'); closeSheet() };
+  $('sWash').onclick = async () => { it.laundry = !it.laundry; await put('items', it); $('sWash').classList.toggle('on', it.laundry); renderGrid(); toast(it.laundry ? 'In the wash' : 'Clean') };
+  $('sWear').onclick = async () => { const tk = todayKey(); const e = WORN[tk] ? {...WORN[tk], items:[...new Set(WORN[tk].items.concat(it.id))]} : {date:tk, items:[it.id], name:'My outfit', lang:'en', created:Date.now()}; await put('worn', e); WORN[tk] = e; toast("Added to today's outfit"); closeSheet() };
   $('sEditT').onclick = () => editForm(it);
   $('sDel').onclick = () => {
-    $('sConfirm').innerHTML = `<div class="confirm"><b>Izbrišem »${esc(it.name)}«?</b><div class="muted" style="font-size:13.5px">Slika in podatki se izbrišejo s telefona za vedno.</div><div class="row"><button class="btn line" id="cNo">Prekliči</button><button class="btn" style="background:var(--bad);color:#fff" id="cYes">Izbriši</button></div></div>`;
+    $('sConfirm').innerHTML = `<div class="confirm"><b>Delete “${esc(it.name)}”?</b><div class="muted" style="font-size:13.5px">The photo and details are removed from this phone for good.</div><div class="row"><button class="btn line" id="cNo">Cancel</button><button class="btn" style="background:var(--bad);color:#fff" id="cYes">Delete</button></div></div>`;
     $('cNo').onclick = () => $('sConfirm').innerHTML = '';
-    $('cYes').onclick = async () => { await del('items', it.id); dropUrls(it.id); ITEMS = ITEMS.filter(x => x.id !== it.id); locks = locks.filter(x => x !== it.id); toast('Izbrisano'); closeSheet(); renderGrid() };
+    $('cYes').onclick = async () => { await del('items', it.id); dropUrls(it.id); ITEMS = ITEMS.filter(x => x.id !== it.id); locks = locks.filter(x => x !== it.id); toast('Deleted'); closeSheet(); renderGrid() };
   };
 }
-function swatches(sel, attr) { return `<div class="sws">${COLORS.map(c => `<button class="swb${c[0] === sel ? ' on' : ''}" data-${attr}="${c[0]}" style="background:${c[1]}" aria-label="${c[0]}" title="${c[0]}"></button>`).join('')}</div>` }
+function swatches(sel, attr) { return `<div class="sws">${COLORS.map(c => `<button class="swb${c[0] === sel ? ' on' : ''}" data-${attr}="${c[0]}" style="background:${c[1]}" aria-label="${colorLabel(c[0])}" title="${colorLabel(c[0])}"></button>`).join('')}</div>` }
 function editForm(it) {
-  const st = {cat:it.cat, sub:it.sub || '', color:it.color};
+  const st = {cat:it.cat, sub:it.sub || '', color:it.color, style:it.style || 'casual', warmth:+it.warmth || 0, name:it.name};
   const draw = () => {
     const c = CAT[st.cat];
     $('sEdit').innerHTML = `<div style="display:grid;gap:14px">
-      <label class="f">Ime<input id="eName" value="${esc(it.name)}"></label>
-      <div class="row"><label class="f">Kategorija<select id="eCat">${CATS.map(x => `<option value="${x.id}"${x.id === st.cat ? ' selected' : ''}>${esc(x.one)}</option>`).join('')}</select></label>
-      <label class="f">Vrsta<select id="eSub"><option value="">–</option>${c.subs.map(s => `<option${s[0] === st.sub ? ' selected' : ''}>${esc(s[0])}</option>`).join('')}</select></label></div>
-      <div style="display:grid;gap:8px"><span class="eyebrow">Barva · ${esc(st.color)}</span>${swatches(st.color, 'ec')}</div>
-      <div class="row"><label class="f">Stil<select id="eStyle">${STYLES.map(s => `<option${s === it.style ? ' selected' : ''}>${s}</option>`).join('')}</select></label>
-      <label class="f">Toplota 0–5<select id="eWarm">${[0,1,2,3,4,5].map(n => `<option${n === +it.warmth ? ' selected' : ''}>${n}</option>`).join('')}</select></label></div>
-      <button class="btn wide" id="eSave">Shrani spremembe</button></div>`;
+      <label class="f">Name<input id="eName" value="${esc(st.name)}"></label>
+      <div class="row"><label class="f">Category<select id="eCat">${CATS.map(x => `<option value="${x.id}"${x.id === st.cat ? ' selected' : ''}>${esc(x.one)}</option>`).join('')}</select></label>
+      <label class="f">Type<select id="eSub"><option value="">–</option>${c.subs.map(x => `<option value="${esc(x[0])}"${x[0] === st.sub ? ' selected' : ''}>${esc(subLabel(st.cat, x[0]))}</option>`).join('')}</select></label></div>
+      <div style="display:grid;gap:8px"><span class="eyebrow">Color · ${esc(colorLabel(st.color))}</span>${swatches(st.color, 'ec')}</div>
+      <div class="row"><label class="f">Style<select id="eStyle">${STYLES.map(x => `<option value="${esc(x)}"${x === st.style ? ' selected' : ''}>${esc(styleLabel(x))}</option>`).join('')}</select></label>
+      <label class="f">Warmth 0–5<select id="eWarm">${[0,1,2,3,4,5].map(n => `<option${n === st.warmth ? ' selected' : ''}>${n}</option>`).join('')}</select></label></div>
+      <button class="btn wide" id="eSave">Save changes</button></div>`;
+    $('eName').oninput = e => { st.name = e.target.value };
     $('eCat').onchange = e => { st.cat = e.target.value; st.sub = ''; draw() };
-    $('eSub').onchange = e => { st.sub = e.target.value; const s = CAT[st.cat].subs.find(x => x[0] === st.sub); if (s) { $('eStyle').value = s[3]; $('eWarm').value = s[4] } };
+    $('eSub').onchange = e => { st.sub = e.target.value; const x = CAT[st.cat].subs.find(y => y[0] === st.sub); if (x) { st.style = x[3]; st.warmth = x[4]; $('eStyle').value = x[3]; $('eWarm').value = x[4] } };
+    $('eStyle').onchange = e => { st.style = e.target.value };
+    $('eWarm').onchange = e => { st.warmth = +e.target.value };
     $('sEdit').querySelectorAll('[data-ec]').forEach(b => b.onclick = () => { st.color = b.dataset.ec; draw() });
     $('eSave').onclick = async () => {
-      const auto = makeName(it), autoSl = makeNameSl(it); const typed = $('eName').value.trim();
-      Object.assign(it, {cat:st.cat, sub:st.sub, color:st.color, style:$('eStyle').value, warmth:+$('eWarm').value});
+      const auto = makeName(it), autoSl = makeNameSl(it); const typed = st.name.trim();
+      Object.assign(it, {cat:st.cat, sub:st.sub, color:st.color, style:st.style, warmth:st.warmth});
       it.season = seasonOf(it.warmth, it.cat);
       it.name = !typed || typed === auto || typed === autoSl ? makeName(it) : typed;
-      await put('items', it); toast('Shranjeno'); closeSheet(); renderGrid();
+      await put('items', it); toast('Saved'); closeSheet(); renderGrid();
     };
   };
   draw();
@@ -677,11 +697,11 @@ function warmModel() { if (BG.state === 'idle' || BG.state === 'error') { BG.sta
 function renderBG() {
   if (view !== 'dodaj') return;
   const info = $('bgInfo'), bar = $('bgBar');
-  if (!BGON) { info.textContent = 'Izklopljeno. Slike ostanejo z ozadjem.'; bar.hidden = true; return }
-  if (BG.state === 'loading') { info.textContent = BG.prog ? `Prenašam model za ozadje · ${Math.round(BG.prog)} % (samo prvič, 44 MB)` : 'Pripravljam model za ozadje…'; bar.hidden = false; bar.firstElementChild.style.width = Math.round(BG.prog || 3) + '%' }
-  else if (BG.state === 'ready') { info.textContent = 'Pripravljeno. Deluje tudi brez interneta.'; bar.hidden = true }
-  else if (BG.state === 'error') { info.textContent = 'Modela ni bilo mogoče naložiti. Preveri internet, slike se shranijo z ozadjem.'; bar.hidden = true }
-  else { info.textContent = 'Kos izgleda kot v spletni trgovini. Prvič se prenese 44 MB, potem dela brez interneta.'; bar.hidden = true }
+  if (!BGON) { info.textContent = 'Off. Photos keep their background.'; bar.hidden = true; return }
+  if (BG.state === 'loading') { info.textContent = BG.prog ? `Downloading the background model · ${Math.round(BG.prog)} % (first time only, 44 MB)` : 'Preparing the background model…'; bar.hidden = false; bar.firstElementChild.style.width = Math.round(BG.prog || 3) + '%' }
+  else if (BG.state === 'ready') { info.textContent = 'Ready. Works offline too.'; bar.hidden = true }
+  else if (BG.state === 'error') { info.textContent = "Couldn't load the model. Check your internet, photos are saved with their background."; bar.hidden = true }
+  else { info.textContent = 'Items look like they do in an online store. 44 MB downloads the first time, then it works offline.'; bar.hidden = true }
 }
 $('bgTg').onclick = async () => { BGON = !BGON; $('bgTg').classList.toggle('on', BGON); await kvSet('bg', BGON); if (BGON) warmModel(); renderBG() };
 
@@ -714,11 +734,11 @@ const WEBP = (() => { try { const c = document.createElement('canvas'); c.width 
 function encode(cv, max, cut) { const c = toCanvas(cv, max); const type = cut ? (WEBP ? 'image/webp' : 'image/png') : 'image/jpeg'; return new Promise(r => c.toBlob(b => r(b), type, cut ? 0.9 : 0.85)) }
 
 let Q = [], busy = false, lock = null;
-const QST = {wait:'V vrsti', prep:'Pripravljam', bg:'Odstranjujem ozadje', save:'Shranjujem', ok:'Pripravljeno za oznako', err:'Napaka'};
+const QST = {wait:'Queued', prep:'Preparing', bg:'Removing background', save:'Saving', ok:'Ready to tag', err:'Error'};
 function renderAdd() {
   $('bgTg').classList.toggle('on', BGON); renderBG();
   const p = pending().length;
-  $('pendAdd').innerHTML = p ? `<div class="card pend" style="margin:22px 0 0"><div><h3>${p} ${kosov(p)} za označiti</h3><p>En klik na kos: kaj je to.</p></div><button class="btn sm acc" data-tag="1">Označi</button></div>` : '';
+  $('pendAdd').innerHTML = p ? `<div class="card pend" style="margin:22px 0 0"><div><h3>${p} ${kosov(p)} to tag</h3><p>One tap per item: what is it?</p></div><button class="btn sm acc" data-tag="1">Tag</button></div>` : '';
   renderQ();
 }
 $('pendAdd').addEventListener('click', e => { if (e.target.closest('[data-tag]')) openTag() });
@@ -729,11 +749,11 @@ function renderQ() {
   $('qcount').textContent = done + ' / ' + Q.length;
   $('queue').innerHTML = Q.slice().reverse().map(q => {
     const it = q.itemId && ITEMS.find(i => i.id === q.itemId); const tagged = it && it.status === 'ready';
-    if (q.itemId && !it) return `<div class="qrow"><div class="qi"></div><div class="t"><b>Izbrisano</b><small>Slika je izbrisana</small></div></div>`;
+    if (q.itemId && !it) return `<div class="qrow"><div class="qi"></div><div class="t"><b>Deleted</b><small>Photo was deleted</small></div></div>`;
     return `<div class="qrow ${q.st}">
       <div class="qi">${it ? `<img src="${url(it, 'thumb')}"${it.cut ? ' class="cut"' : ''} alt="">` : q.prev ? `<img src="${q.prev}" alt="">` : ''}</div>
-      <div class="t"><b>${tagged ? esc(it.name) : 'Nov kos'}</b><small>${tagged ? 'V omari' : q.st === 'err' ? esc(q.err) : QST[q.st]}${q.st === 'bg' && q.t ? ' · ' + q.t : ''}</small></div>
-      ${['prep','bg','save'].includes(q.st) ? '<span class="spin"></span>' : tagged ? `<span class="okc">${icon('i-check')}</span>` : q.st === 'ok' ? `<button class="btn sm line" data-tagid="${q.itemId}">Označi</button>` : q.st === 'err' ? `<button class="btn sm line" data-retry="${q.key}">Znova</button>` : ''}
+      <div class="t"><b>${tagged ? esc(it.name) : 'New item'}</b><small>${tagged ? 'In your closet' : q.st === 'err' ? esc(q.err) : QST[q.st]}${q.st === 'bg' && q.t ? ' · ' + q.t : ''}</small></div>
+      ${['prep','bg','save'].includes(q.st) ? '<span class="spin"></span>' : tagged ? `<span class="okc">${icon('i-check')}</span>` : q.st === 'ok' ? `<button class="btn sm line" data-tagid="${q.itemId}">Tag</button>` : q.st === 'err' ? `<button class="btn sm line" data-retry="${q.key}">Retry</button>` : ''}
     </div>`;
   }).join('');
 }
@@ -765,10 +785,10 @@ async function processOne(q) {
     q.st = 'save'; renderQ();
     const color = detectColor(cv, cut);
     const [img, thumb] = await Promise.all([encode(cv, 1000, cut), encode(cv, 440, cut)]);
-    const it = {id:uid(), status:'pending', created:Date.now(), cut, color, img, thumb, name:'Nov kos', cat:null, sub:'', style:'casual', warmth:null, season:null, laundry:false};
+    const it = {id:uid(), status:'pending', created:Date.now(), cut, color, img, thumb, name:'New item', cat:null, sub:'', style:'casual', warmth:null, season:null, laundry:false};
     await put('items', it); ITEMS.unshift(it);
     q.st = 'ok'; q.itemId = it.id; q.file = null; if (q.prev) { URL.revokeObjectURL(q.prev); q.prev = null }
-  } catch (e) { console.warn(e); q.st = 'err'; q.err = e && e.message === 'img' ? 'Slike ne morem odpreti' : 'Ni se shranilo' }
+  } catch (e) { console.warn(e); q.st = 'err'; q.err = e && e.message === 'img' ? "Can't open this photo" : "Couldn't save it" }
   renderQ(); if (view === 'dodaj') renderAdd(); head();
 }
 $('file').addEventListener('change', e => { addFiles([...e.target.files]); e.target.value = '' });
@@ -776,7 +796,7 @@ $('file2').addEventListener('change', e => { addFiles([...e.target.files]); e.ta
 
 /* quick tagging: colour is guessed, one tap on the type saves it */
 function openTag(id) {
-  const P = pending(); if (!P.length) { closeSheet(); toast('Vse je označeno'); return }
+  const P = pending(); if (!P.length) { closeSheet(); toast('Everything is tagged'); return }
   const it = (id && P.find(x => x.id === id)) || P[0];
   TAG = {id:it.id, color:it.color, cat:null, keep:false, picked:false}; drawTag();
 }
@@ -785,18 +805,18 @@ function drawTag() {
   const P = pending(), pos = P.indexOf(it) + 1, c = TAG.cat && CAT[TAG.cat];
   const keep = TAG.keep; TAG.keep = false;
   openSheet(`<div class="grab"></div>
-    <div class="shead"><span class="eyebrow">Označi · ${pos} / ${P.length}</span><div style="display:flex;gap:16px">${P.length > 1 ? '<button class="link" id="tSkip">Preskoči</button>' : ''}<button class="link bad" id="tDel">Izbriši</button></div></div>
+    <div class="shead"><span class="eyebrow">Tag · ${pos} / ${P.length}</span><div style="display:flex;gap:16px">${P.length > 1 ? '<button class="link" id="tSkip">Skip</button>' : ''}<button class="link bad" id="tDel">Delete</button></div></div>
     <div class="hero ph sm">${pic(it, 'img')}</div>
-    <div style="display:grid;gap:8px"><span class="eyebrow">Barva · ${esc(TAG.color)}</span>${swatches(TAG.color, 'tc')}</div>
-    <div style="display:grid;gap:8px"><span class="eyebrow">Kaj je to?</span><div class="catg">${CATS.map(x => `<button class="catb${TAG.cat === x.id ? ' on' : ''}" data-tcat="${x.id}"><svg viewBox="0 0 100 100"><path d="${SIL[x.id]}" fill="${colorInfo(TAG.color).hex}" stroke="rgba(128,128,134,.6)" stroke-width="2"/></svg>${esc(x.one)}</button>`).join('')}</div></div>
-    ${c ? `<div style="display:grid;gap:8px"><span class="eyebrow">Vrsta · klik shrani</span><div class="subs">${c.subs.map(s => `<button class="pill" data-tsub="${esc(s[0])}">${esc(s[0])}</button>`).join('')}</div><button class="btn wide" id="tSave">Shrani brez vrste</button></div>` : ''}`, keep);
+    <div style="display:grid;gap:8px"><span class="eyebrow">Color · ${esc(colorLabel(TAG.color))}</span>${swatches(TAG.color, 'tc')}</div>
+    <div style="display:grid;gap:8px"><span class="eyebrow">What is it?</span><div class="catg">${CATS.map(x => `<button class="catb${TAG.cat === x.id ? ' on' : ''}" data-tcat="${x.id}"><svg viewBox="0 0 100 100"><path d="${SIL[x.id]}" fill="${colorInfo(TAG.color).hex}" stroke="rgba(128,128,134,.6)" stroke-width="2"/></svg>${esc(x.one)}</button>`).join('')}</div></div>
+    ${c ? `<div style="display:grid;gap:8px"><span class="eyebrow">Type · tap to save</span><div class="subs">${c.subs.map(s => `<button class="pill" data-tsub="${esc(s[0])}">${esc(subLabel(c.id, s[0]))}</button>`).join('')}</div><button class="btn wide" id="tSave">Save without type</button></div>` : ''}`, keep);
   const box = $('sheetBox');
   box.querySelectorAll('[data-tc]').forEach(b => b.onclick = () => { TAG.color = b.dataset.tc; TAG.picked = true; TAG.keep = true; drawTag() });
   box.querySelectorAll('[data-tcat]').forEach(b => b.onclick = () => { TAG.cat = b.dataset.tcat; TAG.keep = true; if (TAG.cat === 'ura' && !TAG.picked) { if (['siva','bela','temno siva','svetlo modra'].includes(TAG.color)) TAG.color = 'srebrna'; else if (['rumena','bež','kaki','oranžna'].includes(TAG.color)) TAG.color = 'zlata' } drawTag(); const s = $('tSave'); if (s) s.scrollIntoView({block:'nearest'}) });
   box.querySelectorAll('[data-tsub]').forEach(b => b.onclick = () => saveTag(b.dataset.tsub));
   if ($('tSave')) $('tSave').onclick = () => saveTag('');
   if ($('tSkip')) $('tSkip').onclick = () => { const i = P.indexOf(it); const nx = P[(i + 1) % P.length]; TAG = {id:nx.id, color:nx.color, cat:null, keep:false}; drawTag() };
-  $('tDel').onclick = async () => { const b = $('tDel'); if (!b.dataset.sure) { b.dataset.sure = '1'; b.textContent = 'Res izbrišem?'; setTimeout(() => { if (b.isConnected) { delete b.dataset.sure; b.textContent = 'Izbriši' } }, 3000); return } await del('items', it.id); dropUrls(it.id); ITEMS = ITEMS.filter(x => x.id !== it.id); renderGrid(); if (view === 'dodaj') renderAdd(); openTag() };
+  $('tDel').onclick = async () => { const b = $('tDel'); if (!b.dataset.sure) { b.dataset.sure = '1'; b.textContent = 'Really delete?'; setTimeout(() => { if (b.isConnected) { delete b.dataset.sure; b.textContent = 'Delete' } }, 3000); return } await del('items', it.id); dropUrls(it.id); ITEMS = ITEMS.filter(x => x.id !== it.id); renderGrid(); if (view === 'dodaj') renderAdd(); openTag() };
 }
 async function saveTag(sub) {
   const it = ITEMS.find(x => x.id === TAG.id); const c = CAT[TAG.cat]; const s = sub ? c.subs.find(x => x[0] === sub) : null;
@@ -805,14 +825,15 @@ async function saveTag(sub) {
   await put('items', it);
   renderGrid(); if (view === 'dodaj') renderAdd();
   const P = pending();
-  if (P.length) { TAG = {id:P[0].id, color:P[0].color, cat:null, keep:false}; drawTag() } else { closeSheet(); toast(`Označeno · ${ready().length} ${kosov(ready().length)} v omari`) }
+  if (P.length) { TAG = {id:P[0].id, color:P[0].color, cat:null, keep:false}; drawTag() } else { closeSheet(); toast(`Tagged · ${ready().length} ${kosov(ready().length)} in your closet`) }
 }
 
 /* ===================== weather (Open-Meteo, free, no key) ===================== */
 const RAIN = c => (c >= 51 && c <= 67) || (c >= 80 && c <= 82) || c >= 95;
 const SNOW = c => (c >= 71 && c <= 77) || c === 85 || c === 86;
 const wxIcon = c => SNOW(c) ? 'i-snow' : RAIN(c) ? 'i-rain' : c <= 1 ? 'i-sun' : 'i-cloud';
-const wxDesc = c => c === 0 ? 'Jasno' : c === 1 ? 'Pretežno jasno' : c === 2 ? 'Delno oblačno' : c === 3 ? 'Oblačno' : c === 45 || c === 48 ? 'Megla' : c <= 57 ? 'Pršenje' : c <= 67 ? 'Dež' : c <= 77 ? 'Sneg' : c <= 82 ? 'Plohe' : c <= 86 ? 'Snežne plohe' : 'Nevihte';
+const wxDesc = c => c === 0 ? 'Clear' : c === 1 ? 'Mostly clear' : c === 2 ? 'Partly cloudy' : c === 3 ? 'Cloudy' : c === 45 || c === 48 ? 'Fog' : c <= 57 ? 'Drizzle' : c <= 67 ? 'Rain' : c <= 77 ? 'Snow' : c <= 82 ? 'Showers' : c <= 86 ? 'Snow showers' : 'Thunderstorms';
+const locName = () => !LOC ? '' : LOC.name === 'Trenutna lokacija' ? 'Current location' : LOC.name;
 async function loadWeather(force) {
   if (!LOC) { renderWx(); return }
   const key = LOC.lat + ',' + LOC.lon, c = lsGet('omara-wx', null);
@@ -836,11 +857,11 @@ function autoWx() {
 function currentWx() { if (wxManual) return {...wxManual, label:T_LABEL[wxManual.T]}; return autoWx() || {T:1, rain:false, label:T_LABEL[1]} }
 function renderWx() {
   if (view !== 'outfit') return;
-  if (!LOC) $('wxCard').innerHTML = `<div class="wx"><div class="ic">${icon('i-pin')}</div><div><b style="font-weight:600">Samodejno vreme</b><div class="muted" style="font-size:13.5px;margin:2px 0 10px">Outfit bo sam upošteval temperaturo in dež.</div><div class="row"><button class="btn sm" data-wx="gps">Moja lokacija</button><button class="btn sm line" data-wx="city">Vpiši mesto</button></div></div></div>`;
-  else if (!WX) $('wxCard').innerHTML = `<div class="wx"><div class="ic"><span class="spin"></span></div><div><b style="font-weight:600">${esc(LOC.name)}</b><div class="muted" style="font-size:13.5px">Nalagam vreme…</div></div></div>`;
-  else $('wxCard').innerHTML = `<div class="wx"><div class="ic">${icon(wxIcon(WX.code))}</div><div><div class="tt"><span class="deg">${Math.round(WX.t)}°</span><span class="muted">${esc(LOC.name)}</span></div><small>${wxDesc(WX.dcode)} · ${Math.round(WX.min)}° do ${Math.round(WX.max)}° · dež ${Math.round(WX.pop)} %</small></div></div>`;
+  if (!LOC) $('wxCard').innerHTML = `<div class="wx"><div class="ic">${icon('i-pin')}</div><div><b style="font-weight:600">Automatic weather</b><div class="muted" style="font-size:13.5px;margin:2px 0 10px">Outfits take the temperature and rain into account.</div><div class="row"><button class="btn sm" data-wx="gps">My location</button><button class="btn sm line" data-wx="city">Enter city</button></div></div></div>`;
+  else if (!WX) $('wxCard').innerHTML = `<div class="wx"><div class="ic"><span class="spin"></span></div><div><b style="font-weight:600">${esc(locName())}</b><div class="muted" style="font-size:13.5px">Loading weather…</div></div></div>`;
+  else $('wxCard').innerHTML = `<div class="wx"><div class="ic">${icon(wxIcon(WX.code))}</div><div><div class="tt"><span class="deg">${Math.round(WX.t)}°</span><span class="muted">${esc(locName())}</span></div><small>${wxDesc(WX.dcode)} · ${Math.round(WX.min)}° to ${Math.round(WX.max)}° · rain ${Math.round(WX.pop)} %</small></div></div>`;
   const cw = currentWx(), auto = !wxManual && !!WX;
-  $('wxPills').innerHTML = TEMPS.map((t, i) => `<button class="pill${cw.T === i ? ' on' : ''}" data-t="${i}">${icon(t[1])}${t[0]}</button>`).join('') + `<button class="pill${cw.rain ? ' on' : ''}" data-rain="1">${icon('i-rain')}Dež</button>`;
+  $('wxPills').innerHTML = TEMPS.map((t, i) => `<button class="pill${cw.T === i ? ' on' : ''}" data-t="${i}">${icon(t[1])}${t[0]}</button>`).join('') + `<button class="pill${cw.rain ? ' on' : ''}" data-rain="1">${icon('i-rain')}Rain</button>`;
   $('wxAuto').hidden = !wxManual || !WX;
 }
 $('wxCard').addEventListener('click', e => { const b = e.target.closest('[data-wx]'); if (!b) return; if (b.dataset.wx === 'gps') useGPS(); else openSettings(true) });
@@ -852,12 +873,12 @@ $('wxPills').addEventListener('click', e => {
 });
 $('wxAuto').onclick = () => { wxManual = null; renderWx() };
 function useGPS() {
-  if (!navigator.geolocation) { toast('Lokacija na tem telefonu ni na voljo'); return }
-  toast('Iščem lokacijo…');
+  if (!navigator.geolocation) { toast("Location isn't available on this phone"); return }
+  toast('Finding your location…');
   navigator.geolocation.getCurrentPosition(async p => {
-    LOC = {lat:+p.coords.latitude.toFixed(3), lon:+p.coords.longitude.toFixed(3), name:'Trenutna lokacija'};
+    LOC = {lat:+p.coords.latitude.toFixed(3), lon:+p.coords.longitude.toFixed(3), name:'Current location'};
     await kvSet('loc', LOC); WX = null; await loadWeather(true); if (!$('sheet').hidden) openSettings();
-  }, () => toast('Lokacije ni bilo mogoče dobiti. Vpiši mesto.'), {timeout:12000, maximumAge:3600e3});
+  }, () => toast("Couldn't get your location. Enter a city instead."), {timeout:12000, maximumAge:3600e3});
 }
 
 /* ===================== outfit engine (rules, no AI) ===================== */
@@ -871,8 +892,8 @@ const OCC_STYLE = {
   'Družinsko':{casual:1.4, streetwear:.4, 'športno':-1, 'smart casual':2.5, elegantno:1.6}};
 const STYLE_PAIR = {'casual|streetwear':.5, 'casual|smart casual':.3, 'streetwear|športno':.2, 'casual|športno':0, 'elegantno|smart casual':.6, 'smart casual|streetwear':-.2, 'smart casual|športno':-1, 'elegantno|športno':-2, 'elegantno|streetwear':-.8, 'casual|elegantno':-.4};
 const styleCompat = (a, b) => a === b ? 1 : (STYLE_PAIR[[a, b].sort().join('|')] ?? 0);
-const STYLE_PHRASE = {casual:'Sproščen casual stil', streetwear:'Streetwear stil', 'športno':'Športni stil', 'smart casual':'Smart casual stil', elegantno:'Eleganten stil'};
-const OCC_FOR = {'Vsakdan':'vsak dan', 'Šola / faks':'šolo ali faks', 'Izhod zvečer':'večerni izhod', 'Zmenek':'zmenek', 'Šport':'šport', 'Družinsko':'družinsko srečanje'};
+const STYLE_PHRASE = {casual:'Relaxed casual', streetwear:'Streetwear', 'športno':'A sporty style', 'smart casual':'Smart casual', elegantno:'An elegant style'};
+const OCC_FOR = {'Vsakdan':'every day', 'Šola / faks':'school or uni', 'Izhod zvečer':'a night out', 'Zmenek':'a date', 'Šport':'training', 'Družinsko':'a family get-together'};
 const isDenim = m => m.col.name === 'denim' || ((m.sub === 'Kavbojke' || m.sub === 'Jeans') && ['modra','svetlo modra','temno modra','denim'].includes(m.col.name));
 const sameFamily = (a, b) => [['rdeča','bordo','roza'], ['modra','vijolična'], ['rumena','oranžna']].some(f => f.includes(a) && f.includes(b));
 
@@ -997,62 +1018,62 @@ function lookName(ms, ctx) {
   const acc = [...new Set(ms.filter(m => m.col.kind === 'a').map(m => m.col.name))];
   const darks = ms.filter(m => m.L < 30).length, earth = ms.filter(m => m.col.kind === 'e').length;
   const layers = ms.filter(m => ['top','mid','outer'].includes(m.slot)).length, st = dominantStyle(ms);
-  if (ctx.occ === 'Šport') return 'Športni look';
+  if (ctx.occ === 'Šport') return 'Sporty look';
   if (darks >= 3 && darks >= ms.length - 1 && !acc.length) return 'Total black';
-  if (layers >= 3) return ctx.T >= 3 ? 'Zimsko layeranje' : 'Urban layering';
-  if (acc.length === 1) return cap(COL[acc[0]].forms[0]) + ' poudarek';
-  if (earth >= 2) return 'Zemeljski toni';
-  if (ctx.T === 0 && ms.some(m => m.cat === 'kratke')) return 'Poletni casual';
-  if (ctx.occ === 'Zmenek') return st === 'elegantno' ? 'Eleganten večer' : 'Smart casual';
-  if (ctx.occ === 'Izhod zvečer') return 'Večerni izhod';
-  return {casual:'Čist casual', streetwear:'Streetwear', 'športno':'Športni look', 'smart casual':'Smart casual', elegantno:'Eleganten look'}[st] || 'Vsakdanji look';
+  if (layers >= 3) return ctx.T >= 3 ? 'Winter layers' : 'Urban layering';
+  if (acc.length === 1) return colorLabel(acc[0]) + ' accent';
+  if (earth >= 2) return 'Earth tones';
+  if (ctx.T === 0 && ms.some(m => m.cat === 'kratke')) return 'Summer casual';
+  if (ctx.occ === 'Zmenek') return st === 'elegantno' ? 'Elegant evening' : 'Smart casual';
+  if (ctx.occ === 'Izhod zvečer') return 'Night out';
+  return {casual:'Clean casual', streetwear:'Streetwear', 'športno':'Sporty look', 'smart casual':'Smart casual', elegantno:'Sharp look'}[st] || 'Everyday look';
 }
 function explain(ms, ctx) {
-  const S = [], T = ctx.T, NUM = ['', 'eno', 'dve', 'tri', 'štiri'];
+  const S = [], T = ctx.T, NUM = ['', 'one', 'two', 'three', 'four'], en = n => EN_COLOR[n] || n;
   const ups = ms.filter(m => ['top','mid','outer'].includes(m.slot)).length, outer = ms.find(m => m.slot === 'outer');
-  if (T >= 2 || ctx.rain) S.push(`Za ${ctx.label}${ctx.rain ? ' in dež' : ''} imaš ${NUM[ups] || ups} ${ups === 1 ? 'plast' : 'plasti'}${outer ? ', zadnja je ' + subNoun(outer.it) : ''}.`);
-  else if (T === 0) S.push(`Za ${ctx.label} samo lahki kosi, brez dodatnih plasti.`);
+  if (T >= 2 || ctx.rain) S.push(`For ${ctx.label}${ctx.rain ? ' and rain' : ''} you get ${NUM[ups] || ups} ${ups === 1 ? 'layer' : 'layers'}${outer ? ', with your ' + enNoun(outer.it) + ' on top' : ''}.`);
+  else if (T === 0) S.push(`For ${ctx.label}, just light pieces with no extra layers.`);
   const cm = ms.filter(m => m.slot !== 'watch');
   const acc = [...new Set(cm.filter(m => m.col.kind === 'a').map(m => m.col.name))];
   const darks = cm.filter(m => m.L < 30).length, earth = cm.filter(m => m.col.kind === 'e').length;
-  if (acc.length === 1) S.push(`Nevtralna osnova z enim barvnim poudarkom (${acc[0]}) deluje premišljeno.`);
-  else if (!acc.length && darks >= 3) S.push('Temni toni dajo čist, oster obris.');
-  else if (!acc.length && earth >= 2) S.push('Zemeljski toni se med sabo lepo ujemajo.');
-  else if (!acc.length) S.push(`Nevtralne barve (${[...new Set(cm.map(m => m.col.name))].slice(0, 3).join(', ')}) gredo vedno skupaj.`);
-  else S.push(`Dva barvna poudarka (${acc.slice(0, 2).join(' in ')}) sta drzna izbira.`);
+  if (acc.length === 1) S.push(`A neutral base with one pop of color (${en(acc[0])}) looks deliberate.`);
+  else if (!acc.length && darks >= 3) S.push('Dark tones give a clean, sharp outline.');
+  else if (!acc.length && earth >= 2) S.push('Earth tones go nicely together.');
+  else if (!acc.length) S.push(`Neutral colors (${[...new Set(cm.map(m => en(m.col.name)))].slice(0, 3).join(', ')}) always work together.`);
+  else S.push(`Two pops of color (${acc.slice(0, 2).map(en).join(' and ')}) make a bold choice.`);
   const vis = ms.find(m => m.slot === 'outer') || ms.find(m => m.slot === 'mid') || ms.find(m => m.slot === 'top'), bot = ms.find(m => m.slot === 'bottom');
-  if (S.length < 3 && vis && bot && Math.abs(vis.L - bot.L) >= 30) S.push('Svetlo in temno med zgornjim in spodnjim delom da lep kontrast.');
-  if (S.length < 3) S.push(`${STYLE_PHRASE[dominantStyle(ms)]} paše za ${OCC_FOR[ctx.occ]}.`);
+  if (S.length < 3 && vis && bot && Math.abs(vis.L - bot.L) >= 30) S.push('Light against dark between top and bottom gives a nice contrast.');
+  if (S.length < 3) S.push(`${STYLE_PHRASE[dominantStyle(ms)]} works for ${OCC_FOR[ctx.occ]}.`);
   let out = S.slice(0, 3).join(' ');
-  if (ctx.yesterday.size && !ms.some(m => ctx.yesterday.has(m.id) && m.slot !== 'shoes' && !ctx.locked.has(m.id))) out += ' Ne ponavlja oblačil od včeraj.';
+  if (ctx.yesterday.size && !ms.some(m => ctx.yesterday.has(m.id) && m.slot !== 'shoes' && !ctx.locked.has(m.id))) out += ' Nothing repeats from yesterday.';
   return out;
 }
 function styleTip(ms, ctx) {
   const f = (cat, sub) => ms.find(m => m.cat === cat && (!sub || m.sub === sub));
   const top = f('majica'), mid = f('pulover'), out = f('jakna'), bot = ms.find(m => m.slot === 'bottom'), sh = f('cevlji');
   const wt = f('ura');
-  if (top && top.sub === 'Srajca' && ['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) return 'Srajco zatakni v hlače in rokave zavihaj do komolcev.';
-  if (wt && ['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) return wt.col.name === 'srebrna' || wt.col.name === 'zlata' ? 'Kovinska ura naj se ujema z drugim nakitom: srebro s srebrom, zlato z zlatom.' : 'Usnjen pašček ure naj bo v podobni barvi kot čevlji ali pas.';
-  if (top && mid) return mid.sub === 'Jopa' ? 'Jopo pusti odpeto, da se vidi majica pod njo.' : 'Majica naj rahlo pokuka izpod puloverja ob vratu ali spodaj, to doda globino.';
-  if (out && (mid || top) && ctx.T <= 2) return 'Jakno nosi odpeto, da se vidi plast pod njo.';
-  if (bot && (bot.sub === 'Cargo' || bot.sub === 'Trenirka') && mid && mid.sub === 'Hoodie') return 'Oversized zgoraj, ožje spodaj: hlače naj se zberejo ob gležnju.';
-  if (bot && bot.cat === 'hlace' && (!bot.sub || bot.sub === 'Kavbojke' || bot.sub === 'Chino') && sh && (!sh.sub || sh.sub === 'Superge')) return 'Hlače enkrat ali dvakrat zavihaj, da se lepo vidijo superge.';
-  if (bot && bot.cat === 'kratke') return 'Kratke hlače naj segajo malo nad koleno, majica pa ne predolgo.';
-  if (sh && sh.sub === 'Chelsea' && bot && bot.cat === 'hlace') return 'Hlače naj se končajo tik nad chelsea škornji, brez gub na gležnju.';
-  if (sh && sh.sub === 'Mokasini') return 'K mokasinam nosi kratke nevidne nogavice, da se gleženj vidi.';
-  if (sh && sh.sub === 'Elegantni') return 'Pas naj bo v isti barvi kot čevlji.';
-  if (top && !mid && !out) return 'Majico rahlo zatakni spredaj v hlače, da dobiš boljše razmerje.';
-  return 'Čisti čevlji naredijo pol looka.';
+  if (top && top.sub === 'Srajca' && ['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) return 'Tuck the shirt in and roll the sleeves up to the elbows.';
+  if (wt && ['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) return wt.col.name === 'srebrna' || wt.col.name === 'zlata' ? 'Match a metal watch to your other jewelry: silver with silver, gold with gold.' : 'Keep the watch strap close in color to your shoes or belt.';
+  if (top && mid) return mid.sub === 'Jopa' ? 'Leave the cardigan open so the tee shows underneath.' : 'Let the tee peek out a little at the collar or hem of the sweater, it adds depth.';
+  if (out && (mid || top) && ctx.T <= 2) return 'Wear the jacket open so the layer underneath shows.';
+  if (bot && (bot.sub === 'Cargo' || bot.sub === 'Trenirka') && mid && mid.sub === 'Hoodie') return 'Oversized on top, slimmer below: let the pants stack at the ankle.';
+  if (bot && bot.cat === 'hlace' && (!bot.sub || bot.sub === 'Kavbojke' || bot.sub === 'Chino') && sh && (!sh.sub || sh.sub === 'Superge')) return 'Cuff the pants once or twice so the sneakers show.';
+  if (bot && bot.cat === 'kratke') return 'Shorts should end just above the knee, and the tee should not be too long.';
+  if (sh && sh.sub === 'Chelsea' && bot && bot.cat === 'hlace') return 'Pants should end just above the Chelsea boots, with no bunching at the ankle.';
+  if (sh && sh.sub === 'Mokasini') return 'Wear no-show socks with loafers so the ankle shows.';
+  if (sh && sh.sub === 'Elegantni') return 'Match your belt to your shoes.';
+  if (top && !mid && !out) return 'Do a small front tuck of the tee for better proportions.';
+  return 'Clean shoes make half the look.';
 }
 function gapNote(ctx) {
   const all = ctx.items, n = c => all.filter(i => i.cat === c && !i.laundry).length, wash = all.filter(i => i.laundry).length;
-  if (!n('cevlji')) return 'V omari še nimaš obutve. Slikaj čevlje, da bodo outfiti popolni.';
-  if (ctx.T >= 2 && !n('jakna')) return ctx.T >= 3 ? 'Za mraz ti manjka topla jakna.' : 'Za hladne dni bi prav prišla jakna.';
-  if (ctx.rain && !n('jakna')) return 'Za dež bi prav prišla jakna s kapuco.';
-  if (ctx.T >= 3 && !all.some(i => i.cat === 'dodatek' && (i.sub === 'Kapa' || i.sub === 'Šal'))) return 'Pri mrazu bi kapa ali šal zaključila look.';
-  if (ctx.T === 0 && !n('kratke')) return 'Za vroče dni bi prav prišle kratke hlače.';
-  if (wash) return `${wash} ${wash === 1 ? 'kos je' : wash === 2 ? 'kosa sta' : wash <= 4 ? 'kosi so' : 'kosov je'} v pranju, zato ${wash === 1 ? 'ga' : wash === 2 ? 'ju' : 'jih'} ni v predlogu.`;
-  if (all.length >= 8 && !all.some(i => colorInfo(i.color).kind === 'a')) return 'Vse je nevtralno. En kos v barvi (bordo, olivna, zelena) bi popestril omaro.';
+  if (!n('cevlji')) return 'No shoes in your closet yet. Add some so your outfits are complete.';
+  if (ctx.T >= 2 && !n('jakna')) return ctx.T >= 3 ? 'You are missing a warm jacket for the cold.' : 'A jacket would come in handy on cool days.';
+  if (ctx.rain && !n('jakna')) return 'A hooded jacket would come in handy in the rain.';
+  if (ctx.T >= 3 && !all.some(i => i.cat === 'dodatek' && (i.sub === 'Kapa' || i.sub === 'Šal'))) return 'In the cold, a beanie or scarf would finish the look.';
+  if (ctx.T === 0 && !n('kratke')) return 'Shorts would come in handy on hot days.';
+  if (wash) return `${wash} ${wash === 1 ? 'item is' : 'items are'} in the wash, so ${wash === 1 ? 'it is' : 'they are'} left out of this suggestion.`;
+  if (all.length >= 8 && !all.some(i => colorInfo(i.color).kind === 'a')) return 'Everything is neutral. One piece in color (burgundy, olive, green) would liven up your closet.';
   return '';
 }
 function makeCtx() {
@@ -1069,16 +1090,16 @@ function renderOutfit() {
   const here = new Set(closet().map(i => i.id));
   locks = locks.filter(id => here.has(id));
   if (lastFit && !lastFit.items.every(id => byId(id) && (here.has(id) || !byId(id).ex))) lastFit = null;
-  $('locks').innerHTML = locks.map(id => { const it = byId(id); return `<div class="mini">${ph(it)}<button data-unlock="${esc(id)}" aria-label="Odstrani">${icon('i-x')}</button></div>` }).join('') + `<button class="addl" id="addLock" aria-label="Izberi kos">${icon('i-plus')}</button>`;
+  $('locks').innerHTML = locks.map(id => { const it = byId(id); return `<div class="mini">${ph(it)}<button data-unlock="${esc(id)}" aria-label="Remove">${icon('i-x')}</button></div>` }).join('') + `<button class="addl" id="addLock" aria-label="Pick an item">${icon('i-plus')}</button>`;
   $('lockHint').hidden = locks.length > 0;
-  $('occPills').innerHTML = OCC.map(o => `<button class="pill${o === occ ? ' on' : ''}" data-o="${esc(o)}">${esc(o)}</button>`).join('');
-  $('goTxt').textContent = lastFit ? 'Drug predlog' : 'Sestavi outfit';
+  $('occPills').innerHTML = OCC.map(o => `<button class="pill${o === occ ? ' on' : ''}" data-o="${esc(o)}">${esc(occLabel(o))}</button>`).join('');
+  $('goTxt').textContent = lastFit ? 'Another one' : 'Build outfit';
   renderFit(); renderWeek(); renderSaved(); head();
 }
 $('locks').addEventListener('click', e => { const u = e.target.closest('[data-unlock]'); if (u) { toggleLock(u.dataset.unlock); renderOutfit(); return } if (e.target.closest('#addLock')) pickLock() });
 $('occPills').addEventListener('click', e => { const b = e.target.closest('[data-o]'); if (b) { occ = b.dataset.o; renderOutfit() } });
 function pickLock() {
-  openSheet(`<div class="grab"></div><div style="display:grid;gap:6px"><div class="eyebrow">Tvoj izbor</div><h2>Kaj hočeš nositi?</h2></div><div class="grid" id="pickGrid">${closet().map(it => tile(it, locks.includes(it.id) ? ' sel' : '')).join('')}</div><button class="btn wide" id="pickDone">Končano</button>`);
+  openSheet(`<div class="grab"></div><div style="display:grid;gap:6px"><div class="eyebrow">Your picks</div><h2>What do you want to wear?</h2></div><div class="grid" id="pickGrid">${closet().map(it => tile(it, locks.includes(it.id) ? ' sel' : '')).join('')}</div><button class="btn wide" id="pickDone">Done</button>`);
   $('pickGrid').addEventListener('click', e => { const b = e.target.closest('.tile'); if (!b) return; toggleLock(b.dataset.id); b.classList.toggle('sel') });
   $('pickDone').onclick = () => { closeSheet(); renderOutfit() };
 }
@@ -1087,16 +1108,16 @@ function generate() {
   const sig = [currentWx().T, currentWx().rain, occ, locks.join(',')].join('|');
   if (sig !== prevSig) { prevKeys = []; prevSig = sig }
   const st = $('fitStatus'); st.className = 'status'; st.textContent = '';
-  if (closet().length < 2) { st.className = 'status err'; st.textContent = 'Dodaj vsaj nekaj kosov.'; return }
+  if (closet().length < 2) { st.className = 'status err'; st.textContent = 'Add a few items first.'; return }
   const ctx = makeCtx(), r = buildOutfit(ctx);
   if (!r) {
     lastFit = null; renderOutfit(); st.className = 'status err';
-    st.textContent = closet().every(i => i.laundry) ? 'Vse je v pranju. Ko opereš, v Omari klikni Vse oprano.' : 'Iz teh kosov ne gre sestaviti outfita. Dodaj še kaj.';
+    st.textContent = closet().every(i => i.laundry) ? "Everything is in the wash. When it's clean, tap All clean in Closet." : "These items don't make an outfit yet. Add a few more.";
     return;
   }
-  lastFit = {items:r.ms.map(m => m.id), key:r.key, name:lookName(r.ms, ctx), why:explain(r.ms, ctx), tip:styleTip(r.ms, ctx), missing:gapNote(ctx), occ, wx:ctx.label + (ctx.rain ? ' · dež' : '')};
+  lastFit = {items:r.ms.map(m => m.id), key:r.key, name:lookName(r.ms, ctx), why:explain(r.ms, ctx), tip:styleTip(r.ms, ctx), missing:gapNote(ctx), occ, wx:ctx.label + (ctx.rain ? ' · rain' : '')};
   prevKeys.push(r.key); if (prevKeys.length > 8) prevKeys.shift();
-  if (r.ignored.length) toast('Iz iste kategorije sem vzel samo en kos');
+  if (r.ignored.length) toast('You picked two of the same kind, I used one');
   renderOutfit();
   setTimeout(() => { const l = $('fit').querySelector('.look'); if (l) l.scrollIntoView({behavior:'smooth', block:'start'}) }, 60);
 }
@@ -1110,39 +1131,39 @@ function renderFit() {
   const its = f.items.map(byId).filter(Boolean);
   const worn = WORN[todayKey()] && WORN[todayKey()].key === f.key;
   $('fit').innerHTML = `<div class="look">
-    <div class="head"><span class="eyebrow" style="color:var(--accent)">Predlog · ${esc(f.occ)} · ${esc(f.wx)}</span><h3>${esc(f.name)}</h3></div>
+    <div class="head"><span class="eyebrow" style="color:var(--accent)">Suggestion · ${esc(occLabel(f.occ))} · ${esc(f.wx)}</span><h3>${esc(f.name)}</h3></div>
     ${collage(its)}
     <div class="notes">
-      <div><span class="eyebrow">Zakaj</span><span>${esc(f.why)}</span></div>
+      <div><span class="eyebrow">Why</span><span>${esc(f.why)}</span></div>
       <div><span class="eyebrow">Styling</span><span>${esc(f.tip)}</span></div>
-      ${f.missing ? `<div><span class="eyebrow">Opomba</span><span class="muted">${esc(f.missing)}</span></div>` : ''}
+      ${f.missing ? `<div><span class="eyebrow">Note</span><span class="muted">${esc(f.missing)}</span></div>` : ''}
     </div>
     <div class="acts">
-      <button class="btn${worn ? ' soft' : ''}" id="wearFit">${icon(worn ? 'i-check' : 'i-shirt')}${worn ? 'To nosiš danes' : 'Danes nosim to'}</button>
-      <button class="btn line" id="saveFit">${icon('i-heart')}Shrani look</button>
-      <button class="btn line" id="again">${icon('i-refresh')}Drug predlog</button>
+      <button class="btn${worn ? ' soft' : ''}" id="wearFit">${icon(worn ? 'i-check' : 'i-shirt')}${worn ? "You're wearing this today" : 'Wearing this today'}</button>
+      <button class="btn line" id="saveFit">${icon('i-heart')}Save look</button>
+      <button class="btn line" id="again">${icon('i-refresh')}Another one</button>
     </div></div>`;
   $('again').onclick = generate;
   $('wearFit').onclick = () => wearLook(f);
   $('saveFit').onclick = async () => {
-    if (its.some(i => i.ex)) { toast('Primerov ne moreš shraniti, dodaj svoje kose'); return }
-    if (LOOKS.some(l => l.key === f.key)) { toast('Ta look je že shranjen'); return }
-    const L = {id:uid(), items:f.items, key:f.key, name:f.name, why:f.why, tip:f.tip, occ:f.occ, created:Date.now()};
-    await put('looks', L); LOOKS.unshift(L); toast('Look shranjen'); renderSaved();
+    if (its.some(i => i.ex)) { toast("Examples can't be saved, add your own items"); return }
+    if (LOOKS.some(l => l.key === f.key)) { toast('This look is already saved'); return }
+    const L = {id:uid(), items:f.items, key:f.key, name:f.name, why:f.why, tip:f.tip, occ:f.occ, lang:'en', created:Date.now()};
+    await put('looks', L); LOOKS.unshift(L); toast('Look saved'); renderSaved();
   };
 }
 async function wearLook(f) {
   const its = f.items.map(byId).filter(Boolean);
-  if (its.some(i => i.ex)) { toast('Primerov ne moreš zapisati, dodaj svoje kose'); return }
-  const e = {date:todayKey(), items:f.items, key:f.key, name:f.name, created:Date.now()};
-  await put('worn', e); WORN[e.date] = e; toast('Zapisano za danes'); renderOutfit();
+  if (its.some(i => i.ex)) { toast("Examples can't be logged, add your own items"); return }
+  const e = {date:todayKey(), items:f.items, key:f.key, name:f.name, lang:'en', created:Date.now()};
+  await put('worn', e); WORN[e.date] = e; toast('Logged for today'); renderOutfit();
 }
-const DAYS = ['ned','pon','tor','sre','čet','pet','sob'];
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 function renderWeek() {
   const out = [], now = new Date();
   for (let i = 6; i >= 0; i--) {
     const d = new Date(now); d.setDate(now.getDate() - i); const k = todayKey(d), w = WORN[k];
-    const lbl = i === 0 ? 'danes' : i === 1 ? 'včeraj' : DAYS[d.getDay()] + ' ' + d.getDate() + '.';
+    const lbl = i === 0 ? 'today' : i === 1 ? 'yesterday' : DAYS[d.getDay()] + ' ' + d.getDate();
     const its = w ? w.items.map(byId).filter(Boolean) : [];
     out.push(w && its.length ? `<button class="day${i === 0 ? ' today' : ''}" data-day="${k}">${mini(its)}<small>${lbl}</small></button>`
       : `<button class="day empty${i === 0 ? ' today' : ''}" data-day="${k}" ${i === 0 ? '' : 'disabled'}><div class="mc">${i === 0 ? icon('i-plus') : ''}</div><small>${lbl}</small></button>`);
@@ -1152,28 +1173,28 @@ function renderWeek() {
 }
 $('week').addEventListener('click', e => {
   const b = e.target.closest('[data-day]'); if (!b) return; const k = b.dataset.day, w = WORN[k];
-  if (!w) { if (k === todayKey()) { if (lastFit) wearLook(lastFit); else toast('Sestavi outfit ali na kosu klikni Danes nosim') } return }
+  if (!w) { if (k === todayKey()) { if (lastFit) wearLook(lastFit); else toast('Build an outfit, or tap Wearing today on an item') } return }
   const its = w.items.map(byId).filter(Boolean);
-  openSheet(`<div class="grab"></div><div style="display:grid;gap:6px"><div class="eyebrow">${k === todayKey() ? 'Danes' : esc(k.split('-').reverse().join('. '))}</div><h2>${esc(w.name || 'Moj outfit')}</h2></div>
+  openSheet(`<div class="grab"></div><div style="display:grid;gap:6px"><div class="eyebrow">${k === todayKey() ? 'Today' : esc(new Date(k + 'T12:00').toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short'}))}</div><h2>${esc(w.name || 'My outfit')}</h2></div>
     ${collage(its)}
-    <div class="row"><button class="btn" id="dWash">${icon('i-wash')}Vse v pranje</button></div>
-    <div style="display:flex;justify-content:space-between"><button class="link" id="dClose">Zapri</button><button class="link bad" id="dDel">Izbriši zapis</button></div>`);
+    <div class="row"><button class="btn" id="dWash">${icon('i-wash')}Send all to the wash</button></div>
+    <div style="display:flex;justify-content:space-between"><button class="link" id="dClose">Close</button><button class="link bad" id="dDel">Delete entry</button></div>`);
   $('dClose').onclick = closeSheet;
-  $('dWash').onclick = async () => { for (const it of its) if (!it.ex) { it.laundry = true; await put('items', it) } toast('V pranju · ' + its.length + ' ' + kosov(its.length)); closeSheet(); renderGrid(); renderOutfit() };
+  $('dWash').onclick = async () => { for (const it of its) if (!it.ex) { it.laundry = true; await put('items', it) } toast('In the wash · ' + its.length + ' ' + kosov(its.length)); closeSheet(); renderGrid(); renderOutfit() };
   $('dDel').onclick = async () => { await del('worn', k); delete WORN[k]; closeSheet(); renderOutfit() };
 });
 function renderSaved() {
-  if (!LOOKS.length) { $('saved').innerHTML = '<div class="note">Tukaj bodo looki, ki ti bodo všeč. Sestavi outfit in klikni Shrani look.</div>'; return }
-  $('saved').innerHTML = `<div class="svgrid">${LOOKS.map(l => { const its = l.items.map(byId).filter(Boolean); return `<button class="sv" data-look="${esc(l.id)}">${mini(its)}<b>${esc(l.name)}</b><small>${esc(l.occ || '')} · ${its.length} ${kosov(its.length)}</small></button>` }).join('')}</div>`;
+  if (!LOOKS.length) { $('saved').innerHTML = '<div class="note">Looks you like will show up here. Build an outfit and tap Save look.</div>'; return }
+  $('saved').innerHTML = `<div class="svgrid">${LOOKS.map(l => { const its = l.items.map(byId).filter(Boolean); return `<button class="sv" data-look="${esc(l.id)}">${mini(its)}<b>${esc(l.name)}</b><small>${esc(occLabel(l.occ))} · ${its.length} ${kosov(its.length)}</small></button>` }).join('')}</div>`;
 }
 $('saved').addEventListener('click', e => {
   const b = e.target.closest('[data-look]'); if (!b) return; const l = LOOKS.find(x => x.id === b.dataset.look); if (!l) return;
   const its = l.items.map(byId).filter(Boolean);
-  openSheet(`<div class="grab"></div><div style="display:grid;gap:6px"><div class="eyebrow">${esc(l.occ || '')} · shranjen look</div><h2>${esc(l.name)}</h2></div>
+  openSheet(`<div class="grab"></div><div style="display:grid;gap:6px"><div class="eyebrow">${esc(occLabel(l.occ))} · saved look</div><h2>${esc(l.name)}</h2></div>
     ${collage(its)}
-    <div class="notes"><div><span class="eyebrow">Zakaj</span><span>${esc(l.why)}</span></div><div><span class="eyebrow">Styling</span><span>${esc(l.tip)}</span></div></div>
-    <button class="btn wide" id="lWear">${icon('i-shirt')}Danes nosim to</button>
-    <div style="display:flex;justify-content:space-between"><button class="link" id="lClose">Zapri</button><button class="link bad" id="lDel">Izbriši look</button></div>`);
+    <div class="notes"><div><span class="eyebrow">Why</span><span>${esc(l.why)}</span></div><div><span class="eyebrow">Styling</span><span>${esc(l.tip)}</span></div></div>
+    <button class="btn wide" id="lWear">${icon('i-shirt')}Wearing this today</button>
+    <div style="display:flex;justify-content:space-between"><button class="link" id="lClose">Close</button><button class="link bad" id="lDel">Delete look</button></div>`);
   $('lClose').onclick = closeSheet;
   $('lWear').onclick = async () => { await wearLook(l); closeSheet() };
   $('lDel').onclick = async () => { await del('looks', l.id); LOOKS = LOOKS.filter(x => x.id !== l.id); closeSheet(); renderSaved() };
@@ -1183,26 +1204,26 @@ $('saved').addEventListener('click', e => {
 $('setBtn').onclick = () => openSettings();
 async function openSettings(focusCity) {
   let est = ''; try { const s = await navigator.storage.estimate(); est = (s.usage / 1048576).toFixed(0) + ' MB' } catch (e) {}
-  openSheet(`<div class="grab"></div><h2>Nastavitve</h2>
-    <div style="display:grid;gap:10px"><span class="eyebrow">Lokacija za vreme</span>
-      <div class="note" style="display:flex;gap:10px;align-items:center">${icon('i-pin')}<span>${LOC ? esc(LOC.name) : 'Ni nastavljena'}</span></div>
-      <button class="btn line wide" id="sGps">${icon('i-pin')}Uporabi mojo lokacijo</button>
-      <div class="row"><label class="f" style="flex:3">Mesto<input id="sCity" placeholder="npr. Ljubljana" autocomplete="off"></label><button class="btn" id="sFind" style="flex:1;align-self:end">Išči</button></div>
+  openSheet(`<div class="grab"></div><h2>Settings</h2>
+    <div style="display:grid;gap:10px"><span class="eyebrow">Weather location</span>
+      <div class="note" style="display:flex;gap:10px;align-items:center">${icon('i-pin')}<span>${LOC ? esc(locName()) : 'Not set'}</span></div>
+      <button class="btn line wide" id="sGps">${icon('i-pin')}Use my location</button>
+      <div class="row"><label class="f" style="flex:3">City<input id="sCity" placeholder="e.g. Ljubljana" autocomplete="off"></label><button class="btn" id="sFind" style="flex:1;align-self:end">Search</button></div>
       <div class="res" id="sRes"></div></div>
-    <div style="display:grid;gap:10px"><span class="eyebrow">Varnostna kopija</span>
-      <div class="muted" style="font-size:13.5px">Vse je shranjeno samo na tem telefonu${est ? ' (' + est + ')' : ''}. Občasno naredi kopijo, da ne izgubiš omare, če zamenjaš telefon.</div>
-      <div class="row"><button class="btn line" id="sExp">${icon('i-down')}Izvozi</button><label class="btn line" for="sImp">${icon('i-up')}Uvozi</label></div>
+    <div style="display:grid;gap:10px"><span class="eyebrow">Backup</span>
+      <div class="muted" style="font-size:13.5px">Everything is stored only on this phone${est ? ' (' + est + ')' : ''}. Make a backup now and then so you don't lose your closet when you switch phones.</div>
+      <div class="row"><button class="btn line" id="sExp">${icon('i-down')}Export</button><label class="btn line" for="sImp">${icon('i-up')}Import</label></div>
       <input type="file" id="sImp" accept=".json,application/json" hidden></div>
-    <div class="muted" style="font-size:12.5px">My Wardrobe · brezplačno, brez računa, deluje brez interneta. Vreme: Open-Meteo.</div>`);
+    <div class="muted" style="font-size:12.5px">My Wardrobe · free, no account, works offline. Weather by Open-Meteo.</div>`);
   $('sGps').onclick = useGPS;
   const find = async () => {
-    const q = $('sCity').value.trim(); if (!q) return; $('sRes').innerHTML = '<div class="status"><span class="spin"></span>Iščem…</div>';
+    const q = $('sCity').value.trim(); if (!q) return; $('sRes').innerHTML = '<div class="status"><span class="spin"></span>Searching…</div>';
     try {
-      const d = await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=sl&format=json`)).json();
+      const d = await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=en&format=json`)).json();
       const rs = d.results || [];
-      $('sRes').innerHTML = rs.length ? rs.map((r, i) => `<button data-r="${i}">${esc(r.name)}<small>${esc([r.admin1, r.country].filter(Boolean).join(', '))}</small></button>`).join('') : '<div class="muted">Ni zadetkov.</div>';
-      $('sRes').querySelectorAll('[data-r]').forEach(b => b.onclick = async () => { const r = rs[+b.dataset.r]; LOC = {lat:+r.latitude.toFixed(3), lon:+r.longitude.toFixed(3), name:r.name}; await kvSet('loc', LOC); WX = null; closeSheet(); toast('Lokacija: ' + r.name); await loadWeather(true) });
-    } catch (e) { $('sRes').innerHTML = '<div class="muted">Iskanje ne dela brez interneta.</div>' }
+      $('sRes').innerHTML = rs.length ? rs.map((r, i) => `<button data-r="${i}">${esc(r.name)}<small>${esc([r.admin1, r.country].filter(Boolean).join(', '))}</small></button>`).join('') : '<div class="muted">No results.</div>';
+      $('sRes').querySelectorAll('[data-r]').forEach(b => b.onclick = async () => { const r = rs[+b.dataset.r]; LOC = {lat:+r.latitude.toFixed(3), lon:+r.longitude.toFixed(3), name:r.name}; await kvSet('loc', LOC); WX = null; closeSheet(); toast('Location: ' + r.name); await loadWeather(true) });
+    } catch (e) { $('sRes').innerHTML = '<div class="muted">Search needs an internet connection.</div>' }
   };
   $('sFind').onclick = find; $('sCity').onkeydown = e => { if (e.key === 'Enter') find() };
   if (focusCity) setTimeout(() => $('sCity').focus(), 250);
@@ -1212,17 +1233,17 @@ async function openSettings(focusCity) {
 const blobToData = b => new Promise(r => { if (!b) return r(null); const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b) });
 const dataToBlob = async d => d ? (await fetch(d)).blob() : null;
 async function exportAll() {
-  const btn = $('sExp'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Pripravljam…';
+  const btn = $('sExp'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Preparing…';
   const items = []; for (const it of ITEMS) items.push({...it, img:await blobToData(it.img), thumb:await blobToData(it.thumb)});
   const data = {app:'moja-omara', v:1, at:new Date().toISOString(), items, looks:LOOKS, worn:Object.values(WORN), loc:LOC};
-  const name = 'moja-omara-' + todayKey() + '.json', blob = new Blob([JSON.stringify(data)], {type:'application/json'});
+  const name = 'my-wardrobe-' + todayKey() + '.json', blob = new Blob([JSON.stringify(data)], {type:'application/json'});
   const file = new File([blob], name, {type:'application/json'});
-  btn.disabled = false; btn.innerHTML = icon('i-down') + 'Shrani datoteko';
+  btn.disabled = false; btn.innerHTML = icon('i-down') + 'Save file';
   btn.onclick = async () => {
-    try { if (navigator.canShare && navigator.canShare({files:[file]})) { await navigator.share({files:[file], title:'My Wardrobe kopija'}); toast('Kopija shranjena'); return } } catch (e) { if (e.name === 'AbortError') return }
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove() }, 3000); toast('Kopija shranjena');
+    try { if (navigator.canShare && navigator.canShare({files:[file]})) { await navigator.share({files:[file], title:'My Wardrobe backup'}); toast('Backup saved'); return } } catch (e) { if (e.name === 'AbortError') return }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove() }, 3000); toast('Backup saved');
   };
-  toast('Kopija je pripravljena, klikni Shrani datoteko');
+  toast('Backup ready, tap Save file');
 }
 async function importAll(file) {
   try {
@@ -1231,8 +1252,8 @@ async function importAll(file) {
     for (const l of d.looks || []) await put('looks', l);
     for (const w of d.worn || []) await put('worn', w);
     if (d.loc && !LOC) { LOC = d.loc; await kvSet('loc', LOC) }
-    await loadAll(); closeSheet(); toast('Uvoženo · ' + (d.items || []).length + ' ' + kosov((d.items || []).length));
-  } catch (e) { toast('To ni kopija Moje Omare') }
+    await loadAll(); closeSheet(); toast('Imported · ' + (d.items || []).length + ' ' + kosov((d.items || []).length));
+  } catch (e) { toast("That isn't a My Wardrobe backup") }
 }
 
 /* ===================== install hint ===================== */
@@ -1242,25 +1263,32 @@ function renderInstall() {
   const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   if (standalone || lsGet('omara-install-hide', false)) { $('install').innerHTML = ''; return }
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  $('install').innerHTML = `<div class="card"><div class="art"><img src="icon-192.png" alt="" style="width:64px;height:64px;border-radius:16px"></div><div><h3>Dodaj na začetni zaslon</h3><p>${deferredInstall ? 'Dobiš ikono kot pri pravi aplikaciji, deluje brez interneta.' : ios ? 'V Safariju klikni Deli, nato Dodaj na začetni zaslon.' : 'V brskalniku odpri meni ⋮ in izberi Namesti aplikacijo.'}</p><div class="row" style="flex-wrap:nowrap">${deferredInstall ? '<button class="btn sm" id="doInstall">Namesti</button>' : ''}<button class="link" id="hideInstall">Ne zdaj</button></div></div></div>`;
+  $('install').innerHTML = `<div class="card"><div class="art"><img src="icon-192.png" alt="" style="width:64px;height:64px;border-radius:16px"></div><div><h3>Add to Home Screen</h3><p>${deferredInstall ? 'You get an icon like a real app, and it works offline.' : ios ? 'In Safari tap Share, then Add to Home Screen.' : 'Open the browser menu ⋮ and choose Install app.'}</p><div class="row" style="flex-wrap:nowrap">${deferredInstall ? '<button class="btn sm" id="doInstall">Install</button>' : ''}<button class="link" id="hideInstall">Not now</button></div></div></div>`;
   if ($('doInstall')) $('doInstall').onclick = async () => { deferredInstall.prompt(); await deferredInstall.userChoice.catch(() => {}); deferredInstall = null; renderInstall() };
   $('hideInstall').onclick = () => { lsSet('omara-install-hide', true); renderInstall() };
 }
 
 /* ===================== boot ===================== */
+async function toEnglish() {
+  const base = o => ({occ:OCC_EN[o] ? o : OCC[0], T:1, rain:false, label:T_LABEL[1], yesterday:new Set(), locked:new Set()});
+  const ms = ids => (ids || []).map(byId).filter(i => i && CAT[i.cat]).map(meta);
+  for (const l of LOOKS) if (l.lang !== 'en') { const m = ms(l.items), c = base(l.occ); if (m.length) Object.assign(l, {name:lookName(m, c), why:explain(m, c), tip:styleTip(m, c)}); l.lang = 'en'; await put('looks', l) }
+  for (const w of Object.values(WORN)) if (w.lang !== 'en') { const m = ms(w.items); w.name = !w.key || w.name === 'Moj outfit' || !m.length ? 'My outfit' : lookName(m, base('')); w.lang = 'en'; await put('worn', w) }
+}
 async function loadAll() {
   for (const id of [...URLS.keys()]) { URL.revokeObjectURL(URLS.get(id)); URLS.delete(id) }
   ITEMS = (await getAll('items')).sort((a, b) => b.created - a.created);
   for (const it of ITEMS) if (it.status === 'ready' && it.name === makeNameSl(it) && it.name !== makeName(it)) { it.name = makeName(it); await put('items', it) }
   LOOKS = (await getAll('looks')).sort((a, b) => b.created - a.created);
   WORN = Object.fromEntries((await getAll('worn')).map(w => [w.date, w]));
+  await toEnglish();
   renderGrid(); if (view === 'outfit') renderOutfit(); if (view === 'dodaj') renderAdd();
 }
 (async () => {
   try {
     LOC = (await kvGet('loc')) || null; const bg = await kvGet('bg'); BGON = bg !== false;
     await loadAll();
-  } catch (e) { console.error(e); toast('Shramba na tem brskalniku ni na voljo') }
+  } catch (e) { console.error(e); toast("Storage isn't available in this browser") }
   renderInstall(); show('omara'); if (LOC) loadWeather(false);
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
