@@ -361,7 +361,7 @@ const CATS = [
   {id:'kratke', name:'Kratke', one:'Kratke hlače', noun:'kratke hlače', g:'fp', style:'casual', w:1, subs:[
     ['Kratke','kratke hlače','fp','casual',1],['Jeans','jeans kratke hlače','fp','casual',1],['Športne','športne kratke hlače','fp','športno',1]]},
   {id:'cevlji', name:'Obutev', one:'Čevlji', noun:'čevlji', g:'mp', style:'casual', w:2, subs:[
-    ['Superge','superge','fp','casual',2],['Športni','športni copati','mp','športno',2],['Škornji','škornji','mp','casual',4],['Elegantni','elegantni čevlji','mp','elegantno',2],['Natikači','natikači','mp','casual',1]]},
+    ['Superge','superge','fp','casual',2],['Športni','športni copati','mp','športno',2],['Škornji','škornji','mp','casual',4],['Chelsea','chelsea škornji','mp','smart casual',3],['Elegantni','elegantni čevlji','mp','elegantno',2],['Mokasini','mokasini','mp','smart casual',2],['Sandali','sandali','mp','casual',1],['Natikači','natikači','mp','casual',1]]},
   {id:'dodatek', name:'Dodatki', one:'Dodatek', noun:'dodatek', g:'m', style:'casual', w:0, subs:[
     ['Kapa','kapa','f','streetwear',3],['Šilt kapa','šilt kapa','f','streetwear',1],['Šal','šal','m','casual',4],['Verižica','verižica','f','streetwear',0],['Pas','pas','m','smart casual',0],['Torba','torba','f','casual',0]]},
   {id:'ura', name:'Ure', one:'Ura', noun:'ura', g:'f', style:'smart casual', w:0, subs:[
@@ -869,9 +869,10 @@ function slotScore(m, ctx) {
     else if (T === 0) s -= .4;
   }
   if (m.slot === 'shoes') {
-    if (m.sub === 'Natikači') s += T === 0 ? .5 : -6;
-    if (m.sub === 'Škornji') s += T >= 2 ? 1.5 : T === 0 ? -3 : -.5;
-    if (ctx.rain) { if (m.sub === 'Škornji') s += 1; if (m.col.name === 'bela') s -= .5 }
+    if (m.sub === 'Natikači' || m.sub === 'Sandali') s += T === 0 ? .5 : -6;
+    if (m.sub === 'Škornji' || m.sub === 'Chelsea') s += T >= 2 ? 1.5 : T === 0 ? -3 : -.5;
+    if (m.sub === 'Mokasini' && T >= 3) s -= 1.5;
+    if (ctx.rain) { if (m.sub === 'Škornji' || m.sub === 'Chelsea') s += 1; if (m.sub === 'Mokasini' || m.sub === 'Sandali') s -= 1.5; if (m.col.name === 'bela') s -= .5 }
   }
   if (m.slot === 'top' && T === 0 && m.sub === 'Dolgi rokavi') s -= 1;
   if (m.slot === 'watch') {
@@ -1013,6 +1014,8 @@ function styleTip(ms, ctx) {
   if (bot && (bot.sub === 'Cargo' || bot.sub === 'Trenirka') && mid && mid.sub === 'Hoodie') return 'Oversized zgoraj, ožje spodaj: hlače naj se zberejo ob gležnju.';
   if (bot && bot.cat === 'hlace' && (!bot.sub || bot.sub === 'Kavbojke' || bot.sub === 'Chino') && sh && (!sh.sub || sh.sub === 'Superge')) return 'Hlače enkrat ali dvakrat zavihaj, da se lepo vidijo superge.';
   if (bot && bot.cat === 'kratke') return 'Kratke hlače naj segajo malo nad koleno, majica pa ne predolgo.';
+  if (sh && sh.sub === 'Chelsea' && bot && bot.cat === 'hlace') return 'Hlače naj se končajo tik nad chelsea škornji, brez gub na gležnju.';
+  if (sh && sh.sub === 'Mokasini') return 'K mokasinam nosi kratke nevidne nogavice, da se gleženj vidi.';
   if (sh && sh.sub === 'Elegantni') return 'Pas naj bo v isti barvi kot čevlji.';
   if (top && !mid && !out) return 'Majico rahlo zatakni spredaj v hlače, da dobiš boljše razmerje.';
   return 'Čisti čevlji naredijo pol looka.';
