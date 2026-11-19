@@ -1,0 +1,17 @@
+{
+  "name": "Moja Omara",
+  "short_name": "Omara",
+  "description": "Tvoja omara na telefonu: slikaj oblačila, sestavi outfit z enim klikom.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F7F7F5",
+  "theme_color": "#F7F7F5",
+  "lang": "sl",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

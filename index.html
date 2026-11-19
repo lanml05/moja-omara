@@ -1,0 +1,1219 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Moja Omara</title>
+<meta name="description" content="Tvoja omara na telefonu: slikaj oblačila, sestavi outfit z enim klikom.">
+<meta name="theme-color" content="#F7F7F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C0C0D" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Omara">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: editorial phone app. Big tight headlines, cut-out garments on soft neutral tiles, hairline rules,
+   one oxblood accent for selection, floating glass tab bar with a camera shutter in the middle. */
+:root{
+  --bg:#F7F7F5; --surface:#FFFFFF; --tile:#ECEBE7; --line:#E3E2DD; --ink:#111112; --ink2:#5D5D62; --ink3:#9B9BA0;
+  --accent:#8C2F39; --accent-soft:#F4E7E8; --ok:#2F7D5B; --bad:#B3261E; --glass:rgba(255,255,255,.82); --shadow:0 10px 30px rgba(17,17,18,.10);
+  --f-disp:"Inter Tight","Inter",system-ui,sans-serif; --f-body:"Inter",system-ui,sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0C0C0D; --surface:#161618; --tile:#1C1C1F; --line:#2A2A2E; --ink:#F3F3F1; --ink2:#A9A9AE; --ink3:#6E6E73;
+  --accent:#E3989F; --accent-soft:#2C1B1D; --ok:#5CC59A; --bad:#F2867D; --glass:rgba(22,22,24,.82); --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;
+  padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:680px;margin:0 auto}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-disp);margin:0;text-wrap:balance;letter-spacing:-.025em}
+.eyebrow{font:500 11px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.muted{color:var(--ink2)}
+svg.i{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:20px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+header.top h1{font-size:40px;font-weight:700;line-height:.95}
+header.top .right{display:flex;align-items:flex-end;gap:14px}
+header.top .cnt{text-align:right;display:grid;gap:2px}
+header.top .num{font:600 22px var(--f-disp);letter-spacing:-.02em;line-height:1}
+.iconbtn{width:40px;height:40px;border-radius:50%;border:0;background:var(--tile);color:var(--ink);display:grid;place-items:center;padding:0}
+
+.tabsc{display:flex;gap:22px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:20px;scrollbar-width:none}
+.tabsc::-webkit-scrollbar{display:none}
+.tabsc button{flex:none;background:none;border:0;padding:10px 0 12px;font-size:14px;font-weight:500;color:var(--ink3);position:relative;white-space:nowrap}
+.tabsc button sup{font:500 10px var(--f-mono);margin-left:3px;color:var(--ink3)}
+.tabsc button.on{color:var(--ink)}
+.tabsc button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
+.tabsc button.wash{color:var(--accent)}
+
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px}
+@media (min-width:560px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tile{background:none;border:0;padding:0;text-align:left;display:grid;gap:10px;min-width:0}
+.ph{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:var(--tile);max-width:100%}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph img.cut{object-fit:contain;padding:9%;filter:drop-shadow(0 10px 12px rgba(0,0,0,.16))}
+.ph .sil{position:absolute;inset:14% 12%;display:grid;place-items:center}
+.ph .sil svg{width:100%;height:100%}
+.badge{position:absolute;top:10px;left:10px;font:500 10px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--ink);padding:4px 8px;border-radius:999px}
+.badge.acc{background:var(--accent);color:var(--bg)}
+.tile.sel .ph{box-shadow:0 0 0 2px var(--accent)}
+.tile.wash .ph img,.tile.wash .ph .sil{opacity:.4}
+.tile .nm{font-size:14px;font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .sub{font-size:12.5px;color:var(--ink3);display:flex;gap:7px;align-items:center;margin-top:2px;min-width:0}
+.tile .sub span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sw{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)}
+
+.card{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;padding:18px;border-radius:18px;background:var(--surface);margin-bottom:22px;box-shadow:0 1px 0 var(--line)}
+.card h3{font-size:18px;font-weight:600}
+.card p{margin:3px 0 12px;color:var(--ink2);font-size:14px}
+.card .art{width:64px;height:64px;border-radius:16px;background:var(--tile);display:grid;place-items:center;color:var(--ink)}
+.card .art svg.i{width:34px;height:34px;stroke-width:1.3}
+.card.pend{grid-template-columns:1fr auto;padding:14px 16px}
+.card.pend p{margin:2px 0 0}
+
+.btn{border:0;border-radius:999px;padding:14px 22px;font-weight:600;font-size:15px;background:var(--ink);color:var(--bg);display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;white-space:nowrap}
+.btn.line{background:none;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.btn.soft{background:var(--tile);color:var(--ink)}
+.btn.acc{background:var(--accent);color:var(--bg)}
+.btn.sm{padding:9px 16px;font-size:13.5px}
+.btn.wide{width:100%}
+.btn:disabled{opacity:.45;cursor:default}
+.link{background:none;border:0;padding:6px 0;font-weight:500;color:var(--ink2);text-decoration:underline;text-underline-offset:3px}
+.link.bad{color:var(--bad)}
+
+nav.bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:6;display:flex;align-items:center;gap:6px;padding:7px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:var(--shadow),inset 0 0 0 1px var(--line)}
+nav.bar button{background:none;border:0;display:flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;color:var(--ink3);font-weight:600;font-size:13.5px}
+nav.bar button.on{color:var(--ink);background:var(--tile)}
+nav.bar .shutter{width:56px;height:56px;padding:0;justify-content:center;background:var(--ink);color:var(--bg);margin:0 4px;position:relative}
+nav.bar .shutter svg.i{width:24px;height:24px}
+nav.bar .shutter.on{background:var(--accent);color:var(--bg)}
+nav.bar .shutter b{position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;border-radius:999px;background:var(--accent);color:var(--bg);font:600 11px var(--f-body);display:grid;place-items:center;padding:0 5px;box-shadow:0 0 0 2px var(--bg)}
+
+.studio{position:relative;border-radius:24px;overflow:hidden;background:#141416;color:#F3F3F1;padding:26px 22px 22px;display:grid;gap:18px;isolation:isolate}
+.studio::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 80% at 80% 0%,rgba(140,47,57,.45),transparent 60%),radial-gradient(90% 70% at 0% 100%,rgba(255,255,255,.07),transparent 60%)}
+.studio .vf{aspect-ratio:16/10;border-radius:16px;position:relative;display:grid;place-items:center;background:rgba(255,255,255,.04)}
+.studio .vf i{position:absolute;width:26px;height:26px;border-color:rgba(255,255,255,.7);border-style:solid;border-width:0}
+.studio .vf i:nth-child(1){top:14px;left:14px;border-top-width:2px;border-left-width:2px;border-top-left-radius:8px}
+.studio .vf i:nth-child(2){top:14px;right:14px;border-top-width:2px;border-right-width:2px;border-top-right-radius:8px}
+.studio .vf i:nth-child(3){bottom:14px;left:14px;border-bottom-width:2px;border-left-width:2px;border-bottom-left-radius:8px}
+.studio .vf i:nth-child(4){bottom:14px;right:14px;border-bottom-width:2px;border-right-width:2px;border-bottom-right-radius:8px}
+.studio .vf svg{width:30%;height:auto;stroke:rgba(255,255,255,.55);stroke-width:1.2;fill:none}
+.studio h2{font-size:30px;font-weight:700;line-height:1.05}
+.studio p{margin:-8px 0 0;color:rgba(243,243,241,.7);font-size:14.5px}
+.studio .btn{background:#F3F3F1;color:#111112}
+.studio .btn.line{background:none;color:#F3F3F1;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.tips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.tips div{background:var(--surface);border-radius:14px;padding:12px;font-size:12.5px;color:var(--ink2);display:grid;gap:6px;align-content:start;box-shadow:0 1px 0 var(--line)}
+.tips b{color:var(--ink);font-weight:600;font-size:13px}
+.setrow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.setrow .t{min-width:0}
+.setrow .t b{display:block;font-weight:500}
+.setrow .t small{display:block;color:var(--ink3);font-size:12.5px;line-height:1.4}
+.tg{flex:none;width:48px;height:28px;border-radius:999px;background:var(--line);position:relative;border:0;padding:0}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.tg.on{background:var(--ink)}
+.tg.on::after{transform:translateX(20px);background:var(--bg)}
+.qhead{display:flex;justify-content:space-between;align-items:baseline;margin:28px 0 8px}
+.qhead h2{font-size:22px;font-weight:600}
+.qlist{display:grid}
+.qrow{display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);min-width:0}
+.qrow .qi{width:48px;height:60px;border-radius:10px;flex:none;background:var(--tile);overflow:hidden}
+.qrow .qi img{width:100%;height:100%;object-fit:cover;display:block}
+.qrow .qi img.cut{object-fit:contain;padding:4px}
+.qrow .t{flex:1;min-width:0}
+.qrow .t b{display:block;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qrow .t small{font:400 11.5px var(--f-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink3)}
+.qrow.err .t small{color:var(--bad)}
+.qrow.ok .t small{color:var(--accent)}
+.okc{width:24px;height:24px;border-radius:50%;background:var(--ok);color:var(--bg);display:grid;place-items:center;flex:none}
+.okc svg.i{width:14px;height:14px;stroke-width:2.4}
+.spin{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--ink);animation:sp .8s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.bar2{height:3px;border-radius:2px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar2 i{display:block;height:100%;background:var(--ink);width:0;transition:width .3s}
+
+.wx{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;padding:18px;border-radius:20px;background:var(--surface);box-shadow:0 1px 0 var(--line)}
+.wx .ic{width:58px;height:58px;border-radius:16px;background:var(--tile);display:grid;place-items:center}
+.wx .ic svg.i{width:30px;height:30px;stroke-width:1.4}
+.wx .tt{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.wx .deg{font:700 34px var(--f-disp);letter-spacing:-.03em;line-height:1}
+.wx small{color:var(--ink2);font-size:13px}
+.sec{display:grid;gap:12px;padding-block:18px;border-bottom:1px solid var(--line)}
+.sec .hrow{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.sel-row{display:flex;gap:10px;overflow-x:auto;padding:4px 2px}
+.sel-row .mini{flex:none;width:68px;position:relative}
+.sel-row .mini .ph{border-radius:12px}
+.sel-row .mini button{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;border:0;background:var(--ink);color:var(--bg);display:grid;place-items:center;padding:0}
+.sel-row .mini button svg.i{width:12px;height:12px;stroke-width:2.2}
+.sel-row .addl{flex:none;width:68px;aspect-ratio:3/4;border-radius:12px;border:1px dashed var(--ink3);background:none;color:var(--ink2);display:grid;place-items:center}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:0;border-radius:999px;padding:9px 15px;font-size:13.5px;font-weight:500;background:none;color:var(--ink2);box-shadow:inset 0 0 0 1px var(--line);display:inline-flex;gap:7px;align-items:center}
+.pill svg.i{width:16px;height:16px}
+.pill.on{background:var(--ink);color:var(--bg);box-shadow:none}
+.status{font-size:13.5px;color:var(--ink2);min-height:20px;display:flex;gap:10px;align-items:center}
+.status.err{color:var(--bad)}
+
+.look{margin-top:26px;display:grid;gap:18px;animation:fade .45s ease;scroll-margin-top:calc(96px + env(safe-area-inset-top,0px))}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}}
+.look .head{display:grid;gap:6px}
+.look h3{font-size:34px;font-weight:700;line-height:1}
+.collage{display:grid;grid-template-columns:1.25fr 1fr;gap:10px}
+.collage .c{border-radius:16px;overflow:hidden;background:var(--tile);position:relative;aspect-ratio:3/4;max-width:100%}
+.collage .c:first-child{grid-row:span 2;aspect-ratio:auto;min-height:100%}
+.collage .c img{width:100%;height:100%;object-fit:cover;display:block}
+.collage .c img.cut{object-fit:contain;padding:10%;filter:drop-shadow(0 12px 14px rgba(0,0,0,.16))}
+.collage .c .sil{position:absolute;inset:14% 12%;display:grid;place-items:center}
+.collage .c .sil svg{width:100%;height:100%}
+.collage .c span{position:absolute;left:10px;bottom:10px;right:10px;font-size:11.5px;font-weight:500;color:var(--ink);background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:5px 9px;border-radius:999px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.collage .c.mine::after{content:"Tvoj izbor";position:absolute;top:10px;left:10px;font:500 10px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;background:var(--accent);color:var(--bg);padding:4px 8px;border-radius:999px}
+.collage.n1{grid-template-columns:1fr}.collage.n1 .c:first-child,.collage.n2 .c:first-child{grid-row:auto;aspect-ratio:3/4}
+.notes div{display:grid;grid-template-columns:92px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--line);font-size:14.5px}
+.notes div:last-child{border-bottom:1px solid var(--line)}
+.notes .eyebrow{padding-top:3px}
+.look .acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.look .acts .btn:first-child{grid-column:1/-1}
+
+h2.sect{font-size:24px;font-weight:600;margin:38px 0 14px}
+.week{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.week::-webkit-scrollbar{display:none}
+.day{flex:none;width:86px;display:grid;gap:6px;background:none;border:0;padding:0;text-align:left}
+.mc{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px;border-radius:12px;overflow:hidden;aspect-ratio:3/4;background:var(--tile)}
+.mc.m1{grid-template-columns:1fr;grid-template-rows:1fr}.mc.m2{grid-template-rows:1fr}.mc.m3 .ph:first-child{grid-row:span 2}
+.mc .ph{border-radius:0;aspect-ratio:auto;min-height:0;height:100%}
+.mc .ph img.cut{padding:6%}
+.day.empty .mc{display:grid;place-items:center;background:none;box-shadow:inset 0 0 0 1px var(--line);color:var(--ink3)}
+.day small{font:500 10.5px var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3)}
+.day.today small{color:var(--accent)}
+.svgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 14px}
+.sv{background:none;border:0;padding:0;text-align:left;display:grid;gap:8px;min-width:0}
+.sv .mc{aspect-ratio:1;border-radius:14px}
+.sv b{font-weight:500;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sv small{font-size:12px;color:var(--ink3)}
+
+.sheet{position:fixed;inset:0;z-index:20;background:rgba(8,8,10,.5);display:flex;align-items:flex-end;justify-content:center}
+.sheet .box{background:var(--bg);width:100%;max-width:680px;max-height:92vh;overflow:auto;border-radius:26px 26px 0 0;padding:12px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:16px;animation:up .28s cubic-bezier(.2,.8,.2,1)}
+.sheet .box>*{flex:none}
+@keyframes up{from{transform:translateY(30px);opacity:.6}}
+.sheet .grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 4px}
+.sheet .hero{aspect-ratio:auto;height:min(46vh,560px);width:100%;border-radius:20px}
+.sheet .hero.sm{height:min(30vh,340px)}
+.sheet h2{font-size:28px;font-weight:700;line-height:1.05}
+.shead{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.specs{display:grid;border-top:1px solid var(--line)}
+.specs div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.specs span:first-child{color:var(--ink3)}
+.dots{display:inline-flex;gap:4px;align-items:center}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--ink)}
+.sws{display:flex;flex-wrap:wrap;gap:10px}
+.swb{width:34px;height:34px;border-radius:50%;border:0;padding:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.16)}
+.swb.on{outline:2px solid var(--ink);outline-offset:3px}
+.catg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.catb{background:var(--surface);border:0;border-radius:14px;padding:12px 4px 9px;display:grid;justify-items:center;gap:5px;font-size:12px;font-weight:500;box-shadow:inset 0 0 0 1px var(--line);min-width:0}
+.catb svg{width:34px;height:34px}
+.catb.on{box-shadow:inset 0 0 0 2px var(--ink)}
+.subs{display:flex;flex-wrap:wrap;gap:8px}
+label.f{display:grid;gap:6px;font:500 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-transform:none;color:var(--ink);background:var(--surface);border:0;box-shadow:inset 0 0 0 1px var(--line);border-radius:12px;padding:12px 14px;width:100%;-webkit-appearance:none;appearance:none}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1 1 0;min-width:0}
+.confirm{border-radius:16px;padding:16px;display:grid;gap:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--bad)}
+.note{font-size:13.5px;color:var(--ink2);background:var(--surface);border-radius:14px;padding:12px 14px;box-shadow:0 1px 0 var(--line)}
+.res{display:grid}
+.res button{background:none;border:0;border-bottom:1px solid var(--line);padding:12px 0;text-align:left;font-size:15px}
+.res button small{color:var(--ink3);margin-left:6px}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:999px;font-weight:500;font-size:14px;z-index:30;white-space:nowrap;box-shadow:var(--shadow);max-width:calc(100vw - 40px);overflow:hidden;text-overflow:ellipsis}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition:none!important}.spin{animation-duration:3s!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-hanger" viewBox="0 0 24 24"><path d="M12 6.2a1.9 1.9 0 1 1 1.9 1.9c-1 0-1.9.6-1.9 1.5v.6"/><path d="M12 10.2 3.4 16.3c-.8.6-.4 1.9.6 1.9h16c1 0 1.4-1.3.6-1.9L12 10.2Z"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2l1.3-2h6l1.3 2h2.2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9Z"/><circle cx="12" cy="12.8" r="3.4"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5 13.7 9l5.8 1.8-5.8 1.8L12 18.2l-1.7-5.6-5.8-1.8L10.3 9 12 3.5Z"/><path d="M19 3v3M17.5 4.5h3"/></symbol>
+  <symbol id="i-gallery" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m4 17 4.5-4.5 3.5 3.5 2.5-2.5L20 18"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 19.5s-7.5-4.4-7.5-10A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 7.5 2.5c0 5.6-7.5 10-7.5 10Z"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4h-4"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.8"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7.5 18.5h9.5a4 4 0 0 0 .4-8 5.5 5.5 0 0 0-10.6 1.4A3.3 3.3 0 0 0 7.5 18.5Z"/></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="m9.5 4.5 2.5 2 2.5-2M9.5 19.5l2.5-2 2.5 2"/></symbol>
+  <symbol id="i-rain" viewBox="0 0 24 24"><path d="M7.5 14.5h9.5a4 4 0 0 0 .4-8 5.5 5.5 0 0 0-10.6 1.4 3.3 3.3 0 0 0 .7 6.6Z"/><path d="m9 17.5-1 2.5M13 17.5l-1 2.5M17 17.5l-1 2.5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a7.6 7.6 0 0 0 0-3l1.9-1.5-1.9-3.3-2.3.9a7.5 7.5 0 0 0-2.6-1.5L14.2 2.7h-3.8l-.4 2.4a7.5 7.5 0 0 0-2.6 1.5l-2.3-.9L3.2 9l1.9 1.5a7.6 7.6 0 0 0 0 3L3.2 15l1.9 3.3 2.3-.9a7.5 7.5 0 0 0 2.6 1.5l.4 2.4h3.8l.4-2.4a7.5 7.5 0 0 0 2.6-1.5l2.3.9 1.9-3.3-1.9-1.5Z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+  <symbol id="i-wash" viewBox="0 0 24 24"><rect x="4.5" y="3.5" width="15" height="17" rx="2.5"/><circle cx="12" cy="13" r="4.2"/><path d="M8 6.5h1.5"/></symbol>
+  <symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8.5 3.5 4 6l1.6 4 2-1V20.5h8.8V9l2 1L20 6l-4.5-2.5c-.6 1.6-2 2.6-3.5 2.6s-2.9-1-3.5-2.6Z"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 15V4M7 8.5l5-5 5 5M5 20h14"/></symbol>
+</svg>
+
+<div class="wrap">
+  <header class="top">
+    <div><div class="eyebrow" id="eyebrow">Moja omara</div><h1 id="title">Omara</h1></div>
+    <div class="right">
+      <div class="cnt"><span class="num" id="num">0</span><span class="eyebrow" id="numlbl">kosov</span></div>
+      <button class="iconbtn" id="setBtn" aria-label="Nastavitve"><svg class="i"><use href="#i-gear"/></svg></button>
+    </div>
+  </header>
+
+  <section class="view" id="v-omara">
+    <div id="install"></div>
+    <div id="intro"></div>
+    <div id="pend"></div>
+    <div class="tabsc" id="catTabs"></div>
+    <div id="washBar"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="view" id="v-dodaj" hidden>
+    <div class="studio">
+      <div class="vf"><i></i><i></i><i></i><i></i><svg viewBox="0 0 100 100"><path d="M30 18 42 12q8 6 16 0l12 6 12 14-10 8-4-4v52H32V36l-4 4-10-8Z"/></svg></div>
+      <h2>Slikaj celo omaro.</h2>
+      <p>Kos za kosom, brez čakanja. Ozadje se odstrani samo, ti pa samo izbereš, kaj je.</p>
+      <div style="display:grid;gap:10px">
+        <label class="btn wide" for="file"><svg class="i"><use href="#i-cam"/></svg>Odpri kamero</label>
+        <label class="btn line wide" for="file2"><svg class="i"><use href="#i-gallery"/></svg>Uvozi več slik iz galerije</label>
+      </div>
+    </div>
+    <div class="tips">
+      <div><b>Svetlo ozadje</b>Postelja, tla ali vrata.</div>
+      <div><b>En kos</b>Ena slika, en kos.</div>
+      <div><b>Cel kos</b>Naj bo ves v kadru.</div>
+    </div>
+    <div class="setrow" style="margin-top:8px">
+      <div class="t"><b>Odstrani ozadje</b><small id="bgInfo">Kos izgleda kot v spletni trgovini. Prvič se prenese 44 MB, potem dela brez interneta.</small><div class="bar2" id="bgBar" hidden><i></i></div></div>
+      <button class="tg on" id="bgTg" aria-label="Odstrani ozadje"></button>
+    </div>
+    <input type="file" id="file" accept="image/*" capture="environment" hidden>
+    <input type="file" id="file2" accept="image/*" multiple hidden>
+    <div id="pendAdd"></div>
+    <div id="qwrap" hidden>
+      <div class="qhead"><h2>Obdelava</h2><span class="eyebrow" id="qcount"></span></div>
+      <div class="qlist" id="queue"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-outfit" hidden>
+    <div id="wxCard"></div>
+    <div class="sec">
+      <div class="hrow"><span class="eyebrow">Vreme za outfit</span><button class="link" id="wxAuto" hidden>Samodejno</button></div>
+      <div class="pills" id="wxPills"></div>
+    </div>
+    <div class="sec">
+      <div class="eyebrow">Tvoj izbor</div>
+      <div class="sel-row" id="locks"></div>
+      <div class="muted" style="font-size:13px" id="lockHint">Dodaj kos, ki ga hočeš nositi, ostalo se doda samo. Brez izbora dobiš celoten outfit.</div>
+    </div>
+    <div class="sec">
+      <div class="eyebrow">Priložnost</div>
+      <div class="pills" id="occPills"></div>
+    </div>
+    <div style="display:grid;gap:10px;padding-top:18px">
+      <button class="btn wide" id="go"><svg class="i"><use href="#i-spark"/></svg><span id="goTxt">Sestavi outfit</span></button>
+      <div class="status" id="fitStatus"></div>
+    </div>
+    <div id="fit"></div>
+    <h2 class="sect">Ta teden</h2>
+    <div class="week" id="week"></div>
+    <h2 class="sect">Shranjeni looki</h2>
+    <div id="saved"></div>
+  </section>
+</div>
+
+<nav class="bar" id="bar">
+  <button data-v="omara" class="on"><svg class="i"><use href="#i-hanger"/></svg>Omara</button>
+  <button data-v="dodaj" class="shutter" aria-label="Dodaj kos"><svg class="i"><use href="#i-cam"/></svg><b id="pendDot" hidden></b></button>
+  <button data-v="outfit"><svg class="i"><use href="#i-spark"/></svg>Outfit</button>
+</nav>
+
+<div class="sheet" id="sheet" hidden><div class="box" id="sheetBox"></div></div>
+<div class="toast" id="toast" hidden></div>
+
+<script type="module">
+/* ===================== data ===================== */
+const TF_URL = 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+// subtype: [label, noun, gender, style, warmth]
+const CATS = [
+  {id:'majica', name:'Majice', one:'Majica', noun:'majica', g:'f', style:'casual', w:1, subs:[
+    ['T-shirt','majica','f','casual',1],['Srajca','srajca','f','smart casual',2],['Polo','polo majica','f','smart casual',1],['Dolgi rokavi','majica z dolgimi rokavi','f','casual',2],['Športna','športna majica','f','športno',1]]},
+  {id:'pulover', name:'Puloverji', one:'Pulover', noun:'pulover', g:'m', style:'casual', w:3, subs:[
+    ['Hoodie','hoodie','m','streetwear',4],['Pulover','pulover','m','casual',3],['Jopa','jopa','f','casual',3],['Športni','športni pulover','m','športno',3]]},
+  {id:'jakna', name:'Jakne', one:'Jakna', noun:'jakna', g:'f', style:'casual', w:4, subs:[
+    ['Bomber','bomber jakna','f','streetwear',3],['Puhovka','puhovka','f','casual',5],['Jeans','jeans jakna','f','casual',3],['Usnjena','usnjena jakna','f','streetwear',3],['Plašč','plašč','m','elegantno',4],['Vetrovka','vetrovka','f','športno',2]]},
+  {id:'hlace', name:'Hlače', one:'Hlače', noun:'hlače', g:'fp', style:'casual', w:3, subs:[
+    ['Kavbojke','kavbojke','fp','casual',3],['Cargo','cargo hlače','fp','streetwear',3],['Chino','chino hlače','fp','smart casual',2],['Trenirka','trenirka','f','športno',3],['Elegantne','elegantne hlače','fp','elegantno',2]]},
+  {id:'kratke', name:'Kratke', one:'Kratke hlače', noun:'kratke hlače', g:'fp', style:'casual', w:1, subs:[
+    ['Kratke','kratke hlače','fp','casual',1],['Jeans','jeans kratke hlače','fp','casual',1],['Športne','športne kratke hlače','fp','športno',1]]},
+  {id:'cevlji', name:'Obutev', one:'Čevlji', noun:'čevlji', g:'mp', style:'casual', w:2, subs:[
+    ['Superge','superge','fp','casual',2],['Športni','športni copati','mp','športno',2],['Škornji','škornji','mp','casual',4],['Elegantni','elegantni čevlji','mp','elegantno',2],['Natikači','natikači','mp','casual',1]]},
+  {id:'dodatek', name:'Dodatki', one:'Dodatek', noun:'dodatek', g:'m', style:'casual', w:0, subs:[
+    ['Kapa','kapa','f','streetwear',3],['Šilt kapa','šilt kapa','f','streetwear',1],['Šal','šal','m','casual',4],['Ura','ura','f','smart casual',0],['Verižica','verižica','f','streetwear',0],['Pas','pas','m','smart casual',0],['Torba','torba','f','casual',0]]}
+];
+const CAT = Object.fromEntries(CATS.map(c => [c.id, c]));
+const STYLES = ['casual','streetwear','športno','smart casual','elegantno'];
+// [name, hex, forms m/f/fp/mp, kind: n neutral, e earth, s soft, a accent]
+const COLORS = [
+  ['črna','#17181C',['črn','črna','črne','črni'],'n'],
+  ['bela','#F5F5F2',['bel','bela','bele','beli'],'n'],
+  ['siva','#8E939C',['siv','siva','sive','sivi'],'n'],
+  ['temno siva','#464B54',['temno siv','temno siva','temno sive','temno sivi'],'n'],
+  ['temno modra','#1E2A4D',['temno moder','temno modra','temno modre','temno modri'],'n'],
+  ['denim','#4B6A9B',['denim','denim','denim','denim'],'n'],
+  ['bež','#D6C3A1',['bež','bež','bež','bež'],'e'],
+  ['krem','#ECE4D1',['krem','krem','krem','krem'],'e'],
+  ['rjava','#76502F',['rjav','rjava','rjave','rjavi'],'e'],
+  ['kaki','#A39A6E',['kaki','kaki','kaki','kaki'],'e'],
+  ['olivna','#5F6640',['oliven','olivna','olivne','olivni'],'e'],
+  ['svetlo modra','#A6C4E4',['svetlo moder','svetlo modra','svetlo modre','svetlo modri'],'s'],
+  ['modra','#2F5FB8',['moder','modra','modre','modri'],'a'],
+  ['zelena','#2E7D4F',['zelen','zelena','zelene','zeleni'],'a'],
+  ['bordo','#6E1F2B',['bordo','bordo','bordo','bordo'],'a'],
+  ['rdeča','#C8343F',['rdeč','rdeča','rdeče','rdeči'],'a'],
+  ['roza','#E7A1BC',['roza','roza','roza','roza'],'a'],
+  ['vijolična','#6E4BA8',['vijoličen','vijolična','vijolične','vijolični'],'a'],
+  ['rumena','#E5C23E',['rumen','rumena','rumene','rumeni'],'a'],
+  ['oranžna','#E07B2E',['oranžen','oranžna','oranžne','oranžni'],'a']
+];
+const COL = Object.fromEntries(COLORS.map(c => [c[0], {name:c[0], hex:c[1], forms:c[2], kind:c[3]}]));
+const GI = {m:0, f:1, fp:2, mp:3};
+const OCC = ['Vsakdan','Šola / faks','Izhod zvečer','Zmenek','Šport','Družinsko'];
+const TEMPS = [['Toplo','i-sun'],['Srednje','i-cloud'],['Hladno','i-cloud'],['Mraz','i-snow']];
+const T_LABEL = ['toplo vreme','srednje vreme','hladno vreme','mraz'];
+const SIL = {
+  majica:'M30 18 42 12q8 6 16 0l12 6 12 14-10 8-4-4v52H32V36l-4 4-10-8Z',
+  pulover:'M36 14q14-10 28 0l14 8 10 50-10 2-6-34v50H28V40l-6 34-10-2 10-50Z',
+  jakna:'M36 12q14-8 28 0l14 8 10 52-10 2-6-34v52H28V40l-6 34-10-2 10-52Z',
+  hlace:'M31 8h38l5 84H56l-6-52-6 52H26Z',
+  kratke:'M28 28h44l5 40H55l-5-22-5 22H23Z',
+  cevlji:'M10 64q2-14 15-16l18-3q8 11 23 11l18 4q7 2 7 10v4H10Z',
+  dodatek:'M20 62q0-28 30-30 28 2 30 28l13 4v4H20Z'};
+const EXAMPLES = [
+  {id:'ex1',cat:'majica',sub:'T-shirt',color:'bela',style:'casual',warmth:1},
+  {id:'ex2',cat:'hlace',sub:'Kavbojke',color:'svetlo modra',style:'casual',warmth:3},
+  {id:'ex3',cat:'pulover',sub:'Hoodie',color:'siva',style:'streetwear',warmth:4},
+  {id:'ex4',cat:'cevlji',sub:'Superge',color:'bela',style:'casual',warmth:2},
+  {id:'ex5',cat:'jakna',sub:'Bomber',color:'črna',style:'streetwear',warmth:3},
+  {id:'ex6',cat:'hlace',sub:'Cargo',color:'olivna',style:'streetwear',warmth:3},
+  {id:'ex7',cat:'majica',sub:'Srajca',color:'temno modra',style:'smart casual',warmth:2},
+  {id:'ex8',cat:'pulover',sub:'Pulover',color:'bordo',style:'casual',warmth:3}
+].map(e => ({...e, ex:true, status:'ready', created:0, season:seasonOf(e.warmth, e.cat), name:makeName(e)}));
+
+/* ===================== helpers ===================== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function cap(s) { return s ? s[0].toUpperCase() + s.slice(1) : s }
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const icon = id => `<svg class="i"><use href="#${id}"/></svg>`;
+const pad2 = n => String(n).padStart(2, '0');
+const todayKey = (d = new Date()) => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+const dayDiff = (a, b) => Math.round((new Date(b + 'T12:00') - new Date(a + 'T12:00')) / 864e5);
+const kosov = n => n === 1 ? 'kos' : n === 2 ? 'kosa' : n <= 4 && n > 0 ? 'kosi' : 'kosov';
+const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v) } catch (e) { return d } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)) } catch (e) {} };
+function colorInfo(n) { return COL[n] || COL['siva'] }
+function hexRgb(h) { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255] }
+function rgbLab(r, g, b) {
+  const f = v => (v /= 255) > 0.04045 ? Math.pow((v + 0.055) / 1.055, 2.4) : v / 12.92;
+  r = f(r); g = f(g); b = f(b);
+  let x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047, y = r * 0.2126 + g * 0.7152 + b * 0.0722, z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
+  const t = v => v > 0.008856 ? Math.cbrt(v) : 7.787 * v + 16 / 116;
+  x = t(x); y = t(y); z = t(z);
+  return [116 * y - 16, 500 * (x - y), 200 * (y - z)];
+}
+const PAL_LAB = COLORS.map(c => ({n:c[0], lab:rgbLab(...hexRgb(c[1]))}));
+const LIGHT = Object.fromEntries(PAL_LAB.map(p => [p.n, p.lab[0]]));
+function nearestColor(lab) { let best = 'siva', bd = 1e9; for (const p of PAL_LAB) { const d = (p.lab[0] - lab[0]) ** 2 + (p.lab[1] - lab[1]) ** 2 + (p.lab[2] - lab[2]) ** 2; if (d < bd) { bd = d; best = p.n } } return best }
+function subOf(it) { const c = CAT[it.cat]; return c && it.sub ? c.subs.find(s => s[0] === it.sub) : null }
+function seasonOf(w, cat) { w = +w; if (cat === 'majica' || cat === 'dodatek') return 'vse leto'; return w === 0 ? 'vse leto' : w <= 1 ? 'poletje' : w <= 3 ? 'vse leto' : w === 4 ? 'pomlad/jesen' : 'zima' }
+function makeName(it) {
+  const c = CAT[it.cat]; if (!c) return 'Nov kos';
+  const s = subOf(it); const noun = s ? s[1] : c.noun; const g = s ? s[2] : c.g;
+  const col = COL[it.color];
+  if (!col) return cap(noun);
+  if (it.color === 'denim' && (noun === 'kavbojke' || noun.startsWith('jeans'))) return cap(noun);
+  return cap(col.forms[GI[g]] + ' ' + noun);
+}
+function subNoun(it) { const s = subOf(it); return s ? s[1] : (CAT[it.cat] ? CAT[it.cat].noun : 'kos') }
+
+/* ===================== storage (IndexedDB, only on this phone) ===================== */
+let dbp = null;
+function idb() {
+  return dbp || (dbp = new Promise((res, rej) => {
+    const r = indexedDB.open('moja-omara', 1);
+    r.onupgradeneeded = () => { const d = r.result; d.createObjectStore('items', {keyPath:'id'}); d.createObjectStore('looks', {keyPath:'id'}); d.createObjectStore('worn', {keyPath:'date'}); d.createObjectStore('kv', {keyPath:'k'}) };
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+}
+async function tx(store, mode, fn) {
+  const d = await idb();
+  return new Promise((res, rej) => { const t = d.transaction(store, mode); const r = fn(t.objectStore(store)); let out; if (r) r.onsuccess = () => { out = r.result }; t.oncomplete = () => res(out); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error) });
+}
+const getAll = s => tx(s, 'readonly', st => st.getAll());
+const put = (s, v) => tx(s, 'readwrite', st => st.put(v));
+const del = (s, k) => tx(s, 'readwrite', st => st.delete(k));
+const kvGet = async k => { const r = await tx('kv', 'readonly', st => st.get(k)); return r ? r.v : undefined };
+const kvSet = (k, v) => put('kv', {k, v});
+
+/* ===================== state ===================== */
+let ITEMS = [], LOOKS = [], WORN = {}, LOC = null, WX = null, BGON = true;
+let view = 'omara', cat = 'vse', locks = [], occ = OCC[0], lastFit = null, prevKeys = [], wxManual = null, TAG = null;
+const URLS = new Map();
+function url(it, kind) { const b = it[kind] || it.img; if (!b) return ''; const k = it.id + kind; let u = URLS.get(k); if (!u) { u = URL.createObjectURL(b); URLS.set(k, u) } return u }
+function dropUrls(id) { for (const k of ['thumb', 'img']) { const u = URLS.get(id + k); if (u) { URL.revokeObjectURL(u); URLS.delete(id + k) } } }
+const ready = () => ITEMS.filter(i => i.status === 'ready');
+const pending = () => ITEMS.filter(i => i.status === 'pending');
+const usingExamples = () => !ready().length;
+const closet = () => usingExamples() ? EXAMPLES : ready();
+const byId = id => ITEMS.find(i => i.id === id) || EXAMPLES.find(i => i.id === id);
+
+function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => e.hidden = true, 2400) }
+function sil(it) { const c = colorInfo(it.color); return `<div class="sil"><svg viewBox="0 0 100 100"><path d="${SIL[it.cat] || SIL.majica}" fill="${c.hex}" stroke="rgba(128,128,134,.45)" stroke-width="1" stroke-linejoin="round"/>${it.cat === 'jakna' ? '<path d="M50 14v78" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>' : ''}</svg></div>` }
+function pic(it, kind = 'thumb') { const u = url(it, kind); return u ? `<img src="${u}" alt="${esc(it.name)}"${it.cut ? ' class="cut"' : ''} loading="lazy">` : sil(it) }
+function ph(it, badge, kind) { return `<div class="ph">${pic(it, kind)}${badge || ''}</div>` }
+
+/* ===================== header + nav ===================== */
+function head() {
+  const T = {omara:['Moja omara','Omara'], dodaj:['Nov kos','Dodaj'], outfit:['Stilist','Outfit']}[view];
+  $('eyebrow').textContent = T[0]; $('title').textContent = T[1];
+  const n = ready().length; $('num').textContent = n; $('numlbl').textContent = kosov(n);
+  const p = pending().length; $('pendDot').hidden = !p; $('pendDot').textContent = p;
+}
+function show(v) {
+  view = v;
+  document.querySelectorAll('.view').forEach(s => s.hidden = s.id !== 'v-' + v);
+  document.querySelectorAll('#bar button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  head(); window.scrollTo(0, 0);
+  if (v === 'outfit') { renderOutfit(); loadWeather(false) }
+  if (v === 'dodaj') { renderAdd(); if (BGON) warmModel() }
+}
+$('bar').addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(b.dataset.v) });
+
+/* ===================== closet ===================== */
+function renderGrid() {
+  const all = closet(), ex = usingExamples();
+  $('intro').innerHTML = ex && !pending().length ? `<div class="card"><div class="art">${icon('i-hanger')}</div><div><h3>Tvoja omara je prazna</h3><p>Spodaj je primer, kako bo izgledala. Slikaj svoje kose in ozadje se odstrani samo.</p><button class="btn sm" data-go="dodaj">${icon('i-cam')}Začni slikati</button></div></div>` : '';
+  const p = pending().length;
+  $('pend').innerHTML = p ? `<div class="card pend"><div><h3>${p} ${kosov(p)} ${p === 1 ? 'čaka' : p === 2 ? 'čakata' : p <= 4 ? 'čakajo' : 'čaka'} na oznako</h3><p>Samo izbereš, kaj je, barvo ugane sam.</p></div><button class="btn sm" data-tag="1">Označi</button></div>` : '';
+  const wash = all.filter(i => i.laundry).length;
+  if (cat === 'pranje' && !wash) cat = 'vse';
+  $('catTabs').innerHTML = [['vse','Vse']].concat(CATS.map(c => [c.id, c.name])).map(c => {
+    const n = c[0] === 'vse' ? all.length : all.filter(i => i.cat === c[0]).length;
+    if (c[0] !== 'vse' && !n) return '';
+    return `<button class="${cat === c[0] ? 'on' : ''}" data-c="${c[0]}">${esc(c[1])}<sup>${n}</sup></button>`;
+  }).join('') + (wash ? `<button class="wash${cat === 'pranje' ? ' on' : ''}" data-c="pranje">V pranju<sup>${wash}</sup></button>` : '');
+  $('washBar').innerHTML = cat === 'pranje' ? `<div class="card pend"><div><h3>${wash} ${kosov(wash)} v pranju</h3><p>Ti kosi se ne pojavijo v outfitih.</p></div><button class="btn sm" id="allClean">Vse oprano</button></div>` : '';
+  const xs = cat === 'vse' ? all : cat === 'pranje' ? all.filter(i => i.laundry) : all.filter(i => i.cat === cat);
+  $('grid').innerHTML = xs.map(it => tile(it)).join('');
+  head();
+}
+function tile(it, extra) {
+  const b = it.ex ? '<span class="badge">Primer</span>' : locks.includes(it.id) ? '<span class="badge acc">Izbrano</span>' : it.laundry ? '<span class="badge acc">V pranju</span>' : '';
+  return `<button class="tile${it.laundry ? ' wash' : ''}${extra || ''}" data-id="${esc(it.id)}">${ph(it, b)}<div><div class="nm">${esc(it.name)}</div><div class="sub"><i class="sw" style="background:${colorInfo(it.color).hex}"></i><span>${esc(it.color)}${it.sub ? ' · ' + esc(it.sub) : ''}</span></div></div></button>`;
+}
+$('catTabs').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; cat = b.dataset.c; renderGrid() });
+$('intro').addEventListener('click', e => { if (e.target.closest('[data-go]')) show('dodaj') });
+$('pend').addEventListener('click', e => { if (e.target.closest('[data-tag]')) openTag() });
+$('washBar').addEventListener('click', async e => { if (!e.target.closest('#allClean')) return; for (const it of ITEMS.filter(i => i.laundry)) { it.laundry = false; await put('items', it) } toast('Vse oprano'); renderGrid() });
+$('grid').addEventListener('click', e => { const b = e.target.closest('.tile'); if (b) openItem(b.dataset.id) });
+
+/* ===================== sheets ===================== */
+function openSheet(html, keep) { const box = $('sheetBox'), top = box.scrollTop; box.innerHTML = html; $('sheet').hidden = false; box.scrollTop = keep ? top : 0 }
+function closeSheet() { $('sheet').hidden = true; TAG = null }
+$('sheet').addEventListener('click', e => { if (e.target.id === 'sheet') closeSheet() });
+function dots(n) { n = +n || 0; return `<span class="dots">${[1,2,3,4,5].map(i => `<i class="${i <= n ? 'on' : ''}"></i>`).join('')}</span>` }
+function wearStats(id) {
+  let n = 0, last = null; const tk = todayKey();
+  for (const w of Object.values(WORN)) if (w.items.includes(id)) { n++; const d = dayDiff(w.date, tk); if (d >= 0 && (last === null || d < last)) last = d }
+  return {n, last};
+}
+const agoTxt = d => d === null ? 'še nikoli' : d === 0 ? 'danes' : d === 1 ? 'včeraj' : `pred ${d} ${d === 2 ? 'dnevoma' : 'dnevi'}`;
+
+function openItem(id) {
+  const it = byId(id); if (!it) return;
+  const inSel = locks.includes(it.id), ws = wearStats(it.id);
+  openSheet(`<div class="grab"></div>
+    <div class="hero ph">${pic(it, 'img')}</div>
+    <div style="display:grid;gap:6px"><div class="eyebrow">${esc(CAT[it.cat] ? CAT[it.cat].one : '')}${it.sub ? ' · ' + esc(it.sub) : ''}${it.ex ? ' · primer' : ''}</div><h2>${esc(it.name)}</h2></div>
+    <div class="specs">
+      <div><span>Barva</span><span style="display:flex;gap:8px;align-items:center"><i class="sw" style="background:${colorInfo(it.color).hex}"></i>${esc(it.color)}</span></div>
+      <div><span>Stil</span><span>${esc(it.style)}</span></div>
+      <div><span>Toplota</span>${dots(it.warmth)}</div>
+      ${it.ex ? '' : `<div><span>Nošeno</span><span>${ws.n}× · ${agoTxt(ws.last)}</span></div>`}
+    </div>
+    ${it.ex ? '' : `<div class="setrow" style="padding-top:4px"><div class="t"><b>V pranju</b><small>Kos se ne pojavi v outfitih, dokler ni opran.</small></div><button class="tg${it.laundry ? ' on' : ''}" id="sWash" aria-label="V pranju"></button></div>`}
+    <button class="btn wide" id="sFit">${icon('i-spark')}Sestavi outfit s tem kosom</button>
+    <div class="row"><button class="btn line" id="sLock">${icon(inSel ? 'i-x' : 'i-plus')}${inSel ? 'Iz izbora' : 'K izboru'}</button>${it.ex ? '' : `<button class="btn line" id="sWear">${icon('i-shirt')}Danes nosim</button>`}</div>
+    ${it.ex ? '<div class="note">To je primer. Ko dodaš svoje kose, primeri izginejo.</div>' : `<div style="display:flex;justify-content:space-between"><button class="link" id="sEditT">Uredi podatke</button><button class="link bad" id="sDel">Izbriši kos</button></div><div id="sEdit"></div><div id="sConfirm"></div>`}`);
+  $('sFit').onclick = () => { locks = [it.id]; lastFit = null; prevKeys = []; closeSheet(); show('outfit'); generate() };
+  $('sLock').onclick = () => { toggleLock(it.id); closeSheet(); renderGrid(); toast(locks.includes(it.id) ? 'Dodano k izboru · ' + locks.length : 'Odstranjeno iz izbora') };
+  if (it.ex) return;
+  $('sWash').onclick = async () => { it.laundry = !it.laundry; await put('items', it); $('sWash').classList.toggle('on', it.laundry); renderGrid(); toast(it.laundry ? 'V pranju' : 'Oprano') };
+  $('sWear').onclick = async () => { const tk = todayKey(); const e = WORN[tk] ? {...WORN[tk], items:[...new Set(WORN[tk].items.concat(it.id))]} : {date:tk, items:[it.id], name:'Moj outfit', created:Date.now()}; await put('worn', e); WORN[tk] = e; toast('Dodano v današnji outfit'); closeSheet() };
+  $('sEditT').onclick = () => editForm(it);
+  $('sDel').onclick = () => {
+    $('sConfirm').innerHTML = `<div class="confirm"><b>Izbrišem »${esc(it.name)}«?</b><div class="muted" style="font-size:13.5px">Slika in podatki se izbrišejo s telefona za vedno.</div><div class="row"><button class="btn line" id="cNo">Prekliči</button><button class="btn" style="background:var(--bad);color:#fff" id="cYes">Izbriši</button></div></div>`;
+    $('cNo').onclick = () => $('sConfirm').innerHTML = '';
+    $('cYes').onclick = async () => { await del('items', it.id); dropUrls(it.id); ITEMS = ITEMS.filter(x => x.id !== it.id); locks = locks.filter(x => x !== it.id); toast('Izbrisano'); closeSheet(); renderGrid() };
+  };
+}
+function swatches(sel, attr) { return `<div class="sws">${COLORS.map(c => `<button class="swb${c[0] === sel ? ' on' : ''}" data-${attr}="${c[0]}" style="background:${c[1]}" aria-label="${c[0]}" title="${c[0]}"></button>`).join('')}</div>` }
+function editForm(it) {
+  const st = {cat:it.cat, sub:it.sub || '', color:it.color};
+  const draw = () => {
+    const c = CAT[st.cat];
+    $('sEdit').innerHTML = `<div style="display:grid;gap:14px">
+      <label class="f">Ime<input id="eName" value="${esc(it.name)}"></label>
+      <div class="row"><label class="f">Kategorija<select id="eCat">${CATS.map(x => `<option value="${x.id}"${x.id === st.cat ? ' selected' : ''}>${esc(x.one)}</option>`).join('')}</select></label>
+      <label class="f">Vrsta<select id="eSub"><option value="">–</option>${c.subs.map(s => `<option${s[0] === st.sub ? ' selected' : ''}>${esc(s[0])}</option>`).join('')}</select></label></div>
+      <div style="display:grid;gap:8px"><span class="eyebrow">Barva · ${esc(st.color)}</span>${swatches(st.color, 'ec')}</div>
+      <div class="row"><label class="f">Stil<select id="eStyle">${STYLES.map(s => `<option${s === it.style ? ' selected' : ''}>${s}</option>`).join('')}</select></label>
+      <label class="f">Toplota 0–5<select id="eWarm">${[0,1,2,3,4,5].map(n => `<option${n === +it.warmth ? ' selected' : ''}>${n}</option>`).join('')}</select></label></div>
+      <button class="btn wide" id="eSave">Shrani spremembe</button></div>`;
+    $('eCat').onchange = e => { st.cat = e.target.value; st.sub = ''; draw() };
+    $('eSub').onchange = e => { st.sub = e.target.value; const s = CAT[st.cat].subs.find(x => x[0] === st.sub); if (s) { $('eStyle').value = s[3]; $('eWarm').value = s[4] } };
+    $('sEdit').querySelectorAll('[data-ec]').forEach(b => b.onclick = () => { st.color = b.dataset.ec; draw() });
+    $('eSave').onclick = async () => {
+      const auto = makeName(it); const typed = $('eName').value.trim();
+      Object.assign(it, {cat:st.cat, sub:st.sub, color:st.color, style:$('eStyle').value, warmth:+$('eWarm').value});
+      it.season = seasonOf(it.warmth, it.cat);
+      it.name = !typed || typed === auto ? makeName(it) : typed;
+      await put('items', it); toast('Shranjeno'); closeSheet(); renderGrid();
+    };
+  };
+  draw();
+}
+
+/* ===================== capture ===================== */
+let BG = {state:'idle', prog:0};
+const WORKER_SRC = `
+import { AutoModel, AutoProcessor, RawImage, env } from '${TF_URL}';
+env.allowLocalModels = false; env.useBrowserCache = true; env.backends.onnx.wasm.numThreads = 1;
+let ready = null;
+function load() {
+  if (!ready) {
+    ready = (async () => {
+      const model = await AutoModel.from_pretrained('briaai/RMBG-1.4', { config: { model_type: 'custom' }, progress_callback: p => { if (p.status === 'progress' && /onnx/.test(p.file || '')) postMessage({ type: 'progress', progress: p.progress }) } });
+      const processor = await AutoProcessor.from_pretrained('briaai/RMBG-1.4', { config: { do_normalize: true, do_pad: false, do_rescale: true, do_resize: true, image_mean: [0.5, 0.5, 0.5], feature_extractor_type: 'ImageFeatureExtractor', image_std: [1, 1, 1], resample: 2, rescale_factor: 0.00392156862745098, size: { width: 1024, height: 1024 } } });
+      return { model, processor };
+    })();
+    ready.catch(() => { ready = null });
+  }
+  return ready;
+}
+onmessage = async e => {
+  const { id, type, data, width, height } = e.data;
+  try {
+    const { model, processor } = await load();
+    if (type === 'load') { postMessage({ id, type: 'ready' }); return }
+    const t0 = performance.now();
+    const image = new RawImage(new Uint8ClampedArray(data), width, height, 3);
+    const { pixel_values } = await processor(image);
+    const { output } = await model({ input: pixel_values });
+    const mask = await RawImage.fromTensor(output[0].mul(255).to('uint8')).resize(width, height);
+    const buf = new Uint8Array(mask.data).buffer;
+    postMessage({ id, type: 'mask', mask: buf, ms: performance.now() - t0 }, [buf]);
+  } catch (err) { postMessage({ id, type: 'error', error: String(err && err.message || err) }) }
+};`;
+let BW = null, bwSeq = 0; const bwPend = new Map();
+function bgWorker() {
+  if (!BW) {
+    BW = new Worker(URL.createObjectURL(new Blob([WORKER_SRC], {type:'text/javascript'})), {type:'module'});
+    BW.onmessage = e => {
+      const m = e.data;
+      if (m.type === 'progress') { BG.state = 'loading'; BG.prog = m.progress; renderBG(); return }
+      const p = bwPend.get(m.id); if (!p) return; bwPend.delete(m.id);
+      if (m.type === 'error') p.rej(new Error(m.error)); else { BG.state = 'ready'; renderBG(); p.res(m) }
+    };
+    BW.onerror = e => { BG.state = 'error'; renderBG(); for (const p of bwPend.values()) p.rej(new Error('worker')); bwPend.clear(); BW = null };
+  }
+  return BW;
+}
+function bwCall(msg, transfer) { return new Promise((res, rej) => { const id = ++bwSeq; bwPend.set(id, {res, rej}); bgWorker().postMessage({...msg, id}, transfer || []) }) }
+function warmModel() { if (BG.state === 'idle' || BG.state === 'error') { BG.state = 'loading'; renderBG(); bwCall({type:'load'}).catch(() => { BG.state = 'error'; renderBG() }) } }
+function renderBG() {
+  if (view !== 'dodaj') return;
+  const info = $('bgInfo'), bar = $('bgBar');
+  if (!BGON) { info.textContent = 'Izklopljeno. Slike ostanejo z ozadjem.'; bar.hidden = true; return }
+  if (BG.state === 'loading') { info.textContent = BG.prog ? `Prenašam model za ozadje · ${Math.round(BG.prog)} % (samo prvič, 44 MB)` : 'Pripravljam model za ozadje…'; bar.hidden = false; bar.firstElementChild.style.width = Math.round(BG.prog || 3) + '%' }
+  else if (BG.state === 'ready') { info.textContent = 'Pripravljeno. Deluje tudi brez interneta.'; bar.hidden = true }
+  else if (BG.state === 'error') { info.textContent = 'Modela ni bilo mogoče naložiti. Preveri internet, slike se shranijo z ozadjem.'; bar.hidden = true }
+  else { info.textContent = 'Kos izgleda kot v spletni trgovini. Prvič se prenese 44 MB, potem dela brez interneta.'; bar.hidden = true }
+}
+$('bgTg').onclick = async () => { BGON = !BGON; $('bgTg').classList.toggle('on', BGON); await kvSet('bg', BGON); if (BGON) warmModel(); renderBG() };
+
+function loadImg(file) { return new Promise((res, rej) => { const u = URL.createObjectURL(file); const im = new Image(); im.onload = () => { res(im); setTimeout(() => URL.revokeObjectURL(u), 2000) }; im.onerror = () => { URL.revokeObjectURL(u); rej(new Error('img')) }; im.src = u }) }
+function toCanvas(src, max) { const w0 = src.naturalWidth || src.width, h0 = src.naturalHeight || src.height; const s = Math.min(1, max / Math.max(w0, h0)); const c = document.createElement('canvas'); c.width = Math.round(w0 * s); c.height = Math.round(h0 * s); const x = c.getContext('2d', {willReadFrequently:true}); x.imageSmoothingQuality = 'high'; x.drawImage(src, 0, 0, c.width, c.height); return c }
+async function removeBg(cv) {
+  const w = cv.width, h = cv.height, ctx = cv.getContext('2d', {willReadFrequently:true});
+  const id = ctx.getImageData(0, 0, w, h), px = id.data;
+  const rgb = new Uint8Array(w * h * 3); for (let i = 0, j = 0; i < px.length; i += 4, j += 3) { rgb[j] = px[i]; rgb[j + 1] = px[i + 1]; rgb[j + 2] = px[i + 2] }
+  const r = await bwCall({type:'run', data:rgb.buffer, width:w, height:h}, [rgb.buffer]);
+  const m = new Uint8Array(r.mask); let fg = 0, x0 = w, y0 = h, x1 = 0, y1 = 0;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const k = y * w + x; let a = m[k]; a = a < 28 ? 0 : a > 228 ? 255 : a; px[k * 4 + 3] = a; if (a > 110) { fg++; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y } }
+  const frac = fg / (w * h); if (frac < 0.02 || frac > 0.96) return null;
+  ctx.putImageData(id, 0, 0);
+  const p = Math.round(Math.max(x1 - x0, y1 - y0) * 0.04);
+  x0 = Math.max(0, x0 - p); y0 = Math.max(0, y0 - p); x1 = Math.min(w - 1, x1 + p); y1 = Math.min(h - 1, y1 + p);
+  const out = document.createElement('canvas'); out.width = x1 - x0 + 1; out.height = y1 - y0 + 1;
+  out.getContext('2d', {willReadFrequently:true}).drawImage(cv, x0, y0, out.width, out.height, 0, 0, out.width, out.height);
+  return out;
+}
+function detectColor(cv, cut) {
+  const w = cv.width, h = cv.height, d = cv.getContext('2d', {willReadFrequently:true}).getImageData(0, 0, w, h).data;
+  const votes = {}, step = Math.max(1, Math.floor(Math.sqrt(w * h / 5000)));
+  const xa = cut ? 0 : Math.floor(w * .25), xb = cut ? w : Math.ceil(w * .75), ya = cut ? 0 : Math.floor(h * .2), yb = cut ? h : Math.ceil(h * .8);
+  for (let y = ya; y < yb; y += step) for (let x = xa; x < xb; x += step) { const i = (y * w + x) * 4; if (cut && d[i + 3] < 200) continue; const n = nearestColor(rgbLab(d[i], d[i + 1], d[i + 2])); votes[n] = (votes[n] || 0) + 1 }
+  let best = 'siva', bv = -1; for (const k in votes) if (votes[k] > bv) { bv = votes[k]; best = k }
+  return best;
+}
+const WEBP = (() => { try { const c = document.createElement('canvas'); c.width = c.height = 2; return c.toDataURL('image/webp').startsWith('data:image/webp') } catch (e) { return false } })();
+function encode(cv, max, cut) { const c = toCanvas(cv, max); const type = cut ? (WEBP ? 'image/webp' : 'image/png') : 'image/jpeg'; return new Promise(r => c.toBlob(b => r(b), type, cut ? 0.9 : 0.85)) }
+
+let Q = [], busy = false, lock = null;
+const QST = {wait:'V vrsti', prep:'Pripravljam', bg:'Odstranjujem ozadje', save:'Shranjujem', ok:'Pripravljeno za oznako', err:'Napaka'};
+function renderAdd() {
+  $('bgTg').classList.toggle('on', BGON); renderBG();
+  const p = pending().length;
+  $('pendAdd').innerHTML = p ? `<div class="card pend" style="margin:22px 0 0"><div><h3>${p} ${kosov(p)} za označiti</h3><p>En klik na kos: kaj je to.</p></div><button class="btn sm acc" data-tag="1">Označi</button></div>` : '';
+  renderQ();
+}
+$('pendAdd').addEventListener('click', e => { if (e.target.closest('[data-tag]')) openTag() });
+function renderQ() {
+  if (view !== 'dodaj') return;
+  $('qwrap').hidden = !Q.length;
+  const done = Q.filter(q => q.st === 'ok').length;
+  $('qcount').textContent = done + ' / ' + Q.length;
+  $('queue').innerHTML = Q.slice().reverse().map(q => {
+    const it = q.itemId && ITEMS.find(i => i.id === q.itemId); const tagged = it && it.status === 'ready';
+    return `<div class="qrow ${q.st}">
+      <div class="qi">${it ? `<img src="${url(it, 'thumb')}"${it.cut ? ' class="cut"' : ''} alt="">` : q.prev ? `<img src="${q.prev}" alt="">` : ''}</div>
+      <div class="t"><b>${tagged ? esc(it.name) : 'Nov kos'}</b><small>${tagged ? 'V omari' : q.st === 'err' ? esc(q.err) : QST[q.st]}${q.st === 'bg' && q.t ? ' · ' + q.t : ''}</small></div>
+      ${['prep','bg','save'].includes(q.st) ? '<span class="spin"></span>' : tagged ? `<span class="okc">${icon('i-check')}</span>` : q.st === 'ok' ? `<button class="btn sm line" data-tagid="${q.itemId}">Označi</button>` : q.st === 'err' ? `<button class="btn sm line" data-retry="${q.key}">Znova</button>` : ''}
+    </div>`;
+  }).join('');
+}
+$('queue').addEventListener('click', e => {
+  const t = e.target.closest('[data-tagid]'); if (t) { openTag(t.dataset.tagid); return }
+  const b = e.target.closest('[data-retry]'); if (!b) return; const q = Q.find(x => x.key === b.dataset.retry); if (q && q.file) { q.st = 'wait'; renderQ(); pump() }
+});
+function addFiles(files) {
+  for (const f of files) Q.push({key:uid(), file:f, st:'wait', prev:URL.createObjectURL(f)});
+  renderQ(); pump();
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+}
+async function pump() {
+  if (busy) return; busy = true;
+  try { if ('wakeLock' in navigator) lock = await navigator.wakeLock.request('screen') } catch (e) {}
+  for (;;) { const q = Q.find(x => x.st === 'wait'); if (!q) break; await processOne(q) }
+  busy = false; try { lock && lock.release() } catch (e) {} lock = null;
+}
+async function processOne(q) {
+  try {
+    q.st = 'prep'; renderQ();
+    const im = await loadImg(q.file);
+    let cv = toCanvas(im, 1024), cut = false;
+    if (BGON) {
+      q.st = 'bg'; renderQ();
+      try { const t0 = performance.now(); const c2 = await removeBg(cv); q.t = Math.round((performance.now() - t0) / 1000) + ' s'; if (c2) { cv = c2; cut = true } }
+      catch (e) { console.warn('bg', e); BG.state = 'error'; renderBG() }
+    }
+    q.st = 'save'; renderQ();
+    const color = detectColor(cv, cut);
+    const [img, thumb] = await Promise.all([encode(cv, 1000, cut), encode(cv, 440, cut)]);
+    const it = {id:uid(), status:'pending', created:Date.now(), cut, color, img, thumb, name:'Nov kos', cat:null, sub:'', style:'casual', warmth:null, season:null, laundry:false};
+    await put('items', it); ITEMS.unshift(it);
+    q.st = 'ok'; q.itemId = it.id; q.file = null; if (q.prev) { URL.revokeObjectURL(q.prev); q.prev = null }
+  } catch (e) { console.warn(e); q.st = 'err'; q.err = e && e.message === 'img' ? 'Slike ne morem odpreti' : 'Ni se shranilo' }
+  renderQ(); if (view === 'dodaj') renderAdd(); head();
+}
+$('file').addEventListener('change', e => { addFiles([...e.target.files]); e.target.value = '' });
+$('file2').addEventListener('change', e => { addFiles([...e.target.files]); e.target.value = '' });
+
+/* quick tagging: colour is guessed, one tap on the type saves it */
+function openTag(id) {
+  const P = pending(); if (!P.length) { closeSheet(); toast('Vse je označeno'); return }
+  const it = (id && P.find(x => x.id === id)) || P[0];
+  TAG = {id:it.id, color:it.color, cat:null, keep:false}; drawTag();
+}
+function drawTag() {
+  const it = ITEMS.find(x => x.id === TAG.id); if (!it) { openTag(); return }
+  const P = pending(), pos = P.indexOf(it) + 1, c = TAG.cat && CAT[TAG.cat];
+  const keep = TAG.keep; TAG.keep = false;
+  openSheet(`<div class="grab"></div>
+    <div class="shead"><span class="eyebrow">Označi · ${pos} / ${P.length}</span><div style="display:flex;gap:16px">${P.length > 1 ? '<button class="link" id="tSkip">Preskoči</button>' : ''}<button class="link bad" id="tDel">Izbriši</button></div></div>
+    <div class="hero ph sm">${pic(it, 'img')}</div>
+    <div style="display:grid;gap:8px"><span class="eyebrow">Barva · ${esc(TAG.color)}</span>${swatches(TAG.color, 'tc')}</div>
+    <div style="display:grid;gap:8px"><span class="eyebrow">Kaj je to?</span><div class="catg">${CATS.map(x => `<button class="catb${TAG.cat === x.id ? ' on' : ''}" data-tcat="${x.id}"><svg viewBox="0 0 100 100"><path d="${SIL[x.id]}" fill="${colorInfo(TAG.color).hex}" stroke="rgba(128,128,134,.6)" stroke-width="2"/></svg>${esc(x.one)}</button>`).join('')}</div></div>
+    ${c ? `<div style="display:grid;gap:8px"><span class="eyebrow">Vrsta · klik shrani</span><div class="subs">${c.subs.map(s => `<button class="pill" data-tsub="${esc(s[0])}">${esc(s[0])}</button>`).join('')}</div><button class="btn wide" id="tSave">Shrani brez vrste</button></div>` : ''}`, keep);
+  const box = $('sheetBox');
+  box.querySelectorAll('[data-tc]').forEach(b => b.onclick = () => { TAG.color = b.dataset.tc; TAG.keep = true; drawTag() });
+  box.querySelectorAll('[data-tcat]').forEach(b => b.onclick = () => { TAG.cat = b.dataset.tcat; TAG.keep = true; drawTag(); const s = $('tSave'); if (s) s.scrollIntoView({block:'nearest'}) });
+  box.querySelectorAll('[data-tsub]').forEach(b => b.onclick = () => saveTag(b.dataset.tsub));
+  if ($('tSave')) $('tSave').onclick = () => saveTag('');
+  if ($('tSkip')) $('tSkip').onclick = () => { const i = P.indexOf(it); const nx = P[(i + 1) % P.length]; TAG = {id:nx.id, color:nx.color, cat:null, keep:false}; drawTag() };
+  $('tDel').onclick = async () => { await del('items', it.id); dropUrls(it.id); ITEMS = ITEMS.filter(x => x.id !== it.id); renderGrid(); if (view === 'dodaj') renderAdd(); openTag() };
+}
+async function saveTag(sub) {
+  const it = ITEMS.find(x => x.id === TAG.id); const c = CAT[TAG.cat]; const s = sub ? c.subs.find(x => x[0] === sub) : null;
+  Object.assign(it, {cat:TAG.cat, sub:s ? s[0] : '', color:TAG.color, style:s ? s[3] : c.style, warmth:s ? s[4] : c.w, status:'ready'});
+  it.season = seasonOf(it.warmth, it.cat); it.name = makeName(it);
+  await put('items', it);
+  renderGrid(); if (view === 'dodaj') renderAdd();
+  const P = pending();
+  if (P.length) { TAG = {id:P[0].id, color:P[0].color, cat:null, keep:false}; drawTag() } else { closeSheet(); toast(`Označeno · ${ready().length} ${kosov(ready().length)} v omari`) }
+}
+
+/* ===================== weather (Open-Meteo, free, no key) ===================== */
+const RAIN = c => (c >= 51 && c <= 67) || (c >= 80 && c <= 82) || c >= 95;
+const SNOW = c => (c >= 71 && c <= 77) || c === 85 || c === 86;
+const wxIcon = c => SNOW(c) ? 'i-snow' : RAIN(c) ? 'i-rain' : c <= 1 ? 'i-sun' : 'i-cloud';
+const wxDesc = c => c === 0 ? 'Jasno' : c === 1 ? 'Pretežno jasno' : c === 2 ? 'Delno oblačno' : c === 3 ? 'Oblačno' : c === 45 || c === 48 ? 'Megla' : c <= 57 ? 'Pršenje' : c <= 67 ? 'Dež' : c <= 77 ? 'Sneg' : c <= 82 ? 'Plohe' : c <= 86 ? 'Snežne plohe' : 'Nevihte';
+async function loadWeather(force) {
+  if (!LOC) { renderWx(); return }
+  const key = LOC.lat + ',' + LOC.lon, c = lsGet('omara-wx', null);
+  if (!force && c && c.key === key && Date.now() - c.t < 30 * 60e3) { WX = c.d; renderWx(); return }
+  try {
+    const u = `https://api.open-meteo.com/v1/forecast?latitude=${LOC.lat}&longitude=${LOC.lon}&current=temperature_2m,apparent_temperature,weather_code&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_probability_max,weather_code&timezone=auto&forecast_days=1`;
+    const d = await (await fetch(u)).json();
+    WX = {t:d.current.temperature_2m, feel:d.current.apparent_temperature, code:d.current.weather_code, max:d.daily.temperature_2m_max[0], min:d.daily.temperature_2m_min[0], fmax:d.daily.apparent_temperature_max[0], fmin:d.daily.apparent_temperature_min[0], pop:d.daily.precipitation_probability_max[0] || 0, dcode:d.daily.weather_code[0]};
+    lsSet('omara-wx', {key, t:Date.now(), d:WX});
+  } catch (e) { if (c && c.key === key) WX = c.d }
+  renderWx();
+}
+function autoWx() {
+  if (!WX) return null;
+  const evening = occ === 'Izhod zvečer';
+  const temp = evening ? WX.fmin * 0.7 + WX.fmax * 0.3 : (WX.fmax + WX.feel) / 2;
+  const T = temp >= 20 ? 0 : temp >= 13 ? 1 : temp >= 5 ? 2 : 3;
+  const rain = WX.pop >= 50 || RAIN(WX.code) || RAIN(WX.dcode) || SNOW(WX.dcode);
+  return {T, rain, label:Math.round(temp) + '°'};
+}
+function currentWx() { if (wxManual) return {...wxManual, label:T_LABEL[wxManual.T]}; return autoWx() || {T:1, rain:false, label:T_LABEL[1]} }
+function renderWx() {
+  if (view !== 'outfit') return;
+  if (!LOC) $('wxCard').innerHTML = `<div class="wx"><div class="ic">${icon('i-pin')}</div><div><b style="font-weight:600">Samodejno vreme</b><div class="muted" style="font-size:13.5px;margin:2px 0 10px">Outfit bo sam upošteval temperaturo in dež.</div><div class="row"><button class="btn sm" data-wx="gps">Moja lokacija</button><button class="btn sm line" data-wx="city">Vpiši mesto</button></div></div></div>`;
+  else if (!WX) $('wxCard').innerHTML = `<div class="wx"><div class="ic"><span class="spin"></span></div><div><b style="font-weight:600">${esc(LOC.name)}</b><div class="muted" style="font-size:13.5px">Nalagam vreme…</div></div></div>`;
+  else $('wxCard').innerHTML = `<div class="wx"><div class="ic">${icon(wxIcon(WX.code))}</div><div><div class="tt"><span class="deg">${Math.round(WX.t)}°</span><span class="muted">${esc(LOC.name)}</span></div><small>${wxDesc(WX.dcode)} · ${Math.round(WX.min)}° do ${Math.round(WX.max)}° · dež ${Math.round(WX.pop)} %</small></div></div>`;
+  const cw = currentWx(), auto = !wxManual && !!WX;
+  $('wxPills').innerHTML = TEMPS.map((t, i) => `<button class="pill${cw.T === i ? ' on' : ''}" data-t="${i}">${icon(t[1])}${t[0]}</button>`).join('') + `<button class="pill${cw.rain ? ' on' : ''}" data-rain="1">${icon('i-rain')}Dež</button>`;
+  $('wxAuto').hidden = !wxManual || !WX;
+}
+$('wxCard').addEventListener('click', e => { const b = e.target.closest('[data-wx]'); if (!b) return; if (b.dataset.wx === 'gps') useGPS(); else openSettings(true) });
+$('wxPills').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return; const cw = currentWx();
+  wxManual = {T:cw.T, rain:cw.rain};
+  if (b.dataset.t != null) wxManual.T = +b.dataset.t; else wxManual.rain = !cw.rain;
+  renderWx();
+});
+$('wxAuto').onclick = () => { wxManual = null; renderWx() };
+function useGPS() {
+  if (!navigator.geolocation) { toast('Lokacija na tem telefonu ni na voljo'); return }
+  toast('Iščem lokacijo…');
+  navigator.geolocation.getCurrentPosition(async p => {
+    LOC = {lat:+p.coords.latitude.toFixed(3), lon:+p.coords.longitude.toFixed(3), name:'Trenutna lokacija'};
+    await kvSet('loc', LOC); WX = null; await loadWeather(true); if (!$('sheet').hidden) openSettings();
+  }, () => toast('Lokacije ni bilo mogoče dobiti. Vpiši mesto.'), {timeout:12000, maximumAge:3600e3});
+}
+
+/* ===================== outfit engine (rules, no AI) ===================== */
+const SLOT = {majica:'top', pulover:'mid', jakna:'outer', hlace:'bottom', kratke:'bottom', cevlji:'shoes', dodatek:'acc'};
+const OCC_STYLE = {
+  'Vsakdan':{casual:2, streetwear:2, 'športno':.4, 'smart casual':1, elegantno:-1},
+  'Šola / faks':{casual:2, streetwear:1.6, 'športno':.4, 'smart casual':1.4, elegantno:-.6},
+  'Izhod zvečer':{casual:.6, streetwear:2, 'športno':-2, 'smart casual':2, elegantno:1.4},
+  'Zmenek':{casual:1, streetwear:.6, 'športno':-2.5, 'smart casual':2.5, elegantno:2},
+  'Šport':{casual:0, streetwear:.4, 'športno':3, 'smart casual':-2, elegantno:-3},
+  'Družinsko':{casual:1.4, streetwear:.4, 'športno':-1, 'smart casual':2.5, elegantno:1.6}};
+const STYLE_PAIR = {'casual|streetwear':.5, 'casual|smart casual':.3, 'streetwear|športno':.2, 'casual|športno':0, 'elegantno|smart casual':.6, 'smart casual|streetwear':-.2, 'smart casual|športno':-1, 'elegantno|športno':-2, 'elegantno|streetwear':-.8, 'casual|elegantno':-.4};
+const styleCompat = (a, b) => a === b ? 1 : (STYLE_PAIR[[a, b].sort().join('|')] ?? 0);
+const STYLE_PHRASE = {casual:'Sproščen casual stil', streetwear:'Streetwear stil', 'športno':'Športni stil', 'smart casual':'Smart casual stil', elegantno:'Eleganten stil'};
+const OCC_FOR = {'Vsakdan':'vsak dan', 'Šola / faks':'šolo ali faks', 'Izhod zvečer':'večerni izhod', 'Zmenek':'zmenek', 'Šport':'šport', 'Družinsko':'družinsko srečanje'};
+const isDenim = m => m.col.name === 'denim' || ((m.sub === 'Kavbojke' || m.sub === 'Jeans') && ['modra','svetlo modra','temno modra','denim'].includes(m.col.name));
+const sameFamily = (a, b) => [['rdeča','bordo','roza'], ['modra','vijolična'], ['rumena','oranžna']].some(f => f.includes(a) && f.includes(b));
+
+function meta(it) {
+  const c = CAT[it.cat], s = subOf(it), col = colorInfo(it.color);
+  const w = it.warmth != null && it.warmth !== '' ? +it.warmth : (s ? s[4] : c.w);
+  return {it, id:it.id, cat:it.cat, slot:SLOT[it.cat], sub:it.sub || '', style:it.style || (s ? s[3] : c.style), w, col, L:LIGHT[col.name]};
+}
+function slotScore(m, ctx) {
+  const T = ctx.T; let s = OCC_STYLE[ctx.occ][m.style] ?? 0;
+  if (m.it.season === 'poletje' && T >= 2 && m.slot !== 'top') s -= 2.5;
+  if (m.it.season === 'zima' && T === 0) s -= 2.5;
+  if (m.slot === 'bottom') {
+    if (m.cat === 'kratke') { s += T === 0 ? (['Vsakdan','Šport','Šola / faks'].includes(ctx.occ) ? 1.5 : .2) : T === 1 ? -2.5 : -8; if (ctx.rain) s -= 1.5 }
+    else if (T === 0) s -= .4;
+  }
+  if (m.slot === 'shoes') {
+    if (m.sub === 'Natikači') s += T === 0 ? .5 : -6;
+    if (m.sub === 'Škornji') s += T >= 2 ? 1.5 : T === 0 ? -3 : -.5;
+    if (ctx.rain) { if (m.sub === 'Škornji') s += 1; if (m.col.name === 'bela') s -= .5 }
+  }
+  if (m.slot === 'top' && T === 0 && m.sub === 'Dolgi rokavi') s -= 1;
+  if (m.slot === 'acc') {
+    if (m.sub === 'Kapa' || m.sub === 'Šal') s += T >= 2 ? 1.5 : T === 1 ? -.5 : -4;
+    else if (m.sub === 'Šilt kapa') { s += T <= 1 ? .3 : -1; if (ctx.occ === 'Zmenek' || ctx.occ === 'Družinsko') s -= 1.5 }
+    else if (m.sub === 'Ura' || m.sub === 'Pas') { if (['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) s += .6 }
+    else s -= .3;
+  }
+  const d = ctx.lastWorn[m.id], k = (m.slot === 'shoes' || m.slot === 'outer' || m.slot === 'acc') ? .4 : 1;
+  if (!ctx.locked.has(m.id)) { if (d === 0) s -= 6 * k; else if (d === 1) s -= 4 * k; else if (d === 2) s -= 2 * k; else if (d <= 4) s -= .8 * k; else if (d === undefined || d >= 10) s += .3 }
+  return s;
+}
+function layerScore(slot, m, T, rain) {
+  if (slot === 'mid') return m ? [-5, .6, 1.5, 2.5][T] : [.5, 0, -2.5, -6][T];
+  if (!m) return [.5, -.2, -3, -8][T] - (rain ? 2.5 : 0);
+  let s = T === 0 ? -6 : T === 1 ? (m.w <= 3 ? .8 : -1.5) : T === 2 ? (m.w >= 3 ? 2 : .5) : (m.w >= 4 ? 3 : .5);
+  if (rain) s += 1.5; return s;
+}
+function harmony(sl, ms) {
+  let s = 0; const acc = [...new Set(ms.filter(m => m.col.kind === 'a').map(m => m.col.name))];
+  s += acc.length === 0 ? .9 : acc.length === 1 ? 1.5 : acc.length === 2 ? (sameFamily(acc[0], acc[1]) ? -.4 : -1.4) : -3;
+  if (acc.length && ms.some(m => m.col.kind === 's')) s -= .3;
+  const vis = sl.o || sl.md || sl.t;
+  if (vis && sl.b) {
+    const d = Math.abs(vis.L - sl.b.L);
+    if (d >= 30) s += .8; else if (d < 8 && vis.col.name === sl.b.col.name && vis.col.name !== 'črna') s -= .7;
+    if (isDenim(vis) && isDenim(sl.b)) s -= d >= 20 ? .3 : 1.6;
+    if ([vis.col.name, sl.b.col.name].sort().join('|') === 'temno modra|črna') s -= .4;
+  }
+  if (ms.filter(m => m.L < 30).length >= 3 && !acc.length) s += .6;
+  const earth = ms.filter(m => m.col.kind === 'e').length; if (earth >= 2) s += .3 * Math.min(earth, 3);
+  if (sl.sh) {
+    if (sl.sh.col.name === 'bela') s += .35;
+    if (sl.sh.col.name === 'rjava' && sl.b && sl.b.col.name === 'črna') s -= .4;
+    if (sl.sh.col.kind === 'a' && ms.some(m => m !== sl.sh && m.col.name === sl.sh.col.name)) s += .4;
+  }
+  return s;
+}
+function comboScore(sl, ms, ctx) {
+  const T = ctx.T; let s = 0;
+  for (const m of ms) s += (m.slot === 'mid' || m.slot === 'outer' || m.slot === 'acc') ? m.ss - 1.8 : m.ss;  // extra layers must earn their place
+  s += layerScore('mid', sl.md, T, ctx.rain) + layerScore('outer', sl.o, T, ctx.rain);
+  if (!sl.b) s -= 12;
+  if (!sl.t && !sl.md) s -= 12;
+  if (!sl.t && sl.md) s += T === 0 ? -6 : -.3;
+  if (!sl.sh && ctx.hasShoes) s -= 10;
+  if (sl.a) s -= .3;
+  const W = (sl.t ? sl.t.w : 0) + (sl.md ? sl.md.w : 0) + (sl.o ? sl.o.w : 0), R = [[1,3],[2,5],[6,9],[9,14]][T];
+  if (W < R[0]) s -= .8 * (R[0] - W); if (W > R[1]) s -= .8 * (W - R[1]);
+  let pc = 0, pn = 0; for (let i = 0; i < ms.length; i++) for (let j = i + 1; j < ms.length; j++) { pc += styleCompat(ms[i].style, ms[j].style); pn++ }
+  if (pn) s += 1.6 * pc / pn;
+  s += harmony(sl, ms);
+  if (ctx.lastIds) { const ov = ms.filter(m => ctx.lastIds.has(m.id) && !ctx.locked.has(m.id) && m.slot !== 'shoes').length; if (ov >= 3) s -= 1.5 }
+  return s + Math.random() * .35;
+}
+function buildOutfit(ctx) {
+  const avail = ctx.items.filter(it => it.status === 'ready' && CAT[it.cat] && (!it.laundry || ctx.locked.has(it.id))).map(meta);
+  const bySlot = {top:[], mid:[], outer:[], bottom:[], shoes:[], acc:[]}, lockBy = {}, ignored = [];
+  for (const m of avail) { m.ss = slotScore(m, ctx); bySlot[m.slot].push(m) }
+  for (const id of ctx.locks) { const m = avail.find(x => x.id === id); if (!m) continue; if (lockBy[m.slot]) ignored.push(m); else lockBy[m.slot] = m }
+  const K = {top:7, mid:5, outer:4, bottom:6, shoes:4, acc:3}, C = {};
+  for (const sl of Object.keys(bySlot)) {
+    if (lockBy[sl]) { C[sl] = [lockBy[sl]]; continue }
+    const arr = bySlot[sl].slice().sort((a, b) => b.ss - a.ss).slice(0, K[sl]);
+    const optional = sl === 'mid' || sl === 'outer' || sl === 'acc' || (sl === 'top' && lockBy.mid) || !arr.length;
+    C[sl] = optional ? arr.concat([null]) : arr;
+  }
+  const all = [];
+  for (const t of C.top) for (const md of C.mid) for (const o of C.outer) for (const b of C.bottom) for (const sh of C.shoes) for (const a of C.acc) {
+    const sl = {t, md, o, b, sh, a}, ms = [t, md, o, b, sh, a].filter(Boolean); if (!ms.length) continue;
+    all.push({ms, s:comboScore(sl, ms, ctx)});
+  }
+  if (!all.length) return null;
+  all.sort((x, y) => y.s - x.s);
+  const seen = new Set(), top = [];
+  for (const c of all) { const k = c.ms.map(m => m.id).sort().join('+'); if (seen.has(k)) continue; seen.add(k); c.key = k; top.push(c); if (top.length >= 40) break }
+  const prevSets = [...ctx.prev].map(k => new Set(k.split('+')));
+  for (const c of top) {
+    let p = ctx.prev.has(c.key) ? 4 : 0;
+    const core = c.ms.filter(m => m.slot !== 'shoes' && m.slot !== 'acc' && !ctx.locked.has(m.id)).map(m => m.id);
+    for (const ps of prevSets) { const ov = core.filter(id => ps.has(id)).length; if (core.length && ov === core.length) p = Math.max(p, 3); else if (ov >= 2) p = Math.max(p, 1.2) }
+    c.s2 = c.s - p;
+  }
+  top.sort((x, y) => y.s2 - x.s2);
+  const pool = top.slice(0, 6);
+  const mx = pool[0].s2, ws = pool.map(c => Math.exp((c.s2 - mx) / .9)); let r = Math.random() * ws.reduce((a, b) => a + b, 0), pick = pool[0];
+  for (let i = 0; i < pool.length; i++) { r -= ws[i]; if (r <= 0) { pick = pool[i]; break } }
+  return {...pick, ignored};
+}
+function dominantStyle(ms) { const n = {}; for (const m of ms) n[m.style] = (n[m.style] || 0) + (m.slot === 'acc' ? .5 : 1); return Object.keys(n).sort((a, b) => n[b] - n[a])[0] || 'casual' }
+function lookName(ms, ctx) {
+  const acc = [...new Set(ms.filter(m => m.col.kind === 'a').map(m => m.col.name))];
+  const darks = ms.filter(m => m.L < 30).length, earth = ms.filter(m => m.col.kind === 'e').length;
+  const layers = ms.filter(m => ['top','mid','outer'].includes(m.slot)).length, st = dominantStyle(ms);
+  if (ctx.occ === 'Šport') return 'Športni look';
+  if (darks >= 3 && darks >= ms.length - 1 && !acc.length) return 'Total black';
+  if (layers >= 3) return ctx.T >= 3 ? 'Zimsko layeranje' : 'Urban layering';
+  if (acc.length === 1) return cap(COL[acc[0]].forms[0]) + ' poudarek';
+  if (earth >= 2) return 'Zemeljski toni';
+  if (ctx.T === 0 && ms.some(m => m.cat === 'kratke')) return 'Poletni casual';
+  if (ctx.occ === 'Zmenek') return st === 'elegantno' ? 'Eleganten večer' : 'Smart casual';
+  if (ctx.occ === 'Izhod zvečer') return 'Večerni izhod';
+  return {casual:'Čist casual', streetwear:'Streetwear', 'športno':'Športni look', 'smart casual':'Smart casual', elegantno:'Eleganten look'}[st] || 'Vsakdanji look';
+}
+function explain(ms, ctx) {
+  const S = [], T = ctx.T, NUM = ['', 'eno', 'dve', 'tri', 'štiri'];
+  const ups = ms.filter(m => ['top','mid','outer'].includes(m.slot)).length, outer = ms.find(m => m.slot === 'outer');
+  if (T >= 2 || ctx.rain) S.push(`Za ${ctx.label}${ctx.rain ? ' in dež' : ''} imaš ${NUM[ups] || ups} ${ups === 1 ? 'plast' : 'plasti'}${outer ? ', zadnja je ' + subNoun(outer.it) : ''}.`);
+  else if (T === 0) S.push(`Za ${ctx.label} samo lahki kosi, brez dodatnih plasti.`);
+  const acc = [...new Set(ms.filter(m => m.col.kind === 'a').map(m => m.col.name))];
+  const darks = ms.filter(m => m.L < 30).length, earth = ms.filter(m => m.col.kind === 'e').length;
+  if (acc.length === 1) S.push(`Nevtralna osnova z enim barvnim poudarkom (${acc[0]}) deluje premišljeno.`);
+  else if (!acc.length && darks >= 3) S.push('Temni toni dajo čist, oster obris.');
+  else if (!acc.length && earth >= 2) S.push('Zemeljski toni se med sabo lepo ujemajo.');
+  else if (!acc.length) S.push(`Nevtralne barve (${[...new Set(ms.map(m => m.col.name))].slice(0, 3).join(', ')}) gredo vedno skupaj.`);
+  else S.push(`Dva barvna poudarka (${acc.slice(0, 2).join(' in ')}) sta drzna izbira.`);
+  const vis = ms.find(m => m.slot === 'outer') || ms.find(m => m.slot === 'mid') || ms.find(m => m.slot === 'top'), bot = ms.find(m => m.slot === 'bottom');
+  if (S.length < 3 && vis && bot && Math.abs(vis.L - bot.L) >= 30) S.push('Svetlo in temno med zgornjim in spodnjim delom da lep kontrast.');
+  if (S.length < 3) S.push(`${STYLE_PHRASE[dominantStyle(ms)]} paše za ${OCC_FOR[ctx.occ]}.`);
+  let out = S.slice(0, 3).join(' ');
+  if (ctx.yesterday.size && !ms.some(m => ctx.yesterday.has(m.id) && m.slot !== 'shoes' && !ctx.locked.has(m.id))) out += ' Ne ponavlja oblačil od včeraj.';
+  return out;
+}
+function styleTip(ms, ctx) {
+  const f = (cat, sub) => ms.find(m => m.cat === cat && (!sub || m.sub === sub));
+  const top = f('majica'), mid = f('pulover'), out = f('jakna'), bot = ms.find(m => m.slot === 'bottom'), sh = f('cevlji');
+  if (top && top.sub === 'Srajca' && ['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) return 'Srajco zatakni v hlače in rokave zavihaj do komolcev.';
+  if (top && mid) return mid.sub === 'Jopa' ? 'Jopo pusti odpeto, da se vidi majica pod njo.' : 'Majica naj rahlo pokuka izpod puloverja ob vratu ali spodaj, to doda globino.';
+  if (out && (mid || top) && ctx.T <= 2) return 'Jakno nosi odpeto, da se vidi plast pod njo.';
+  if (bot && (bot.sub === 'Cargo' || bot.sub === 'Trenirka') && mid && mid.sub === 'Hoodie') return 'Oversized zgoraj, ožje spodaj: hlače naj se zberejo ob gležnju.';
+  if (bot && bot.cat === 'hlace' && (!bot.sub || bot.sub === 'Kavbojke' || bot.sub === 'Chino') && sh && (!sh.sub || sh.sub === 'Superge')) return 'Hlače enkrat ali dvakrat zavihaj, da se lepo vidijo superge.';
+  if (bot && bot.cat === 'kratke') return 'Kratke hlače naj segajo malo nad koleno, majica pa ne predolgo.';
+  if (sh && sh.sub === 'Elegantni') return 'Pas naj bo v isti barvi kot čevlji.';
+  if (top && !mid && !out) return 'Majico rahlo zatakni spredaj v hlače, da dobiš boljše razmerje.';
+  return 'Čisti čevlji naredijo pol looka.';
+}
+function gapNote(ctx) {
+  const all = ctx.items, n = c => all.filter(i => i.cat === c && !i.laundry).length, wash = all.filter(i => i.laundry).length;
+  if (!n('cevlji')) return 'V omari še nimaš obutve. Slikaj čevlje, da bodo outfiti popolni.';
+  if (ctx.T >= 2 && !n('jakna')) return ctx.T >= 3 ? 'Za mraz ti manjka topla jakna.' : 'Za hladne dni bi prav prišla jakna.';
+  if (ctx.rain && !n('jakna')) return 'Za dež bi prav prišla jakna s kapuco.';
+  if (ctx.T >= 3 && !all.some(i => i.cat === 'dodatek' && (i.sub === 'Kapa' || i.sub === 'Šal'))) return 'Pri mrazu bi kapa ali šal zaključila look.';
+  if (ctx.T === 0 && !n('kratke')) return 'Za vroče dni bi prav prišle kratke hlače.';
+  if (wash) return `${wash} ${wash === 1 ? 'kos je' : wash === 2 ? 'kosa sta' : wash <= 4 ? 'kosi so' : 'kosov je'} v pranju, zato ${wash === 1 ? 'ga' : wash === 2 ? 'ju' : 'jih'} ni v predlogu.`;
+  if (all.length >= 8 && !all.some(i => colorInfo(i.color).kind === 'a')) return 'Vse je nevtralno. En kos v barvi (bordo, olivna, zelena) bi popestril omaro.';
+  return '';
+}
+function makeCtx() {
+  const tk = todayKey(), lastWorn = {}; let yesterday = new Set();
+  for (const w of Object.values(WORN)) { const d = dayDiff(w.date, tk); if (d < 0) continue; for (const id of w.items) if (lastWorn[id] === undefined || d < lastWorn[id]) lastWorn[id] = d; if (d === 1) yesterday = new Set(w.items) }
+  const cw = currentWx(), items = closet();
+  return {items, locks, locked:new Set(locks), occ, T:cw.T, rain:cw.rain, label:cw.label, lastWorn, yesterday, prev:new Set(prevKeys), lastIds:lastFit ? new Set(lastFit.items) : null, hasShoes:items.some(i => i.cat === 'cevlji' && !i.laundry)};
+}
+
+/* ===================== outfit UI ===================== */
+function toggleLock(id) { locks = locks.includes(id) ? locks.filter(x => x !== id) : locks.concat(id) }
+function renderOutfit() {
+  renderWx();
+  locks = locks.filter(id => byId(id));
+  $('locks').innerHTML = locks.map(id => { const it = byId(id); return `<div class="mini">${ph(it)}<button data-unlock="${esc(id)}" aria-label="Odstrani">${icon('i-x')}</button></div>` }).join('') + `<button class="addl" id="addLock" aria-label="Izberi kos">${icon('i-plus')}</button>`;
+  $('lockHint').hidden = locks.length > 0;
+  $('occPills').innerHTML = OCC.map(o => `<button class="pill${o === occ ? ' on' : ''}" data-o="${esc(o)}">${esc(o)}</button>`).join('');
+  $('goTxt').textContent = lastFit ? 'Drug predlog' : 'Sestavi outfit';
+  renderFit(); renderWeek(); renderSaved(); head();
+}
+$('locks').addEventListener('click', e => { const u = e.target.closest('[data-unlock]'); if (u) { toggleLock(u.dataset.unlock); renderOutfit(); return } if (e.target.closest('#addLock')) pickLock() });
+$('occPills').addEventListener('click', e => { const b = e.target.closest('[data-o]'); if (b) { occ = b.dataset.o; renderOutfit() } });
+function pickLock() {
+  openSheet(`<div class="grab"></div><div style="display:grid;gap:6px"><div class="eyebrow">Tvoj izbor</div><h2>Kaj hočeš nositi?</h2></div><div class="grid" id="pickGrid">${closet().map(it => tile(it, locks.includes(it.id) ? ' sel' : '')).join('')}</div><button class="btn wide" id="pickDone">Končano</button>`);
+  $('pickGrid').addEventListener('click', e => { const b = e.target.closest('.tile'); if (!b) return; toggleLock(b.dataset.id); b.classList.toggle('sel') });
+  $('pickDone').onclick = () => { closeSheet(); renderOutfit() };
+}
+let prevSig = '';
+function generate() {
+  const sig = [currentWx().T, currentWx().rain, occ, locks.join(',')].join('|');
+  if (sig !== prevSig) { prevKeys = []; prevSig = sig }
+  const st = $('fitStatus'); st.className = 'status'; st.textContent = '';
+  if (closet().length < 2) { st.className = 'status err'; st.textContent = 'Dodaj vsaj nekaj kosov.'; return }
+  const ctx = makeCtx(), r = buildOutfit(ctx);
+  if (!r) {
+    lastFit = null; renderOutfit(); st.className = 'status err';
+    st.textContent = closet().every(i => i.laundry) ? 'Vse je v pranju. Ko opereš, v Omari klikni Vse oprano.' : 'Iz teh kosov ne gre sestaviti outfita. Dodaj še kaj.';
+    return;
+  }
+  lastFit = {items:r.ms.map(m => m.id), key:r.key, name:lookName(r.ms, ctx), why:explain(r.ms, ctx), tip:styleTip(r.ms, ctx), missing:gapNote(ctx), occ, wx:ctx.label + (ctx.rain ? ' · dež' : '')};
+  prevKeys.push(r.key); if (prevKeys.length > 8) prevKeys.shift();
+  if (r.ignored.length) toast('Iz iste kategorije sem vzel samo en kos');
+  renderOutfit();
+  setTimeout(() => { const l = $('fit').querySelector('.look'); if (l) l.scrollIntoView({behavior:'smooth', block:'start'}) }, 60);
+}
+$('go').addEventListener('click', generate);
+const ORDER = ['jakna','pulover','majica','hlace','kratke','cevlji','dodatek'];
+const sortMs = arr => arr.slice().sort((a, b) => ORDER.indexOf(a.cat) - ORDER.indexOf(b.cat));
+function mini(its) { const a = sortMs(its).slice(0, 4); return `<div class="mc m${a.length}">${a.map(it => ph(it)).join('')}</div>` }
+function collage(its) { return `<div class="collage n${Math.min(its.length, 3)}">${sortMs(its).map(it => `<div class="c${locks.includes(it.id) ? ' mine' : ''}">${pic(it, 'img')}<span>${esc(it.name)}</span></div>`).join('')}</div>` }
+function renderFit() {
+  const f = lastFit; if (!f) { $('fit').innerHTML = ''; return }
+  const its = f.items.map(byId).filter(Boolean);
+  const worn = WORN[todayKey()] && WORN[todayKey()].key === f.key;
+  $('fit').innerHTML = `<div class="look">
+    <div class="head"><span class="eyebrow" style="color:var(--accent)">Predlog · ${esc(f.occ)} · ${esc(f.wx)}</span><h3>${esc(f.name)}</h3></div>
+    ${collage(its)}
+    <div class="notes">
+      <div><span class="eyebrow">Zakaj</span><span>${esc(f.why)}</span></div>
+      <div><span class="eyebrow">Styling</span><span>${esc(f.tip)}</span></div>
+      ${f.missing ? `<div><span class="eyebrow">Opomba</span><span class="muted">${esc(f.missing)}</span></div>` : ''}
+    </div>
+    <div class="acts">
+      <button class="btn${worn ? ' soft' : ''}" id="wearFit">${icon(worn ? 'i-check' : 'i-shirt')}${worn ? 'To nosiš danes' : 'Danes nosim to'}</button>
+      <button class="btn line" id="saveFit">${icon('i-heart')}Shrani look</button>
+      <button class="btn line" id="again">${icon('i-refresh')}Drug predlog</button>
+    </div></div>`;
+  $('again').onclick = generate;
+  $('wearFit').onclick = () => wearLook(f);
+  $('saveFit').onclick = async () => {
+    if (its.some(i => i.ex)) { toast('Primerov ne moreš shraniti, dodaj svoje kose'); return }
+    if (LOOKS.some(l => l.key === f.key)) { toast('Ta look je že shranjen'); return }
+    const L = {id:uid(), items:f.items, key:f.key, name:f.name, why:f.why, tip:f.tip, occ:f.occ, created:Date.now()};
+    await put('looks', L); LOOKS.unshift(L); toast('Look shranjen'); renderSaved();
+  };
+}
+async function wearLook(f) {
+  const its = f.items.map(byId).filter(Boolean);
+  if (its.some(i => i.ex)) { toast('Primerov ne moreš zapisati, dodaj svoje kose'); return }
+  const e = {date:todayKey(), items:f.items, key:f.key, name:f.name, created:Date.now()};
+  await put('worn', e); WORN[e.date] = e; toast('Zapisano za danes'); renderOutfit();
+}
+const DAYS = ['ned','pon','tor','sre','čet','pet','sob'];
+function renderWeek() {
+  const out = [], now = new Date();
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now); d.setDate(now.getDate() - i); const k = todayKey(d), w = WORN[k];
+    const lbl = i === 0 ? 'danes' : i === 1 ? 'včeraj' : DAYS[d.getDay()] + ' ' + d.getDate() + '.';
+    const its = w ? w.items.map(byId).filter(Boolean) : [];
+    out.push(w && its.length ? `<button class="day${i === 0 ? ' today' : ''}" data-day="${k}">${mini(its)}<small>${lbl}</small></button>`
+      : `<button class="day empty${i === 0 ? ' today' : ''}" data-day="${k}" ${i === 0 ? '' : 'disabled'}><div class="mc">${i === 0 ? icon('i-plus') : ''}</div><small>${lbl}</small></button>`);
+  }
+  $('week').innerHTML = out.join('');
+  $('week').scrollLeft = $('week').scrollWidth;
+}
+$('week').addEventListener('click', e => {
+  const b = e.target.closest('[data-day]'); if (!b) return; const k = b.dataset.day, w = WORN[k];
+  if (!w) { if (k === todayKey()) { if (lastFit) wearLook(lastFit); else toast('Sestavi outfit ali na kosu klikni Danes nosim') } return }
+  const its = w.items.map(byId).filter(Boolean);
+  openSheet(`<div class="grab"></div><div style="display:grid;gap:6px"><div class="eyebrow">${k === todayKey() ? 'Danes' : esc(k.split('-').reverse().join('. '))}</div><h2>${esc(w.name || 'Moj outfit')}</h2></div>
+    ${collage(its)}
+    <div class="row"><button class="btn" id="dWash">${icon('i-wash')}Vse v pranje</button></div>
+    <div style="display:flex;justify-content:space-between"><button class="link" id="dClose">Zapri</button><button class="link bad" id="dDel">Izbriši zapis</button></div>`);
+  $('dClose').onclick = closeSheet;
+  $('dWash').onclick = async () => { for (const it of its) if (!it.ex) { it.laundry = true; await put('items', it) } toast('V pranju · ' + its.length + ' ' + kosov(its.length)); closeSheet(); renderGrid(); renderOutfit() };
+  $('dDel').onclick = async () => { await del('worn', k); delete WORN[k]; closeSheet(); renderOutfit() };
+});
+function renderSaved() {
+  if (!LOOKS.length) { $('saved').innerHTML = '<div class="note">Tukaj bodo looki, ki ti bodo všeč. Sestavi outfit in klikni Shrani look.</div>'; return }
+  $('saved').innerHTML = `<div class="svgrid">${LOOKS.map(l => { const its = l.items.map(byId).filter(Boolean); return `<button class="sv" data-look="${esc(l.id)}">${mini(its)}<b>${esc(l.name)}</b><small>${esc(l.occ || '')} · ${its.length} ${kosov(its.length)}</small></button>` }).join('')}</div>`;
+}
+$('saved').addEventListener('click', e => {
+  const b = e.target.closest('[data-look]'); if (!b) return; const l = LOOKS.find(x => x.id === b.dataset.look); if (!l) return;
+  const its = l.items.map(byId).filter(Boolean);
+  openSheet(`<div class="grab"></div><div style="display:grid;gap:6px"><div class="eyebrow">${esc(l.occ || '')} · shranjen look</div><h2>${esc(l.name)}</h2></div>
+    ${collage(its)}
+    <div class="notes"><div><span class="eyebrow">Zakaj</span><span>${esc(l.why)}</span></div><div><span class="eyebrow">Styling</span><span>${esc(l.tip)}</span></div></div>
+    <button class="btn wide" id="lWear">${icon('i-shirt')}Danes nosim to</button>
+    <div style="display:flex;justify-content:space-between"><button class="link" id="lClose">Zapri</button><button class="link bad" id="lDel">Izbriši look</button></div>`);
+  $('lClose').onclick = closeSheet;
+  $('lWear').onclick = async () => { await wearLook(l); closeSheet() };
+  $('lDel').onclick = async () => { await del('looks', l.id); LOOKS = LOOKS.filter(x => x.id !== l.id); closeSheet(); renderSaved() };
+});
+
+/* ===================== settings + backup ===================== */
+$('setBtn').onclick = () => openSettings();
+async function openSettings(focusCity) {
+  let est = ''; try { const s = await navigator.storage.estimate(); est = (s.usage / 1048576).toFixed(0) + ' MB' } catch (e) {}
+  openSheet(`<div class="grab"></div><h2>Nastavitve</h2>
+    <div style="display:grid;gap:10px"><span class="eyebrow">Lokacija za vreme</span>
+      <div class="note" style="display:flex;gap:10px;align-items:center">${icon('i-pin')}<span>${LOC ? esc(LOC.name) : 'Ni nastavljena'}</span></div>
+      <button class="btn line wide" id="sGps">${icon('i-pin')}Uporabi mojo lokacijo</button>
+      <div class="row"><label class="f" style="flex:3">Mesto<input id="sCity" placeholder="npr. Ljubljana" autocomplete="off"></label><button class="btn" id="sFind" style="flex:1;align-self:end">Išči</button></div>
+      <div class="res" id="sRes"></div></div>
+    <div style="display:grid;gap:10px"><span class="eyebrow">Varnostna kopija</span>
+      <div class="muted" style="font-size:13.5px">Vse je shranjeno samo na tem telefonu${est ? ' (' + est + ')' : ''}. Občasno naredi kopijo, da ne izgubiš omare, če zamenjaš telefon.</div>
+      <div class="row"><button class="btn line" id="sExp">${icon('i-down')}Izvozi</button><label class="btn line" for="sImp">${icon('i-up')}Uvozi</label></div>
+      <input type="file" id="sImp" accept=".json,application/json" hidden></div>
+    <div class="muted" style="font-size:12.5px">Moja Omara · brezplačno, brez računa, deluje brez interneta. Vreme: Open-Meteo.</div>`);
+  $('sGps').onclick = useGPS;
+  const find = async () => {
+    const q = $('sCity').value.trim(); if (!q) return; $('sRes').innerHTML = '<div class="status"><span class="spin"></span>Iščem…</div>';
+    try {
+      const d = await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=sl&format=json`)).json();
+      const rs = d.results || [];
+      $('sRes').innerHTML = rs.length ? rs.map((r, i) => `<button data-r="${i}">${esc(r.name)}<small>${esc([r.admin1, r.country].filter(Boolean).join(', '))}</small></button>`).join('') : '<div class="muted">Ni zadetkov.</div>';
+      $('sRes').querySelectorAll('[data-r]').forEach(b => b.onclick = async () => { const r = rs[+b.dataset.r]; LOC = {lat:+r.latitude.toFixed(3), lon:+r.longitude.toFixed(3), name:r.name}; await kvSet('loc', LOC); WX = null; closeSheet(); toast('Lokacija: ' + r.name); await loadWeather(true) });
+    } catch (e) { $('sRes').innerHTML = '<div class="muted">Iskanje ne dela brez interneta.</div>' }
+  };
+  $('sFind').onclick = find; $('sCity').onkeydown = e => { if (e.key === 'Enter') find() };
+  if (focusCity) setTimeout(() => $('sCity').focus(), 250);
+  $('sExp').onclick = exportAll;
+  $('sImp').onchange = e => { if (e.target.files[0]) importAll(e.target.files[0]); e.target.value = '' };
+}
+const blobToData = b => new Promise(r => { if (!b) return r(null); const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(b) });
+const dataToBlob = async d => d ? (await fetch(d)).blob() : null;
+async function exportAll() {
+  toast('Pripravljam kopijo…');
+  const items = []; for (const it of ITEMS) items.push({...it, img:await blobToData(it.img), thumb:await blobToData(it.thumb)});
+  const data = {app:'moja-omara', v:1, at:new Date().toISOString(), items, looks:LOOKS, worn:Object.values(WORN), loc:LOC};
+  const name = 'moja-omara-' + todayKey() + '.json', blob = new Blob([JSON.stringify(data)], {type:'application/json'});
+  try { const file = new File([blob], name, {type:'application/json'}); if (navigator.canShare && navigator.canShare({files:[file]})) { await navigator.share({files:[file], title:'Moja Omara kopija'}); return } } catch (e) { if (e.name === 'AbortError') return }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove() }, 3000);
+}
+async function importAll(file) {
+  try {
+    const d = JSON.parse(await file.text()); if (d.app !== 'moja-omara') throw 0;
+    for (const it of d.items || []) { it.img = await dataToBlob(it.img); it.thumb = await dataToBlob(it.thumb); await put('items', it) }
+    for (const l of d.looks || []) await put('looks', l);
+    for (const w of d.worn || []) await put('worn', w);
+    if (d.loc && !LOC) { LOC = d.loc; await kvSet('loc', LOC) }
+    await loadAll(); closeSheet(); toast('Uvoženo · ' + (d.items || []).length + ' ' + kosov((d.items || []).length));
+  } catch (e) { toast('To ni kopija Moje Omare') }
+}
+
+/* ===================== install hint ===================== */
+let deferredInstall = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; renderInstall() });
+function renderInstall() {
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if (standalone || lsGet('omara-install-hide', false)) { $('install').innerHTML = ''; return }
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  $('install').innerHTML = `<div class="card"><div class="art"><img src="icon-192.png" alt="" style="width:64px;height:64px;border-radius:16px"></div><div><h3>Dodaj na začetni zaslon</h3><p>${deferredInstall ? 'Dobiš ikono kot pri pravi aplikaciji, deluje brez interneta.' : ios ? 'V Safariju klikni Deli, nato Dodaj na začetni zaslon.' : 'V brskalniku odpri meni ⋮ in izberi Namesti aplikacijo.'}</p><div class="row" style="flex-wrap:nowrap">${deferredInstall ? '<button class="btn sm" id="doInstall">Namesti</button>' : ''}<button class="link" id="hideInstall">Ne zdaj</button></div></div></div>`;
+  if ($('doInstall')) $('doInstall').onclick = async () => { deferredInstall.prompt(); await deferredInstall.userChoice.catch(() => {}); deferredInstall = null; renderInstall() };
+  $('hideInstall').onclick = () => { lsSet('omara-install-hide', true); renderInstall() };
+}
+
+/* ===================== boot ===================== */
+async function loadAll() {
+  for (const id of [...URLS.keys()]) { URL.revokeObjectURL(URLS.get(id)); URLS.delete(id) }
+  ITEMS = (await getAll('items')).sort((a, b) => b.created - a.created);
+  LOOKS = (await getAll('looks')).sort((a, b) => b.created - a.created);
+  WORN = Object.fromEntries((await getAll('worn')).map(w => [w.date, w]));
+  renderGrid(); if (view === 'outfit') renderOutfit(); if (view === 'dodaj') renderAdd();
+}
+(async () => {
+  try {
+    LOC = (await kvGet('loc')) || null; const bg = await kvGet('bg'); BGON = bg !== false;
+    await loadAll();
+  } catch (e) { console.error(e); toast('Shramba na tem brskalniku ni na voljo') }
+  renderInstall(); show('omara'); if (LOC) loadWeather(false);
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+document.addEventListener('visibilitychange', () => { if (!document.hidden && view === 'outfit') loadWeather(false) });
+window.__omara = {addFiles, buildOutfit, makeCtx, generate, state:() => ({ITEMS, LOOKS, WORN, BG, Q}), openTag, saveTag:s => saveTag(s), setTag:(c, col) => { TAG.cat = c; if (col) TAG.color = col }, show};
+</script>
+</body>
+</html>
