@@ -1,6 +1,6 @@
 {
-  "name": "Moja Omara",
-  "short_name": "Omara",
+  "name": "My Wardrobe",
+  "short_name": "My Wardrobe",
   "description": "Tvoja omara na telefonu: slikaj oblačila, sestavi outfit z enim klikom.",
   "start_url": "./",
   "scope": "./",

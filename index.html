@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Moja Omara</title>
+<title>My Wardrobe</title>
 <meta name="description" content="Tvoja omara na telefonu: slikaj oblačila, sestavi outfit z enim klikom.">
 <meta name="theme-color" content="#F7F7F5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0C0C0D" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Omara">
+<meta name="apple-mobile-web-app-title" content="My Wardrobe">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
@@ -265,7 +265,7 @@ label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-t
 
 <div class="wrap">
   <header class="top">
-    <div><div class="eyebrow" id="eyebrow">Moja omara</div><h1 id="title">Omara</h1></div>
+    <div><div class="eyebrow" id="eyebrow">My Wardrobe</div><h1 id="title">Omara</h1></div>
     <div class="right">
       <div class="cnt"><span class="num" id="num">0</span><span class="eyebrow" id="numlbl">kosov</span></div>
       <button class="iconbtn" id="setBtn" aria-label="Nastavitve"><svg class="i"><use href="#i-gear"/></svg></button>
@@ -409,6 +409,18 @@ const SIL = {
   cevlji:'M10 64q2-14 15-16l18-3q8 11 23 11l18 4q7 2 7 10v4H10Z',
   dodatek:'M20 62q0-28 30-30 28 2 30 28l13 4v4H20Z',
   ura:'M41 6h18l3 20a25 25 0 0 1 0 48l-3 20H41l-3-20a25 25 0 0 1 0-48Z'};
+// item names are written in English (Lan's choice); the rest of the app stays Slovenian
+const EN_COLOR = {'črna':'black','bela':'white','siva':'grey','temno siva':'charcoal','temno modra':'navy','denim':'denim','bež':'beige','krem':'cream','rjava':'brown','kaki':'khaki','olivna':'olive','svetlo modra':'light blue','modra':'blue','zelena':'green','bordo':'burgundy','rdeča':'red','roza':'pink','vijolična':'purple','rumena':'yellow','oranžna':'orange','srebrna':'silver','zlata':'gold'};
+const EN_CAT = {majica:'T-shirt', pulover:'sweater', jakna:'jacket', hlace:'pants', kratke:'shorts', cevlji:'shoes', dodatek:'accessory', ura:'watch'};
+const EN_SUB = {
+  majica:{'T-shirt':'T-shirt','Srajca':'shirt','Polo':'polo shirt','Dolgi rokavi':'long sleeve tee','Športna':'sports tee'},
+  pulover:{'Hoodie':'hoodie','Pulover':'sweater','Jopa':'cardigan','Športni':'track top'},
+  jakna:{'Bomber':'bomber jacket','Puhovka':'puffer jacket','Jeans':'denim jacket','Usnjena':'leather jacket','Plašč':'coat','Vetrovka':'windbreaker'},
+  hlace:{'Kavbojke':'jeans','Cargo':'cargo pants','Chino':'chinos','Trenirka':'joggers','Elegantne':'dress pants'},
+  kratke:{'Kratke':'shorts','Jeans':'denim shorts','Športne':'sports shorts'},
+  cevlji:{'Superge':'sneakers','Športni':'running shoes','Škornji':'boots','Chelsea':'Chelsea boots','Elegantni':'dress shoes','Mokasini':'loafers','Sandali':'sandals','Natikači':'slides'},
+  dodatek:{'Kapa':'beanie','Šilt kapa':'cap','Šal':'scarf','Verižica':'chain','Pas':'belt','Torba':'bag'},
+  ura:{'Klasična':'classic watch','Elegantna':'dress watch','Kovinska':'metal watch','Športna':'sports watch','Pametna':'smartwatch'}};
 const EXAMPLES = [
   {id:'ex1',cat:'majica',sub:'T-shirt',color:'bela',style:'casual',warmth:1},
   {id:'ex2',cat:'hlace',sub:'Kavbojke',color:'svetlo modra',style:'casual',warmth:3},
@@ -450,6 +462,13 @@ function nearestColor(lab) { let best = 'siva', bd = 1e9; for (const p of PAL_GU
 function subOf(it) { const c = CAT[it.cat]; return c && it.sub ? c.subs.find(s => s[0] === it.sub) : null }
 function seasonOf(w, cat) { w = +w; if (cat === 'majica' || cat === 'dodatek') return 'vse leto'; return w === 0 ? 'vse leto' : w <= 1 ? 'poletje' : w <= 3 ? 'vse leto' : w === 4 ? 'pomlad/jesen' : 'zima' }
 function makeName(it) {
+  if (!CAT[it.cat]) return 'Nov kos';
+  const noun = (EN_SUB[it.cat] && EN_SUB[it.cat][it.sub]) || EN_CAT[it.cat];
+  const col = EN_COLOR[it.color];
+  if (!col || (it.color === 'denim' && (noun === 'jeans' || noun.startsWith('denim')))) return cap(noun);
+  return cap(col + ' ' + noun);
+}
+function makeNameSl(it) {
   const c = CAT[it.cat]; if (!c) return 'Nov kos';
   const s = subOf(it); const noun = s ? s[1] : c.noun; const g = s ? s[2] : c.g;
   const col = COL[it.color];
@@ -497,7 +516,7 @@ function ph(it, badge, kind) { return `<div class="ph">${pic(it, kind)}${badge |
 
 /* ===================== header + nav ===================== */
 function head() {
-  const T = {omara:['Moja omara','Omara'], dodaj:['Nov kos','Dodaj'], outfit:['Stilist','Outfit']}[view];
+  const T = {omara:['My Wardrobe','Omara'], dodaj:['Nov kos','Dodaj'], outfit:['Stilist','Outfit']}[view];
   $('eyebrow').textContent = T[0]; $('title').textContent = T[1];
   const n = ready().length; $('num').textContent = n; $('numlbl').textContent = kosov(n);
   const p = pending().length; $('pendDot').hidden = !p; $('pendDot').textContent = p;
@@ -597,10 +616,10 @@ function editForm(it) {
     $('eSub').onchange = e => { st.sub = e.target.value; const s = CAT[st.cat].subs.find(x => x[0] === st.sub); if (s) { $('eStyle').value = s[3]; $('eWarm').value = s[4] } };
     $('sEdit').querySelectorAll('[data-ec]').forEach(b => b.onclick = () => { st.color = b.dataset.ec; draw() });
     $('eSave').onclick = async () => {
-      const auto = makeName(it); const typed = $('eName').value.trim();
+      const auto = makeName(it), autoSl = makeNameSl(it); const typed = $('eName').value.trim();
       Object.assign(it, {cat:st.cat, sub:st.sub, color:st.color, style:$('eStyle').value, warmth:+$('eWarm').value});
       it.season = seasonOf(it.warmth, it.cat);
-      it.name = !typed || typed === auto ? makeName(it) : typed;
+      it.name = !typed || typed === auto || typed === autoSl ? makeName(it) : typed;
       await put('items', it); toast('Shranjeno'); closeSheet(); renderGrid();
     };
   };
@@ -1167,7 +1186,7 @@ async function openSettings(focusCity) {
       <div class="muted" style="font-size:13.5px">Vse je shranjeno samo na tem telefonu${est ? ' (' + est + ')' : ''}. Občasno naredi kopijo, da ne izgubiš omare, če zamenjaš telefon.</div>
       <div class="row"><button class="btn line" id="sExp">${icon('i-down')}Izvozi</button><label class="btn line" for="sImp">${icon('i-up')}Uvozi</label></div>
       <input type="file" id="sImp" accept=".json,application/json" hidden></div>
-    <div class="muted" style="font-size:12.5px">Moja Omara · brezplačno, brez računa, deluje brez interneta. Vreme: Open-Meteo.</div>`);
+    <div class="muted" style="font-size:12.5px">My Wardrobe · brezplačno, brez računa, deluje brez interneta. Vreme: Open-Meteo.</div>`);
   $('sGps').onclick = useGPS;
   const find = async () => {
     const q = $('sCity').value.trim(); if (!q) return; $('sRes').innerHTML = '<div class="status"><span class="spin"></span>Iščem…</div>';
@@ -1190,7 +1209,7 @@ async function exportAll() {
   const items = []; for (const it of ITEMS) items.push({...it, img:await blobToData(it.img), thumb:await blobToData(it.thumb)});
   const data = {app:'moja-omara', v:1, at:new Date().toISOString(), items, looks:LOOKS, worn:Object.values(WORN), loc:LOC};
   const name = 'moja-omara-' + todayKey() + '.json', blob = new Blob([JSON.stringify(data)], {type:'application/json'});
-  try { const file = new File([blob], name, {type:'application/json'}); if (navigator.canShare && navigator.canShare({files:[file]})) { await navigator.share({files:[file], title:'Moja Omara kopija'}); return } } catch (e) { if (e.name === 'AbortError') return }
+  try { const file = new File([blob], name, {type:'application/json'}); if (navigator.canShare && navigator.canShare({files:[file]})) { await navigator.share({files:[file], title:'My Wardrobe kopija'}); return } } catch (e) { if (e.name === 'AbortError') return }
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove() }, 3000);
 }
 async function importAll(file) {
@@ -1220,6 +1239,7 @@ function renderInstall() {
 async function loadAll() {
   for (const id of [...URLS.keys()]) { URL.revokeObjectURL(URLS.get(id)); URLS.delete(id) }
   ITEMS = (await getAll('items')).sort((a, b) => b.created - a.created);
+  for (const it of ITEMS) if (it.status === 'ready' && it.name === makeNameSl(it) && it.name !== makeName(it)) { it.name = makeName(it); await put('items', it) }
   LOOKS = (await getAll('looks')).sort((a, b) => b.created - a.created);
   WORN = Object.fromEntries((await getAll('worn')).map(w => [w.date, w]));
   renderGrid(); if (view === 'outfit') renderOutfit(); if (view === 'dodaj') renderAdd();
