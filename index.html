@@ -294,7 +294,7 @@ label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-t
     <div class="tips">
       <div><b>Svetlo ozadje</b>Postelja, tla ali vrata.</div>
       <div><b>En kos</b>Ena slika, en kos.</div>
-      <div><b>Cel kos</b>Naj bo ves v kadru.</div>
+      <div><b>Cel kos</b>Naj bo ves v kadru. Ure slikaj od blizu.</div>
     </div>
     <div class="setrow" style="margin-top:8px">
       <div class="t"><b>Odstrani ozadje</b><small id="bgInfo">Kos izgleda kot v spletni trgovini. Prvič se prenese 44 MB, potem dela brez interneta.</small><div class="bar2" id="bgBar" hidden><i></i></div></div>
@@ -363,7 +363,9 @@ const CATS = [
   {id:'cevlji', name:'Obutev', one:'Čevlji', noun:'čevlji', g:'mp', style:'casual', w:2, subs:[
     ['Superge','superge','fp','casual',2],['Športni','športni copati','mp','športno',2],['Škornji','škornji','mp','casual',4],['Elegantni','elegantni čevlji','mp','elegantno',2],['Natikači','natikači','mp','casual',1]]},
   {id:'dodatek', name:'Dodatki', one:'Dodatek', noun:'dodatek', g:'m', style:'casual', w:0, subs:[
-    ['Kapa','kapa','f','streetwear',3],['Šilt kapa','šilt kapa','f','streetwear',1],['Šal','šal','m','casual',4],['Ura','ura','f','smart casual',0],['Verižica','verižica','f','streetwear',0],['Pas','pas','m','smart casual',0],['Torba','torba','f','casual',0]]}
+    ['Kapa','kapa','f','streetwear',3],['Šilt kapa','šilt kapa','f','streetwear',1],['Šal','šal','m','casual',4],['Verižica','verižica','f','streetwear',0],['Pas','pas','m','smart casual',0],['Torba','torba','f','casual',0]]},
+  {id:'ura', name:'Ure', one:'Ura', noun:'ura', g:'f', style:'smart casual', w:0, subs:[
+    ['Klasična','klasična ura','f','smart casual',0],['Elegantna','elegantna ura','f','elegantno',0],['Kovinska','kovinska ura','f','smart casual',0],['Športna','športna ura','f','športno',0],['Pametna','pametna ura','f','casual',0]]}
 ];
 const CAT = Object.fromEntries(CATS.map(c => [c.id, c]));
 const STYLES = ['casual','streetwear','športno','smart casual','elegantno'];
@@ -388,8 +390,11 @@ const COLORS = [
   ['roza','#E7A1BC',['roza','roza','roza','roza'],'a'],
   ['vijolična','#6E4BA8',['vijoličen','vijolična','vijolične','vijolični'],'a'],
   ['rumena','#E5C23E',['rumen','rumena','rumene','rumeni'],'a'],
-  ['oranžna','#E07B2E',['oranžen','oranžna','oranžne','oranžni'],'a']
+  ['oranžna','#E07B2E',['oranžen','oranžna','oranžne','oranžni'],'a'],
+  ['srebrna','#C3C7CD',['srebrn','srebrna','srebrne','srebrni'],'n'],
+  ['zlata','#C9A54C',['zlat','zlata','zlate','zlati'],'e']
 ];
+const METAL = ['srebrna','zlata'];
 const COL = Object.fromEntries(COLORS.map(c => [c[0], {name:c[0], hex:c[1], forms:c[2], kind:c[3]}]));
 const GI = {m:0, f:1, fp:2, mp:3};
 const OCC = ['Vsakdan','Šola / faks','Izhod zvečer','Zmenek','Šport','Družinsko'];
@@ -402,7 +407,8 @@ const SIL = {
   hlace:'M31 8h38l5 84H56l-6-52-6 52H26Z',
   kratke:'M28 28h44l5 40H55l-5-22-5 22H23Z',
   cevlji:'M10 64q2-14 15-16l18-3q8 11 23 11l18 4q7 2 7 10v4H10Z',
-  dodatek:'M20 62q0-28 30-30 28 2 30 28l13 4v4H20Z'};
+  dodatek:'M20 62q0-28 30-30 28 2 30 28l13 4v4H20Z',
+  ura:'M41 6h18l3 20a25 25 0 0 1 0 48l-3 20H41l-3-20a25 25 0 0 1 0-48Z'};
 const EXAMPLES = [
   {id:'ex1',cat:'majica',sub:'T-shirt',color:'bela',style:'casual',warmth:1},
   {id:'ex2',cat:'hlace',sub:'Kavbojke',color:'svetlo modra',style:'casual',warmth:3},
@@ -411,7 +417,8 @@ const EXAMPLES = [
   {id:'ex5',cat:'jakna',sub:'Bomber',color:'črna',style:'streetwear',warmth:3},
   {id:'ex6',cat:'hlace',sub:'Cargo',color:'olivna',style:'streetwear',warmth:3},
   {id:'ex7',cat:'majica',sub:'Srajca',color:'temno modra',style:'smart casual',warmth:2},
-  {id:'ex8',cat:'pulover',sub:'Pulover',color:'bordo',style:'casual',warmth:3}
+  {id:'ex8',cat:'pulover',sub:'Pulover',color:'bordo',style:'casual',warmth:3},
+  {id:'ex9',cat:'ura',sub:'Klasična',color:'srebrna',style:'smart casual',warmth:0}
 ].map(e => ({...e, ex:true, status:'ready', created:0, season:seasonOf(e.warmth, e.cat), name:makeName(e)}));
 
 /* ===================== helpers ===================== */
@@ -438,7 +445,8 @@ function rgbLab(r, g, b) {
 }
 const PAL_LAB = COLORS.map(c => ({n:c[0], lab:rgbLab(...hexRgb(c[1]))}));
 const LIGHT = Object.fromEntries(PAL_LAB.map(p => [p.n, p.lab[0]]));
-function nearestColor(lab) { let best = 'siva', bd = 1e9; for (const p of PAL_LAB) { const d = (p.lab[0] - lab[0]) ** 2 + (p.lab[1] - lab[1]) ** 2 + (p.lab[2] - lab[2]) ** 2; if (d < bd) { bd = d; best = p.n } } return best }
+const PAL_GUESS = PAL_LAB.filter(p => !METAL.includes(p.n));
+function nearestColor(lab) { let best = 'siva', bd = 1e9; for (const p of PAL_GUESS) { const d = (p.lab[0] - lab[0]) ** 2 + (p.lab[1] - lab[1]) ** 2 + (p.lab[2] - lab[2]) ** 2; if (d < bd) { bd = d; best = p.n } } return best }
 function subOf(it) { const c = CAT[it.cat]; return c && it.sub ? c.subs.find(s => s[0] === it.sub) : null }
 function seasonOf(w, cat) { w = +w; if (cat === 'majica' || cat === 'dodatek') return 'vse leto'; return w === 0 ? 'vse leto' : w <= 1 ? 'poletje' : w <= 3 ? 'vse leto' : w === 4 ? 'pomlad/jesen' : 'zima' }
 function makeName(it) {
@@ -483,7 +491,7 @@ const closet = () => usingExamples() ? EXAMPLES : ready();
 const byId = id => ITEMS.find(i => i.id === id) || EXAMPLES.find(i => i.id === id);
 
 function toast(t) { const e = $('toast'); e.textContent = t; e.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => e.hidden = true, 2400) }
-function sil(it) { const c = colorInfo(it.color); return `<div class="sil"><svg viewBox="0 0 100 100"><path d="${SIL[it.cat] || SIL.majica}" fill="${c.hex}" stroke="rgba(128,128,134,.45)" stroke-width="1" stroke-linejoin="round"/>${it.cat === 'jakna' ? '<path d="M50 14v78" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>' : ''}</svg></div>` }
+function sil(it) { const c = colorInfo(it.color); return `<div class="sil"><svg viewBox="0 0 100 100"><path d="${SIL[it.cat] || SIL.majica}" fill="${c.hex}" stroke="rgba(128,128,134,.45)" stroke-width="1" stroke-linejoin="round"/>${it.cat === 'jakna' ? '<path d="M50 14v78" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>' : ''}${it.cat === 'ura' ? '<circle cx="50" cy="50" r="16" fill="rgba(255,255,255,.5)" stroke="rgba(0,0,0,.25)"/><path d="M50 50V40M50 50l7 4" stroke="rgba(0,0,0,.55)" stroke-width="2" stroke-linecap="round"/>' : ''}</svg></div>` }
 function pic(it, kind = 'thumb') { const u = url(it, kind); return u ? `<img src="${u}" alt="${esc(it.name)}"${it.cut ? ' class="cut"' : ''} loading="lazy">` : sil(it) }
 function ph(it, badge, kind) { return `<div class="ph">${pic(it, kind)}${badge || ''}</div>` }
 
@@ -749,7 +757,7 @@ $('file2').addEventListener('change', e => { addFiles([...e.target.files]); e.ta
 function openTag(id) {
   const P = pending(); if (!P.length) { closeSheet(); toast('Vse je označeno'); return }
   const it = (id && P.find(x => x.id === id)) || P[0];
-  TAG = {id:it.id, color:it.color, cat:null, keep:false}; drawTag();
+  TAG = {id:it.id, color:it.color, cat:null, keep:false, picked:false}; drawTag();
 }
 function drawTag() {
   const it = ITEMS.find(x => x.id === TAG.id); if (!it) { openTag(); return }
@@ -762,8 +770,8 @@ function drawTag() {
     <div style="display:grid;gap:8px"><span class="eyebrow">Kaj je to?</span><div class="catg">${CATS.map(x => `<button class="catb${TAG.cat === x.id ? ' on' : ''}" data-tcat="${x.id}"><svg viewBox="0 0 100 100"><path d="${SIL[x.id]}" fill="${colorInfo(TAG.color).hex}" stroke="rgba(128,128,134,.6)" stroke-width="2"/></svg>${esc(x.one)}</button>`).join('')}</div></div>
     ${c ? `<div style="display:grid;gap:8px"><span class="eyebrow">Vrsta · klik shrani</span><div class="subs">${c.subs.map(s => `<button class="pill" data-tsub="${esc(s[0])}">${esc(s[0])}</button>`).join('')}</div><button class="btn wide" id="tSave">Shrani brez vrste</button></div>` : ''}`, keep);
   const box = $('sheetBox');
-  box.querySelectorAll('[data-tc]').forEach(b => b.onclick = () => { TAG.color = b.dataset.tc; TAG.keep = true; drawTag() });
-  box.querySelectorAll('[data-tcat]').forEach(b => b.onclick = () => { TAG.cat = b.dataset.tcat; TAG.keep = true; drawTag(); const s = $('tSave'); if (s) s.scrollIntoView({block:'nearest'}) });
+  box.querySelectorAll('[data-tc]').forEach(b => b.onclick = () => { TAG.color = b.dataset.tc; TAG.picked = true; TAG.keep = true; drawTag() });
+  box.querySelectorAll('[data-tcat]').forEach(b => b.onclick = () => { TAG.cat = b.dataset.tcat; TAG.keep = true; if (TAG.cat === 'ura' && !TAG.picked) { if (['siva','bela','temno siva','svetlo modra'].includes(TAG.color)) TAG.color = 'srebrna'; else if (['rumena','bež','kaki','oranžna'].includes(TAG.color)) TAG.color = 'zlata' } drawTag(); const s = $('tSave'); if (s) s.scrollIntoView({block:'nearest'}) });
   box.querySelectorAll('[data-tsub]').forEach(b => b.onclick = () => saveTag(b.dataset.tsub));
   if ($('tSave')) $('tSave').onclick = () => saveTag('');
   if ($('tSkip')) $('tSkip').onclick = () => { const i = P.indexOf(it); const nx = P[(i + 1) % P.length]; TAG = {id:nx.id, color:nx.color, cat:null, keep:false}; drawTag() };
@@ -832,7 +840,7 @@ function useGPS() {
 }
 
 /* ===================== outfit engine (rules, no AI) ===================== */
-const SLOT = {majica:'top', pulover:'mid', jakna:'outer', hlace:'bottom', kratke:'bottom', cevlji:'shoes', dodatek:'acc'};
+const SLOT = {majica:'top', pulover:'mid', jakna:'outer', hlace:'bottom', kratke:'bottom', cevlji:'shoes', dodatek:'acc', ura:'watch'};
 const OCC_STYLE = {
   'Vsakdan':{casual:2, streetwear:2, 'športno':.4, 'smart casual':1, elegantno:-1},
   'Šola / faks':{casual:2, streetwear:1.6, 'športno':.4, 'smart casual':1.4, elegantno:-.6},
@@ -866,13 +874,19 @@ function slotScore(m, ctx) {
     if (ctx.rain) { if (m.sub === 'Škornji') s += 1; if (m.col.name === 'bela') s -= .5 }
   }
   if (m.slot === 'top' && T === 0 && m.sub === 'Dolgi rokavi') s -= 1;
+  if (m.slot === 'watch') {
+    s += 1.2;  // a watch goes with almost everything
+    const sporty = m.sub === 'Športna' || m.sub === 'Pametna';
+    if (ctx.occ === 'Šport') s += sporty ? 1.5 : -3;
+    else if (['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) s += (m.sub === 'Elegantna' || m.sub === 'Klasična' || m.sub === 'Kovinska') ? 1 : m.sub === 'Športna' ? -1.5 : 0;
+  }
   if (m.slot === 'acc') {
     if (m.sub === 'Kapa' || m.sub === 'Šal') s += T >= 2 ? 1.5 : T === 1 ? -.5 : -4;
     else if (m.sub === 'Šilt kapa') { s += T <= 1 ? .3 : -1; if (ctx.occ === 'Zmenek' || ctx.occ === 'Družinsko') s -= 1.5 }
-    else if (m.sub === 'Ura' || m.sub === 'Pas') { if (['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) s += .6 }
+    else if (m.sub === 'Pas') { if (['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) s += .6 }
     else s -= .3;
   }
-  const d = ctx.lastWorn[m.id], k = (m.slot === 'shoes' || m.slot === 'outer' || m.slot === 'acc') ? .4 : 1;
+  const d = ctx.lastWorn[m.id], k = m.slot === 'watch' ? .15 : (m.slot === 'shoes' || m.slot === 'outer' || m.slot === 'acc') ? .4 : 1;
   if (!ctx.locked.has(m.id)) { if (d === 0) s -= 6 * k; else if (d === 1) s -= 4 * k; else if (d === 2) s -= 2 * k; else if (d <= 4) s -= .8 * k; else if (d === undefined || d >= 10) s += .3 }
   return s;
 }
@@ -904,36 +918,37 @@ function harmony(sl, ms) {
 }
 function comboScore(sl, ms, ctx) {
   const T = ctx.T; let s = 0;
-  for (const m of ms) s += (m.slot === 'mid' || m.slot === 'outer' || m.slot === 'acc') ? m.ss - 1.8 : m.ss;  // extra layers must earn their place
+  for (const m of ms) s += (m.slot === 'mid' || m.slot === 'outer' || m.slot === 'acc' || m.slot === 'watch') ? m.ss - 1.8 : m.ss;  // extra layers must earn their place
   s += layerScore('mid', sl.md, T, ctx.rain) + layerScore('outer', sl.o, T, ctx.rain);
   if (!sl.b) s -= 12;
   if (!sl.t && !sl.md) s -= 12;
   if (!sl.t && sl.md) s += T === 0 ? -6 : -.3;
   if (!sl.sh && ctx.hasShoes) s -= 10;
   if (sl.a) s -= .3;
+  if (sl.wt && sl.sh && sl.wt.col.name === sl.sh.col.name && ['rjava','črna'].includes(sl.wt.col.name)) s += .4;
   const W = (sl.t ? sl.t.w : 0) + (sl.md ? sl.md.w : 0) + (sl.o ? sl.o.w : 0), R = [[1,3],[2,5],[6,9],[9,14]][T];
   if (W < R[0]) s -= .8 * (R[0] - W); if (W > R[1]) s -= .8 * (W - R[1]);
-  let pc = 0, pn = 0; for (let i = 0; i < ms.length; i++) for (let j = i + 1; j < ms.length; j++) { pc += styleCompat(ms[i].style, ms[j].style); pn++ }
+  let pc = 0, pn = 0; const core = ms.filter(m => m.slot !== 'watch'); for (let i = 0; i < core.length; i++) for (let j = i + 1; j < core.length; j++) { pc += styleCompat(core[i].style, core[j].style); pn++ }
   if (pn) s += 1.6 * pc / pn;
   s += harmony(sl, ms);
-  if (ctx.lastIds) { const ov = ms.filter(m => ctx.lastIds.has(m.id) && !ctx.locked.has(m.id) && m.slot !== 'shoes').length; if (ov >= 3) s -= 1.5 }
+  if (ctx.lastIds) { const ov = ms.filter(m => ctx.lastIds.has(m.id) && !ctx.locked.has(m.id) && m.slot !== 'shoes' && m.slot !== 'watch').length; if (ov >= 3) s -= 1.5 }
   return s + Math.random() * .35;
 }
 function buildOutfit(ctx) {
   const avail = ctx.items.filter(it => it.status === 'ready' && CAT[it.cat] && (!it.laundry || ctx.locked.has(it.id))).map(meta);
-  const bySlot = {top:[], mid:[], outer:[], bottom:[], shoes:[], acc:[]}, lockBy = {}, ignored = [];
+  const bySlot = {top:[], mid:[], outer:[], bottom:[], shoes:[], acc:[], watch:[]}, lockBy = {}, ignored = [];
   for (const m of avail) { m.ss = slotScore(m, ctx); bySlot[m.slot].push(m) }
   for (const id of ctx.locks) { const m = avail.find(x => x.id === id); if (!m) continue; if (lockBy[m.slot]) ignored.push(m); else lockBy[m.slot] = m }
-  const K = {top:7, mid:5, outer:4, bottom:6, shoes:4, acc:3}, C = {};
+  const K = {top:6, mid:5, outer:4, bottom:5, shoes:4, acc:3, watch:3}, C = {};
   for (const sl of Object.keys(bySlot)) {
     if (lockBy[sl]) { C[sl] = [lockBy[sl]]; continue }
     const arr = bySlot[sl].slice().sort((a, b) => b.ss - a.ss).slice(0, K[sl]);
-    const optional = sl === 'mid' || sl === 'outer' || sl === 'acc' || (sl === 'top' && lockBy.mid) || !arr.length;
+    const optional = sl === 'mid' || sl === 'outer' || sl === 'acc' || sl === 'watch' || (sl === 'top' && lockBy.mid) || !arr.length;
     C[sl] = optional ? arr.concat([null]) : arr;
   }
   const all = [];
-  for (const t of C.top) for (const md of C.mid) for (const o of C.outer) for (const b of C.bottom) for (const sh of C.shoes) for (const a of C.acc) {
-    const sl = {t, md, o, b, sh, a}, ms = [t, md, o, b, sh, a].filter(Boolean); if (!ms.length) continue;
+  for (const t of C.top) for (const md of C.mid) for (const o of C.outer) for (const b of C.bottom) for (const sh of C.shoes) for (const a of C.acc) for (const wt of C.watch) {
+    const sl = {t, md, o, b, sh, a, wt}, ms = [t, md, o, b, sh, a, wt].filter(Boolean); if (!ms.length) continue;
     all.push({ms, s:comboScore(sl, ms, ctx)});
   }
   if (!all.length) return null;
@@ -943,7 +958,7 @@ function buildOutfit(ctx) {
   const prevSets = [...ctx.prev].map(k => new Set(k.split('+')));
   for (const c of top) {
     let p = ctx.prev.has(c.key) ? 4 : 0;
-    const core = c.ms.filter(m => m.slot !== 'shoes' && m.slot !== 'acc' && !ctx.locked.has(m.id)).map(m => m.id);
+    const core = c.ms.filter(m => m.slot !== 'shoes' && m.slot !== 'acc' && m.slot !== 'watch' && !ctx.locked.has(m.id)).map(m => m.id);
     for (const ps of prevSets) { const ov = core.filter(id => ps.has(id)).length; if (core.length && ov === core.length) p = Math.max(p, 3); else if (ov >= 2) p = Math.max(p, 1.2) }
     c.s2 = c.s - p;
   }
@@ -953,7 +968,7 @@ function buildOutfit(ctx) {
   for (let i = 0; i < pool.length; i++) { r -= ws[i]; if (r <= 0) { pick = pool[i]; break } }
   return {...pick, ignored};
 }
-function dominantStyle(ms) { const n = {}; for (const m of ms) n[m.style] = (n[m.style] || 0) + (m.slot === 'acc' ? .5 : 1); return Object.keys(n).sort((a, b) => n[b] - n[a])[0] || 'casual' }
+function dominantStyle(ms) { const n = {}; for (const m of ms) n[m.style] = (n[m.style] || 0) + (m.slot === 'acc' || m.slot === 'watch' ? .5 : 1); return Object.keys(n).sort((a, b) => n[b] - n[a])[0] || 'casual' }
 function lookName(ms, ctx) {
   const acc = [...new Set(ms.filter(m => m.col.kind === 'a').map(m => m.col.name))];
   const darks = ms.filter(m => m.L < 30).length, earth = ms.filter(m => m.col.kind === 'e').length;
@@ -990,7 +1005,9 @@ function explain(ms, ctx) {
 function styleTip(ms, ctx) {
   const f = (cat, sub) => ms.find(m => m.cat === cat && (!sub || m.sub === sub));
   const top = f('majica'), mid = f('pulover'), out = f('jakna'), bot = ms.find(m => m.slot === 'bottom'), sh = f('cevlji');
+  const wt = f('ura');
   if (top && top.sub === 'Srajca' && ['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) return 'Srajco zatakni v hlače in rokave zavihaj do komolcev.';
+  if (wt && ['Zmenek','Izhod zvečer','Družinsko'].includes(ctx.occ)) return wt.col.name === 'srebrna' || wt.col.name === 'zlata' ? 'Kovinska ura naj se ujema z drugim nakitom: srebro s srebrom, zlato z zlatom.' : 'Usnjen pašček ure naj bo v podobni barvi kot čevlji ali pas.';
   if (top && mid) return mid.sub === 'Jopa' ? 'Jopo pusti odpeto, da se vidi majica pod njo.' : 'Majica naj rahlo pokuka izpod puloverja ob vratu ali spodaj, to doda globino.';
   if (out && (mid || top) && ctx.T <= 2) return 'Jakno nosi odpeto, da se vidi plast pod njo.';
   if (bot && (bot.sub === 'Cargo' || bot.sub === 'Trenirka') && mid && mid.sub === 'Hoodie') return 'Oversized zgoraj, ožje spodaj: hlače naj se zberejo ob gležnju.';
@@ -1055,7 +1072,7 @@ function generate() {
   setTimeout(() => { const l = $('fit').querySelector('.look'); if (l) l.scrollIntoView({behavior:'smooth', block:'start'}) }, 60);
 }
 $('go').addEventListener('click', generate);
-const ORDER = ['jakna','pulover','majica','hlace','kratke','cevlji','dodatek'];
+const ORDER = ['jakna','pulover','majica','hlace','kratke','cevlji','dodatek','ura'];
 const sortMs = arr => arr.slice().sort((a, b) => ORDER.indexOf(a.cat) - ORDER.indexOf(b.cat));
 function mini(its) { const a = sortMs(its).slice(0, 4); return `<div class="mc m${a.length}">${a.map(it => ph(it)).join('')}</div>` }
 function collage(its) { return `<div class="collage n${Math.min(its.length, 3)}">${sortMs(its).map(it => `<div class="c${locks.includes(it.id) ? ' mine' : ''}">${pic(it, 'img')}<span>${esc(it.name)}</span></div>`).join('')}</div>` }
