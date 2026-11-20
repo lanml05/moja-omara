@@ -594,7 +594,7 @@ function openItem(id) {
   const inSel = locks.includes(it.id), ws = wearStats(it.id);
   openSheet(`<div class="grab"></div>
     <div class="hero ph">${pic(it, 'img')}</div>
-    <div style="display:grid;gap:6px"><div class="eyebrow">${esc(CAT[it.cat] ? CAT[it.cat].one : '')}${it.sub ? ' · ' + esc(subLabel(it.cat, it.sub)) : ''}${it.ex ? ' · example' : ''}</div><h2>${esc(it.name)}</h2></div>
+    <div style="display:grid;gap:6px"><div class="eyebrow">${esc(CAT[it.cat] ? CAT[it.cat].one : '')}${it.sub && subLabel(it.cat, it.sub) !== (CAT[it.cat] || {}).one ? ' · ' + esc(subLabel(it.cat, it.sub)) : ''}${it.ex ? ' · example' : ''}</div><h2>${esc(it.name)}</h2></div>
     <div class="specs">
       <div><span>Color</span><span style="display:flex;gap:8px;align-items:center"><i class="sw" style="background:${colorInfo(it.color).hex}"></i>${esc(colorLabel(it.color))}</span></div>
       <div><span>Style</span><span>${esc(styleLabel(it.style))}</span></div>
@@ -851,7 +851,7 @@ function autoWx() {
   const evening = occ === 'Izhod zvečer';
   const temp = evening ? WX.fmin * 0.7 + WX.fmax * 0.3 : (WX.fmax + WX.feel) / 2;
   const T = temp >= 20 ? 0 : temp >= 13 ? 1 : temp >= 5 ? 2 : 3;
-  const rain = WX.pop >= 50 || RAIN(WX.code) || RAIN(WX.dcode) || SNOW(WX.dcode);
+  const rain = WX.pop >= 50 || RAIN(WX.code) || ((RAIN(WX.dcode) || SNOW(WX.dcode)) && WX.pop >= 30);
   return {T, rain, label:Math.round(temp) + '°'};
 }
 function currentWx() { if (wxManual) return {...wxManual, label:T_LABEL[wxManual.T]}; return autoWx() || {T:1, rain:false, label:T_LABEL[1]} }
@@ -859,7 +859,7 @@ function renderWx() {
   if (view !== 'outfit') return;
   if (!LOC) $('wxCard').innerHTML = `<div class="wx"><div class="ic">${icon('i-pin')}</div><div><b style="font-weight:600">Automatic weather</b><div class="muted" style="font-size:13.5px;margin:2px 0 10px">Outfits take the temperature and rain into account.</div><div class="row"><button class="btn sm" data-wx="gps">My location</button><button class="btn sm line" data-wx="city">Enter city</button></div></div></div>`;
   else if (!WX) $('wxCard').innerHTML = `<div class="wx"><div class="ic"><span class="spin"></span></div><div><b style="font-weight:600">${esc(locName())}</b><div class="muted" style="font-size:13.5px">Loading weather…</div></div></div>`;
-  else $('wxCard').innerHTML = `<div class="wx"><div class="ic">${icon(wxIcon(WX.code))}</div><div><div class="tt"><span class="deg">${Math.round(WX.t)}°</span><span class="muted">${esc(locName())}</span></div><small>${wxDesc(WX.dcode)} · ${Math.round(WX.min)}° to ${Math.round(WX.max)}° · rain ${Math.round(WX.pop)} %</small></div></div>`;
+  else $('wxCard').innerHTML = `<div class="wx"><div class="ic">${icon(wxIcon(WX.code))}</div><div><div class="tt"><span class="deg">${Math.round(WX.t)}°</span><span class="muted">${esc(locName())}</span></div><small>${wxDesc((RAIN(WX.dcode) || SNOW(WX.dcode)) && WX.pop < 30 && !RAIN(WX.code) && !SNOW(WX.code) ? WX.code : WX.dcode)} · ${Math.round(WX.min)}° to ${Math.round(WX.max)}° · rain ${Math.round(WX.pop)} %</small></div></div>`;
   const cw = currentWx(), auto = !wxManual && !!WX;
   $('wxPills').innerHTML = TEMPS.map((t, i) => `<button class="pill${cw.T === i ? ' on' : ''}" data-t="${i}">${icon(t[1])}${t[0]}</button>`).join('') + `<button class="pill${cw.rain ? ' on' : ''}" data-rain="1">${icon('i-rain')}Rain</button>`;
   $('wxAuto').hidden = !wxManual || !WX;
