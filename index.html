@@ -60,6 +60,22 @@ header.top .num{font:600 22px var(--f-disp);letter-spacing:-.02em;line-height:1}
 .tabsc button.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
 .tabsc button.wash{color:var(--accent)}
 
+.ctools{display:flex;gap:10px;align-items:center;margin:14px 0 10px}
+.srch{flex:1;display:flex;align-items:center;gap:8px;background:var(--tile);border-radius:999px;padding:0 14px;height:40px;color:var(--ink3)}
+.srch input{flex:1;min-width:0;border:0;background:none;color:var(--ink);font:15px var(--f-body);outline:none;height:100%}
+.cfil{display:flex;gap:8px;overflow-x:auto;padding:2px 0 16px;scrollbar-width:none}.cfil::-webkit-scrollbar{display:none}
+.cfil button{flex:none;width:26px;height:26px;border-radius:50%;border:0;padding:0;box-shadow:inset 0 0 0 1px rgba(128,128,134,.35)}
+.cfil button.on{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink)}
+.grid-empty{grid-column:1/-1;color:var(--ink2);font-size:14px;padding:20px 0}
+.ins{display:grid;gap:18px}
+.ins-k{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ins-k div{background:var(--surface);border-radius:16px;padding:12px;box-shadow:0 1px 0 var(--line)}
+.ins-k b{display:block;font:600 20px var(--f-display,var(--f-body));letter-spacing:-.01em}.ins-k small{color:var(--ink3);font-size:12px}
+.ins-bar{display:flex;height:14px;border-radius:999px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--line)}
+.ins-row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}.ins-row::-webkit-scrollbar{display:none}
+.ins-row button{flex:none;width:92px;background:none;border:0;padding:0;text-align:left;color:var(--ink)}
+.ins-row .ph{aspect-ratio:1;border-radius:14px}
+.ins-row small{display:block;font-size:12px;color:var(--ink2);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px}
 @media (min-width:560px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .tile{background:none;border:0;padding:0;text-align:left;display:grid;gap:10px;min-width:0}
@@ -230,6 +246,17 @@ h2.sect{font-size:24px;font-weight:600;margin:38px 0 14px}
 label.f{display:grid;gap:6px;font:500 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
 label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-transform:none;color:var(--ink);background:var(--surface);border:0;box-shadow:inset 0 0 0 1px var(--line);border-radius:12px;padding:12px 14px;width:100%;-webkit-appearance:none;appearance:none}
 .row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1 1 0;min-width:0}
+.ped{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.ped-top{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
+.ped-top b{font:600 16px var(--f-body)}
+.ped-stage{flex:1;min-height:0;margin:0 14px;border-radius:20px;background:repeating-conic-gradient(var(--tile) 0 25%,var(--surface) 0 50%) 50%/22px 22px;touch-action:none;overflow:hidden}
+.ped-stage canvas{display:block;touch-action:none}
+.ped-tools{display:grid;gap:12px;padding:14px 20px 18px}
+.seg2{display:flex;background:var(--tile);border-radius:999px;padding:4px}
+.seg2 button{flex:1;border:0;background:none;border-radius:999px;padding:10px;font:600 14px var(--f-body);color:var(--ink2)}
+.seg2 button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.ped-size{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--ink2)}.ped-size input{flex:1;accent-color:var(--accent)}
+.ped-tools .btn{padding:11px 10px;font-size:14px}
 .confirm{border-radius:16px;padding:16px;display:grid;gap:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--bad)}
 .note{font-size:13.5px;color:var(--ink2);background:var(--surface);border-radius:14px;padding:12px 14px;box-shadow:0 1px 0 var(--line)}
 .res{display:grid}
@@ -277,6 +304,9 @@ label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-t
     <div id="intro"></div>
     <div id="pend"></div>
     <div class="tabsc" id="catTabs"></div>
+    <div class="ctools"><label class="srch"><svg viewBox="0 0 24 24" class="i"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><input id="cq" type="search" placeholder="Search brand, color, type" autocomplete="off"></label>
+      <button class="iconbtn" id="insBtn" aria-label="Insights"><svg viewBox="0 0 24 24" class="i"><path d="M5 20V11M12 20V5M19 20v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></button></div>
+    <div class="cfil" id="cfil"></div>
     <div id="washBar"></div>
     <div class="grid" id="grid"></div>
   </section>
@@ -292,8 +322,8 @@ label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-t
       </div>
     </div>
     <div class="tips">
-      <div><b>Plain background</b>A bed, the floor or a door.</div>
-      <div><b>One item</b>One photo, one item.</div>
+      <div><b>Plain background</b>Floor or a door. Not on a messy bed.</div>
+      <div><b>One item</b>Nothing else in the photo, no feet or other clothes.</div>
       <div><b>All of it</b>Keep the whole item in frame. Shoot watches up close.</div>
     </div>
     <div class="setrow" style="margin-top:8px">
@@ -563,14 +593,23 @@ function renderGrid() {
     return `<button class="${cat === c[0] ? 'on' : ''}" data-c="${c[0]}">${esc(c[1])}<sup>${n}</sup></button>`;
   }).join('') + (wash ? `<button class="wash${cat === 'pranje' ? ' on' : ''}" data-c="pranje">Laundry<sup>${wash}</sup></button>` : '');
   $('washBar').innerHTML = cat === 'pranje' ? `<div class="card pend"><div><h3>${wash} ${kosov(wash)} in the wash</h3><p>These won't show up in outfits.</p></div><button class="btn sm" id="allClean">All clean</button></div>` : '';
-  const xs = cat === 'vse' ? all : cat === 'pranje' ? all.filter(i => i.laundry) : all.filter(i => i.cat === cat);
-  $('grid').innerHTML = xs.map(it => tile(it)).join('');
+  let xs = cat === 'vse' ? all : cat === 'pranje' ? all.filter(i => i.laundry) : all.filter(i => i.cat === cat);
+  const cols = [...new Set(xs.map(i => i.color))].filter(Boolean); if (FCOL && !cols.includes(FCOL)) FCOL = null;
+  $('cfil').innerHTML = cols.length > 1 ? cols.map(c => `<button class="${FCOL === c ? 'on' : ''}" data-fc="${esc(c)}" style="background:${colorInfo(c).hex}" aria-label="${esc(colorLabel(c))}" title="${esc(colorLabel(c))}"></button>`).join('') : '';
+  if (FCOL) xs = xs.filter(i => i.color === FCOL);
+  const qq = FQ.trim().toLowerCase();
+  if (qq) xs = xs.filter(i => [i.name, i.brand, colorLabel(i.color), i.sub && subLabel(i.cat, i.sub), CAT[i.cat] && CAT[i.cat].one].filter(Boolean).join(' ').toLowerCase().includes(qq));
+  $('grid').innerHTML = xs.length ? xs.map(it => tile(it)).join('') : `<div class="grid-empty">Nothing matches${qq ? ' “' + esc(FQ.trim()) + '”' : ''}.</div>`;
   head();
 }
 function tile(it, extra) {
   const b = it.ex ? '<span class="badge">Example</span>' : locks.includes(it.id) ? '<span class="badge acc">Picked</span>' : it.laundry ? '<span class="badge acc">In the wash</span>' : '';
   return `<button class="tile${it.laundry ? ' wash' : ''}${extra || ''}" data-id="${esc(it.id)}">${ph(it, b)}<div><div class="nm">${esc(it.name)}</div><div class="sub"><i class="sw" style="background:${colorInfo(it.color).hex}"></i><span>${esc(colorLabel(it.color))}${it.sub ? ' · ' + esc(subLabel(it.cat, it.sub)) : ''}</span></div></div></button>`;
 }
+let FQ = '', FCOL = null;
+$('cq').addEventListener('input', e => { FQ = e.target.value; renderGrid() });
+$('cfil').addEventListener('click', e => { const b = e.target.closest('[data-fc]'); if (!b) return; FCOL = FCOL === b.dataset.fc ? null : b.dataset.fc; renderGrid() });
+$('insBtn').addEventListener('click', () => openInsights());
 $('catTabs').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; cat = b.dataset.c; renderGrid() });
 $('intro').addEventListener('click', e => { if (e.target.closest('[data-go]')) show('dodaj') });
 $('pend').addEventListener('click', e => { if (e.target.closest('[data-tag]')) openTag() });
@@ -599,18 +638,21 @@ function openItem(id) {
       <div><span>Color</span><span style="display:flex;gap:8px;align-items:center"><i class="sw" style="background:${colorInfo(it.color).hex}"></i>${esc(colorLabel(it.color))}</span></div>
       <div><span>Style</span><span>${esc(styleLabel(it.style))}</span></div>
       <div><span>Warmth</span>${dots(it.warmth)}</div>
+      ${it.brand ? `<div><span>Brand</span><span>${esc(it.brand)}</span></div>` : ''}
       ${it.ex ? '' : `<div><span>Worn</span><span>${ws.n}× · ${agoTxt(ws.last)}</span></div>`}
+      ${it.price ? `<div><span>Cost per wear</span><span>${eur(it.price / Math.max(1, ws.n))} <span class="muted" style="font-size:13px">· paid ${eur(it.price)}</span></span></div>` : ''}
     </div>
     ${it.ex ? '' : `<div class="setrow" style="padding-top:4px"><div class="t"><b>In the wash</b><small>It won't show up in outfits until it's clean.</small></div><button class="tg${it.laundry ? ' on' : ''}" id="sWash" aria-label="In the wash"></button></div>`}
     <button class="btn wide" id="sFit">${icon('i-spark')}Build an outfit with this</button>
     <div class="row"><button class="btn line" id="sLock">${icon(inSel ? 'i-x' : 'i-plus')}${inSel ? 'Unpick' : 'Add to picks'}</button>${it.ex ? '' : `<button class="btn line" id="sWear">${icon('i-shirt')}Wearing today</button>`}</div>
-    ${it.ex ? '<div class="note">This is an example. Examples disappear once you add your own items.</div>' : `<div style="display:flex;justify-content:space-between"><button class="link" id="sEditT">Edit details</button><button class="link bad" id="sDel">Delete item</button></div><div id="sEdit"></div><div id="sConfirm"></div>`}`);
+    ${it.ex ? '<div class="note">This is an example. Examples disappear once you add your own items.</div>' : `<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><button class="link" id="sEditT">Edit details</button><button class="link" id="sPhoto">Edit photo</button><button class="link bad" id="sDel">Delete item</button></div><div id="sEdit"></div><div id="sConfirm"></div>`}`);
   $('sFit').onclick = () => { locks = [it.id]; lastFit = null; prevKeys = []; closeSheet(); show('outfit'); generate() };
   $('sLock').onclick = () => { toggleLock(it.id); closeSheet(); renderGrid(); toast(locks.includes(it.id) ? 'Added to picks · ' + locks.length : 'Removed from picks') };
   if (it.ex) return;
   $('sWash').onclick = async () => { it.laundry = !it.laundry; await put('items', it); $('sWash').classList.toggle('on', it.laundry); renderGrid(); toast(it.laundry ? 'In the wash' : 'Clean') };
   $('sWear').onclick = async () => { const tk = todayKey(); const e = WORN[tk] ? {...WORN[tk], items:[...new Set(WORN[tk].items.concat(it.id))]} : {date:tk, items:[it.id], name:'My outfit', lang:'en', created:Date.now()}; await put('worn', e); WORN[tk] = e; toast("Added to today's outfit"); closeSheet() };
   $('sEditT').onclick = () => editForm(it);
+  $('sPhoto').onclick = () => { closeSheet(); photoEditor(it) };
   $('sDel').onclick = () => {
     $('sConfirm').innerHTML = `<div class="confirm"><b>Delete “${esc(it.name)}”?</b><div class="muted" style="font-size:13.5px">The photo and details are removed from this phone for good.</div><div class="row"><button class="btn line" id="cNo">Cancel</button><button class="btn" style="background:var(--bad);color:#fff" id="cYes">Delete</button></div></div>`;
     $('cNo').onclick = () => $('sConfirm').innerHTML = '';
@@ -619,7 +661,7 @@ function openItem(id) {
 }
 function swatches(sel, attr) { return `<div class="sws">${COLORS.map(c => `<button class="swb${c[0] === sel ? ' on' : ''}" data-${attr}="${c[0]}" style="background:${c[1]}" aria-label="${colorLabel(c[0])}" title="${colorLabel(c[0])}"></button>`).join('')}</div>` }
 function editForm(it) {
-  const st = {cat:it.cat, sub:it.sub || '', color:it.color, style:it.style || 'casual', warmth:+it.warmth || 0, name:it.name};
+  const st = {cat:it.cat, sub:it.sub || '', color:it.color, style:it.style || 'casual', warmth:+it.warmth || 0, name:it.name, brand:it.brand || '', price:it.price || 0};
   const draw = () => {
     const c = CAT[st.cat];
     $('sEdit').innerHTML = `<div style="display:grid;gap:14px">
@@ -627,10 +669,14 @@ function editForm(it) {
       <div class="row"><label class="f">Category<select id="eCat">${CATS.map(x => `<option value="${x.id}"${x.id === st.cat ? ' selected' : ''}>${esc(x.one)}</option>`).join('')}</select></label>
       <label class="f">Type<select id="eSub"><option value="">–</option>${c.subs.map(x => `<option value="${esc(x[0])}"${x[0] === st.sub ? ' selected' : ''}>${esc(subLabel(st.cat, x[0]))}</option>`).join('')}</select></label></div>
       <div style="display:grid;gap:8px"><span class="eyebrow">Color · ${esc(colorLabel(st.color))}</span>${swatches(st.color, 'ec')}</div>
+      <div class="row"><label class="f">Brand<input id="eBrand" value="${esc(st.brand)}" placeholder="e.g. Ralph Lauren" autocomplete="off"></label>
+      <label class="f">Price €<input id="ePrice" type="number" inputmode="decimal" min="0" step="1" value="${st.price || ''}" placeholder="optional"></label></div>
       <div class="row"><label class="f">Style<select id="eStyle">${STYLES.map(x => `<option value="${esc(x)}"${x === st.style ? ' selected' : ''}>${esc(styleLabel(x))}</option>`).join('')}</select></label>
       <label class="f">Warmth 0–5<select id="eWarm">${[0,1,2,3,4,5].map(n => `<option${n === st.warmth ? ' selected' : ''}>${n}</option>`).join('')}</select></label></div>
       <button class="btn wide" id="eSave">Save changes</button></div>`;
     $('eName').oninput = e => { st.name = e.target.value };
+    $('eBrand').oninput = e => { st.brand = e.target.value };
+    $('ePrice').oninput = e => { st.price = Math.max(0, +e.target.value || 0) };
     $('eCat').onchange = e => { st.cat = e.target.value; st.sub = ''; draw() };
     $('eSub').onchange = e => { st.sub = e.target.value; const x = CAT[st.cat].subs.find(y => y[0] === st.sub); if (x) { st.style = x[3]; st.warmth = x[4]; $('eStyle').value = x[3]; $('eWarm').value = x[4] } };
     $('eStyle').onchange = e => { st.style = e.target.value };
@@ -638,7 +684,7 @@ function editForm(it) {
     $('sEdit').querySelectorAll('[data-ec]').forEach(b => b.onclick = () => { st.color = b.dataset.ec; draw() });
     $('eSave').onclick = async () => {
       const auto = makeName(it), autoSl = makeNameSl(it); const typed = st.name.trim();
-      Object.assign(it, {cat:st.cat, sub:st.sub, color:st.color, style:st.style, warmth:st.warmth});
+      Object.assign(it, {cat:st.cat, sub:st.sub, color:st.color, style:st.style, warmth:st.warmth, brand:st.brand.trim().slice(0, 40), price:st.price || null});
       it.season = seasonOf(it.warmth, it.cat);
       it.name = !typed || typed === auto || typed === autoSl ? makeName(it) : typed;
       await put('items', it); toast('Saved'); closeSheet(); renderGrid();
@@ -707,20 +753,84 @@ $('bgTg').onclick = async () => { BGON = !BGON; $('bgTg').classList.toggle('on',
 
 function loadImg(file) { return new Promise((res, rej) => { const u = URL.createObjectURL(file); const im = new Image(); im.onload = () => { res(im); setTimeout(() => URL.revokeObjectURL(u), 2000) }; im.onerror = () => { URL.revokeObjectURL(u); rej(new Error('img')) }; im.src = u }) }
 function toCanvas(src, max) { const w0 = src.naturalWidth || src.width, h0 = src.naturalHeight || src.height; const s = Math.min(1, max / Math.max(w0, h0)); const c = document.createElement('canvas'); c.width = Math.round(w0 * s); c.height = Math.round(h0 * s); const x = c.getContext('2d', {willReadFrequently:true}); x.imageSmoothingQuality = 'high'; x.drawImage(src, 0, 0, c.width, c.height); return c }
-async function removeBg(cv) {
-  const w = cv.width, h = cv.height, ctx = cv.getContext('2d', {willReadFrequently:true});
-  const id = ctx.getImageData(0, 0, w, h), px = id.data;
+async function removeBg(cv) { // model alpha mask (Uint8Array w*h) or null when it found nothing useful
+  const w = cv.width, h = cv.height, px = cv.getContext('2d', {willReadFrequently:true}).getImageData(0, 0, w, h).data;
   const rgb = new Uint8Array(w * h * 3); for (let i = 0, j = 0; i < px.length; i += 4, j += 3) { rgb[j] = px[i]; rgb[j + 1] = px[i + 1]; rgb[j + 2] = px[i + 2] }
   const r = await bwCall({type:'run', data:rgb.buffer, width:w, height:h}, [rgb.buffer]);
-  const m = new Uint8Array(r.mask); let fg = 0, x0 = w, y0 = h, x1 = 0, y1 = 0;
-  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const k = y * w + x; let a = m[k]; a = a < 28 ? 0 : a > 228 ? 255 : a; px[k * 4 + 3] = a; if (a > 110) { fg++; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y } }
-  const frac = fg / (w * h); if (frac < 0.02 || frac > 0.96) return null;
-  ctx.putImageData(id, 0, 0);
-  const p = Math.round(Math.max(x1 - x0, y1 - y0) * 0.04);
-  x0 = Math.max(0, x0 - p); y0 = Math.max(0, y0 - p); x1 = Math.min(w - 1, x1 + p); y1 = Math.min(h - 1, y1 + p);
-  const out = document.createElement('canvas'); out.width = x1 - x0 + 1; out.height = y1 - y0 + 1;
-  out.getContext('2d', {willReadFrequently:true}).drawImage(cv, x0, y0, out.width, out.height, 0, 0, out.width, out.height);
+  const m = new Uint8Array(r.mask); let fg = 0;
+  for (let k = 0; k < m.length; k++) { const a = m[k] < 28 ? 0 : m[k] > 228 ? 255 : m[k]; m[k] = a; if (a > 110) fg++ }
+  const frac = fg / (w * h); return frac < 0.02 || frac > 0.96 ? null : m;
+}
+/* The model keeps "the most noticeable thing", which is often the whole bed with the item on it, or feet and floor.
+   cleanAlpha keeps only the item: the blob in the middle of the photo; parts of it whose colour is unlike the
+   item and that run into the photo's edge (bed, floor, feet, a second garment) are dropped. */
+function cleanAlpha(px, w, h, a) {
+  const N = w * h, fg = new Uint8Array(N); for (let k = 0; k < N; k++) fg[k] = a[k] > 110 ? 1 : 0;
+  const stack = new Int32Array(N);
+  function comps(mask) { // 4-connected components -> {lab, list of {area, cen, border}}
+    const lab = new Int32Array(N).fill(-1), out = [];
+    const cx0 = w * .25, cx1 = w * .75, cy0 = h * .2, cy1 = h * .8;
+    for (let s0 = 0; s0 < N; s0++) { if (!mask[s0] || lab[s0] >= 0) continue; const id = out.length; let sp = 0, area = 0, cen = 0, border = 0; stack[sp++] = s0; lab[s0] = id;
+      while (sp) { const k = stack[--sp], x = k % w, y = (k - x) / w; area++; if (x >= cx0 && x <= cx1 && y >= cy0 && y <= cy1) cen++; if (x < 2 || y < 2 || x > w - 3 || y > h - 3) border++;
+        if (x > 0 && mask[k - 1] && lab[k - 1] < 0) { lab[k - 1] = id; stack[sp++] = k - 1 } if (x < w - 1 && mask[k + 1] && lab[k + 1] < 0) { lab[k + 1] = id; stack[sp++] = k + 1 }
+        if (y > 0 && mask[k - w] && lab[k - w] < 0) { lab[k - w] = id; stack[sp++] = k - w } if (y < h - 1 && mask[k + w] && lab[k + w] < 0) { lab[k + w] = id; stack[sp++] = k + w } }
+      out.push({area, cen, border}) }
+    return {lab, out};
+  }
+  const pick = c => { let b = -1, bv = -1; c.out.forEach((o, i) => { const v = o.cen * 4 + o.area; if (v > bv) { bv = v; b = i } }); return b };
+  let C = comps(fg), main = pick(C); if (main < 0) return a;
+  const keep = new Uint8Array(N); let mainArea = 0; for (let k = 0; k < N; k++) if (C.lab[k] === main) { keep[k] = 1; mainArea++ }
+  // colour of the item: k-means on the very centre of the main blob (the item is what you aimed the camera at)
+  const L = new Float32Array(N * 3);
+  for (let k = 0; k < N; k++) if (keep[k]) { const v = rgbLab(px[k * 4], px[k * 4 + 1], px[k * 4 + 2]); L[k * 3] = v[0]; L[k * 3 + 1] = v[1]; L[k * 3 + 2] = v[2] }
+  let samp = [];
+  for (const f of [[.4, .6, .35, .6], [.3, .7, .25, .7], [0, 1, 0, 1]]) { samp = []; const st = Math.max(1, Math.floor(Math.sqrt(mainArea * (f[1] - f[0]) * (f[3] - f[2]) / 4000)));
+    for (let y = Math.floor(h * f[2]); y < h * f[3]; y += st) for (let x = Math.floor(w * f[0]); x < w * f[1]; x += st) { const k = y * w + x; if (keep[k]) samp.push(k) } if (samp.length >= 150) break }
+  if (samp.length < 30) return a;
+  const K = 3; let cen = []; for (let i = 0; i < K; i++) { const k = samp[Math.floor((i + .5) * samp.length / K)]; cen.push([L[k * 3], L[k * 3 + 1], L[k * 3 + 2]]) }
+  let cnt = new Array(K).fill(0);
+  for (let it = 0; it < 8; it++) { const sum = cen.map(() => [0, 0, 0]); cnt = new Array(K).fill(0);
+    for (const k of samp) { let bi = 0, bd = 1e9; for (let i = 0; i < K; i++) { const d = (L[k * 3] - cen[i][0]) ** 2 + (L[k * 3 + 1] - cen[i][1]) ** 2 + (L[k * 3 + 2] - cen[i][2]) ** 2; if (d < bd) { bd = d; bi = i } } cnt[bi]++; sum[bi][0] += L[k * 3]; sum[bi][1] += L[k * 3 + 1]; sum[bi][2] += L[k * 3 + 2] }
+    cen = cen.map((c, i) => cnt[i] ? [sum[i][0] / cnt[i], sum[i][1] / cnt[i], sum[i][2] / cnt[i]] : c) }
+  const core = cen.filter((c, i) => cnt[i] >= samp.length * .15);
+  const coreD = k => { let bd = 1e9; for (const c of core) { const d = (L[k * 3] - c[0]) ** 2 + (L[k * 3 + 1] - c[1]) ** 2 + (L[k * 3 + 2] - c[2]) ** 2; if (d < bd) bd = d } return bd };
+  // "magic wand" from the photo edge: flood over smooth surfaces that are not the item's colour (bed, floor, feet, other clothes)
+  const gone = new Uint8Array(N); let sp = 0, removed = 0; const FAR = 20 * 20, NEAR = 14 * 14, STEP2 = 10 * 10;
+  for (let k = 0; k < N; k++) { if (!keep[k]) continue; const x = k % w, y = (k - x) / w; if ((x < 2 || y < 2 || x > w - 3 || y > h - 3) && coreD(k) > FAR) { gone[k] = 1; stack[sp++] = k } }
+  while (sp) { const k = stack[--sp], x = k % w, y = (k - x) / w; removed++;
+    const nb = [x > 0 ? k - 1 : -1, x < w - 1 ? k + 1 : -1, y > 0 ? k - w : -1, y < h - 1 ? k + w : -1];
+    for (const n of nb) { if (n < 0 || !keep[n] || gone[n]) continue;
+      const dd = (L[n * 3] - L[k * 3]) ** 2 + (L[n * 3 + 1] - L[k * 3 + 1]) ** 2 + (L[n * 3 + 2] - L[k * 3 + 2]) ** 2;
+      if (dd < STEP2 && coreD(n) > NEAR) { gone[n] = 1; stack[sp++] = n } } }
+  if (removed) { // safety: a removed patch whose average colour is close to the item and that is small is the item itself (a light shoulder, a fold) -> keep it
+    const G = comps(gone), sum = G.out.map(() => [0, 0, 0]);
+    for (let k = 0; k < N; k++) if (gone[k]) { const g = sum[G.lab[k]]; g[0] += L[k * 3]; g[1] += L[k * 3 + 1]; g[2] += L[k * 3 + 2] }
+    G.out.forEach((o, i) => { const m = sum[i].map(v => v / o.area); let bd = 1e9; for (const c of core) { const d = (m[0] - c[0]) ** 2 + (m[1] - c[1]) ** 2 + (m[2] - c[2]) ** 2; if (d < bd) bd = d } o.back = bd < 26 * 26 && o.area < mainArea * .15 });
+    for (let k = 0; k < N; k++) if (gone[k] && !G.out[G.lab[k]].back) keep[k] = 0;
+    const C2 = comps(keep), m2 = pick(C2); for (let k = 0; k < N; k++) keep[k] = C2.lab[k] === m2 ? 1 : 0 }
+  let kept = 0; for (let k = 0; k < N; k++) kept += keep[k];
+  if (kept < mainArea * .3) { keep.fill(0); for (let k = 0; k < N; k++) if (C.lab[k] === main) keep[k] = 1 } // too much gone: trust the model's blob
+  // soft edge: keep the model's own alpha within 2 px of what stays
+  const out = new Uint8Array(N);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const k = y * w + x; if (!a[k]) continue; let ok = keep[k];
+    for (let dy = -2; dy <= 2 && !ok; dy++) for (let dx = -2; dx <= 2 && !ok; dx++) { const xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < w && yy < h && keep[yy * w + xx]) ok = 1 }
+    if (ok) out[k] = a[k] }
   return out;
+}
+function withAlpha(src, a) { const w = src.width, h = src.height, c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d', {willReadFrequently:true}); x.drawImage(src, 0, 0); const id = x.getImageData(0, 0, w, h); for (let k = 0; k < w * h; k++) id.data[k * 4 + 3] = a[k]; x.putImageData(id, 0, 0); return c }
+function cropToAlpha(cv) { // crop a cut-out to its visible pixels with a little air around
+  const w = cv.width, h = cv.height, d = cv.getContext('2d', {willReadFrequently:true}).getImageData(0, 0, w, h).data; let x0 = w, y0 = h, x1 = -1, y1 = -1;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (d[(y * w + x) * 4 + 3] > 110) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y }
+  if (x1 < 0) return null; const p = Math.round(Math.max(x1 - x0, y1 - y0) * .04); x0 = Math.max(0, x0 - p); y0 = Math.max(0, y0 - p); x1 = Math.min(w - 1, x1 + p); y1 = Math.min(h - 1, y1 + p);
+  const out = document.createElement('canvas'); out.width = x1 - x0 + 1; out.height = y1 - y0 + 1; out.getContext('2d').drawImage(cv, x0, y0, out.width, out.height, 0, 0, out.width, out.height); return out;
+}
+function alphaOf(cv) { const w = cv.width, h = cv.height, d = cv.getContext('2d', {willReadFrequently:true}).getImageData(0, 0, w, h).data, a = new Uint8Array(w * h); for (let k = 0; k < w * h; k++) a[k] = d[k * 4 + 3]; return a }
+function maskBlob(a, w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'), id = x.createImageData(w, h); for (let k = 0; k < w * h; k++) { id.data[k * 4] = id.data[k * 4 + 1] = id.data[k * 4 + 2] = 255; id.data[k * 4 + 3] = a[k] } x.putImageData(id, 0, 0); return new Promise(r => c.toBlob(r, 'image/png')) }
+async function blobCanvas(b) { const u = URL.createObjectURL(b); try { const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = u }); return toCanvas(im, 4096) } finally { URL.revokeObjectURL(u) } }
+async function cutResult(orig, a) { // orig canvas + alpha -> stored blobs
+  const full = withAlpha(orig, a), cv = cropToAlpha(full); if (!cv) return null;
+  const [img, thumb, mask] = await Promise.all([encode(cv, 1000, true), encode(cv, 440, true), maskBlob(a, orig.width, orig.height)]);
+  return {cv, img, thumb, mask};
 }
 function detectColor(cv, cut) {
   const w = cv.width, h = cv.height, d = cv.getContext('2d', {willReadFrequently:true}).getImageData(0, 0, w, h).data;
@@ -776,16 +886,18 @@ async function processOne(q) {
   try {
     q.st = 'prep'; renderQ();
     const im = await loadImg(q.file);
-    let cv = toCanvas(im, 1024), cut = false;
+    const orig = toCanvas(im, 1024); let cv = orig, cut = false, res = null;
     if (BGON) {
       q.st = 'bg'; renderQ();
-      try { const t0 = performance.now(); const c2 = await removeBg(cv); q.t = Math.round((performance.now() - t0) / 1000) + ' s'; if (c2) { cv = c2; cut = true } }
+      try { const t0 = performance.now(); const m = await removeBg(orig);
+        if (m) { const px = orig.getContext('2d', {willReadFrequently:true}).getImageData(0, 0, orig.width, orig.height).data; res = await cutResult(orig, cleanAlpha(px, orig.width, orig.height, m)); if (res) { cv = res.cv; cut = true } }
+        q.t = Math.round((performance.now() - t0) / 1000) + ' s' }
       catch (e) { console.warn('bg', e); BG.state = 'error'; renderBG() }
     }
     q.st = 'save'; renderQ();
     const color = detectColor(cv, cut);
-    const [img, thumb] = await Promise.all([encode(cv, 1000, cut), encode(cv, 440, cut)]);
-    const it = {id:uid(), status:'pending', created:Date.now(), cut, color, img, thumb, name:'New item', cat:null, sub:'', style:'casual', warmth:null, season:null, laundry:false};
+    const [img, thumb, origB] = res ? [res.img, res.thumb, await encode(orig, 1024, false)] : await Promise.all([encode(cv, 1000, false), encode(cv, 440, false), encode(orig, 1024, false)]);
+    const it = {id:uid(), status:'pending', created:Date.now(), cut, color, img, thumb, orig:origB, mask:res ? res.mask : null, rv:2, name:'New item', cat:null, sub:'', style:'casual', warmth:null, season:null, laundry:false};
     await put('items', it); ITEMS.unshift(it);
     q.st = 'ok'; q.itemId = it.id; q.file = null; if (q.prev) { URL.revokeObjectURL(q.prev); q.prev = null }
   } catch (e) { console.warn(e); q.st = 'err'; q.err = e && e.message === 'img' ? "Can't open this photo" : "Couldn't save it" }
@@ -1234,7 +1346,7 @@ const blobToData = b => new Promise(r => { if (!b) return r(null); const fr = ne
 const dataToBlob = async d => d ? (await fetch(d)).blob() : null;
 async function exportAll() {
   const btn = $('sExp'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Preparing…';
-  const items = []; for (const it of ITEMS) items.push({...it, img:await blobToData(it.img), thumb:await blobToData(it.thumb)});
+  const items = []; for (const it of ITEMS) items.push({...it, img:await blobToData(it.img), thumb:await blobToData(it.thumb), orig:it.orig ? await blobToData(it.orig) : null, mask:it.mask ? await blobToData(it.mask) : null, img0:null});
   const data = {app:'moja-omara', v:1, at:new Date().toISOString(), items, looks:LOOKS, worn:Object.values(WORN), loc:LOC};
   const name = 'my-wardrobe-' + todayKey() + '.json', blob = new Blob([JSON.stringify(data)], {type:'application/json'});
   const file = new File([blob], name, {type:'application/json'});
@@ -1248,7 +1360,7 @@ async function exportAll() {
 async function importAll(file) {
   try {
     const d = JSON.parse(await file.text()); if (d.app !== 'moja-omara') throw 0;
-    for (const it of d.items || []) { it.img = await dataToBlob(it.img); it.thumb = await dataToBlob(it.thumb); await put('items', it) }
+    for (const it of d.items || []) { it.img = await dataToBlob(it.img); it.thumb = await dataToBlob(it.thumb); it.orig = it.orig ? await dataToBlob(it.orig) : null; it.mask = it.mask ? await dataToBlob(it.mask) : null; await put('items', it) }
     for (const l of d.looks || []) await put('looks', l);
     for (const w of d.worn || []) await put('worn', w);
     if (d.loc && !LOC) { LOC = d.loc; await kvSet('loc', LOC) }
@@ -1266,6 +1378,98 @@ function renderInstall() {
   $('install').innerHTML = `<div class="card"><div class="art"><img src="icon-192.png" alt="" style="width:64px;height:64px;border-radius:16px"></div><div><h3>Add to Home Screen</h3><p>${deferredInstall ? 'You get an icon like a real app, and it works offline.' : ios ? 'In Safari tap Share, then Add to Home Screen.' : 'Open the browser menu ⋮ and choose Install app.'}</p><div class="row" style="flex-wrap:nowrap">${deferredInstall ? '<button class="btn sm" id="doInstall">Install</button>' : ''}<button class="link" id="hideInstall">Not now</button></div></div></div>`;
   if ($('doInstall')) $('doInstall').onclick = async () => { deferredInstall.prompt(); await deferredInstall.userChoice.catch(() => {}); deferredInstall = null; renderInstall() };
   $('hideInstall').onclick = () => { lsSet('omara-install-hide', true); renderInstall() };
+}
+
+
+
+/* ===================== insights: value, cost per wear, most / least worn, colours ===================== */
+function eur(v) { return '€' + (v >= 100 ? Math.round(v) : (Math.round(v * 10) / 10)).toLocaleString('en-US') }
+function openInsights() {
+  const all = ready(); if (!all.length) { toast('Add a few items first'); return }
+  const st = all.map(it => ({it, ...wearStats(it.id)})), priced = all.filter(i => i.price), value = priced.reduce((a, i) => a + i.price, 0);
+  const wears = st.reduce((a, x) => a + x.n, 0), cpw = priced.length ? priced.reduce((a, i) => a + i.price / Math.max(1, wearStats(i.id).n), 0) / priced.length : null;
+  const most = st.filter(x => x.n).sort((a, b) => b.n - a.n).slice(0, 8), never = st.filter(x => !x.n), stale = st.filter(x => x.n && x.last != null && x.last >= 30);
+  const byCol = {}; all.forEach(i => byCol[i.color] = (byCol[i.color] || 0) + 1); const cols = Object.entries(byCol).sort((a, b) => b[1] - a[1]);
+  const byCat = CATS.map(c => [c.name, all.filter(i => i.cat === c.id).length]).filter(x => x[1]);
+  const row = (xs, lab) => `<div class="ins-row">${xs.map(x => `<button data-id="${esc(x.it.id)}">${ph(x.it, '', 'thumb')}<small>${lab(x)}</small></button>`).join('')}</div>`;
+  openSheet(`<div class="grab"></div><div class="ins">
+    <div><span class="eyebrow">Insights</span><h2>Your closet</h2></div>
+    <div class="ins-k"><div><b>${all.length}</b><small>items</small></div><div><b>${wears}</b><small>times worn</small></div><div><b>${priced.length ? eur(value) : '–'}</b><small>${priced.length ? 'value' + (priced.length < all.length ? ' · ' + priced.length + ' priced' : '') : 'add prices'}</small></div></div>
+    ${cpw != null ? `<div class="muted" style="font-size:14px">Average cost per wear <b style="color:var(--ink)">${eur(cpw)}</b>. Wear things more and it drops.</div>` : '<div class="muted" style="font-size:14px">Add a price in Edit details to see the value and cost per wear.</div>'}
+    <div style="display:grid;gap:8px"><span class="eyebrow">Colors</span><div class="ins-bar">${cols.map(([c, n]) => `<i style="flex:${n};background:${colorInfo(c).hex}" title="${esc(colorLabel(c))}"></i>`).join('')}</div>
+      <div class="muted" style="font-size:13px">${cols.slice(0, 5).map(([c, n]) => esc(colorLabel(c)) + ' ' + Math.round(n / all.length * 100) + '%').join(' · ')}</div></div>
+    <div style="display:grid;gap:8px"><span class="eyebrow">By type</span><div class="muted" style="font-size:14px">${byCat.map(([n, c]) => esc(n) + ' <b style="color:var(--ink)">' + c + '</b>').join(' · ')}</div></div>
+    ${most.length ? `<div style="display:grid;gap:8px"><span class="eyebrow">Most worn</span>${row(most, x => x.n + '× worn')}</div>` : ''}
+    ${never.length ? `<div style="display:grid;gap:8px"><span class="eyebrow">Never worn · ${never.length}</span>${row(never.slice(0, 12), x => esc(x.it.name))}</div>` : ''}
+    ${stale.length ? `<div style="display:grid;gap:8px"><span class="eyebrow">Not worn in 30+ days · ${stale.length}</span>${row(stale.slice(0, 12), x => agoTxt(x.last))}</div>` : ''}
+    <div class="muted" style="font-size:13px">"Wearing today" on an item or outfit counts a wear.</div></div>`);
+  $('sheetBox').querySelectorAll('.ins-row [data-id]').forEach(b => b.onclick = () => openItem(b.dataset.id));
+}
+
+/* ===================== photo editor: erase / restore brush, auto clean, undo ===================== */
+async function photoEditor(it) {
+  if (!it.img) return;
+  let orig, a;
+  if (it.orig) { orig = await blobCanvas(it.orig); a = it.mask ? alphaOf(await blobCanvas(it.mask)) : new Uint8Array(orig.width * orig.height).fill(255);
+    if (a.length !== orig.width * orig.height) a = new Uint8Array(orig.width * orig.height).fill(255) }
+  else { orig = await blobCanvas(it.img); a = it.cut ? alphaOf(orig) : new Uint8Array(orig.width * orig.height).fill(255) }
+  const W = orig.width, H = orig.height, px = orig.getContext('2d', {willReadFrequently:true}).getImageData(0, 0, W, H).data;
+  const start = a.slice(), undo = []; let mode = 'erase', size = 34, dirty = false;
+  const el = document.createElement('div'); el.className = 'ped';
+  el.innerHTML = `<div class="ped-top"><button class="link" data-p="x">Cancel</button><b>Edit photo</b><button class="link" data-p="ok" style="font-weight:600">Save</button></div>
+    <div class="ped-stage"><canvas></canvas></div>
+    <div class="ped-tools">
+      <div class="seg2"><button data-p="erase" class="on">Erase</button><button data-p="restore">Restore</button></div>
+      <label class="ped-size">Brush<input type="range" min="8" max="90" value="34"></label>
+      <div class="row"><button class="btn line" data-p="auto">Auto clean</button><button class="btn line" data-p="undo">Undo</button><button class="btn line" data-p="reset">Reset</button></div>
+      <div class="muted" style="font-size:12.5px">Paint over what doesn't belong (bed, floor, feet). Restore brings back parts of the item${it.orig ? '' : ' that are still in the photo'}.</div>
+    </div>`;
+  document.body.appendChild(el);
+  const cv = el.querySelector('canvas'), stage = el.querySelector('.ped-stage'), g = cv.getContext('2d');
+  let sc = 1, ox = 0, oy = 0, view = null;
+  function fit() { const r = stage.getBoundingClientRect(), dpr = window.devicePixelRatio || 1; cv.width = r.width * dpr; cv.height = r.height * dpr; cv.style.width = r.width + 'px'; cv.style.height = r.height + 'px';
+    sc = Math.min(r.width / W, r.height / H) * .94; ox = (r.width - W * sc) / 2; oy = (r.height - H * sc) / 2; view = document.createElement('canvas'); view.width = W; view.height = H; draw() }
+  function draw() { const vx = view.getContext('2d'), id = vx.createImageData(W, H), d = id.data;
+    for (let k = 0; k < W * H; k++) { d[k * 4] = px[k * 4]; d[k * 4 + 1] = px[k * 4 + 1]; d[k * 4 + 2] = px[k * 4 + 2]; d[k * 4 + 3] = mode === 'restore' ? Math.max(a[k], 70) : a[k] }
+    vx.putImageData(id, 0, 0); const dpr = window.devicePixelRatio || 1; g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, cv.width, cv.height);
+    if (mode === 'restore') { g.save(); g.globalAlpha = 1; g.drawImage(view, ox, oy, W * sc, H * sc); g.restore();
+      // show what is removed as a red tint
+      g.save(); g.globalAlpha = .35; g.fillStyle = '#c0392b'; const mk = document.createElement('canvas'); mk.width = W; mk.height = H; const mx = mk.getContext('2d'), md = mx.createImageData(W, H); for (let k = 0; k < W * H; k++) md.data[k * 4 + 3] = 255 - a[k]; mx.putImageData(md, 0, 0); mx.globalCompositeOperation = 'source-in'; mx.fillStyle = '#c0392b'; mx.fillRect(0, 0, W, H); g.drawImage(mk, ox, oy, W * sc, H * sc); g.restore() }
+    else g.drawImage(view, ox, oy, W * sc, H * sc) }
+  let painting = false, last = null;
+  function at(e) { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left - ox) / sc, (e.clientY - r.top - oy) / sc] }
+  function dab(x, y) { const R = size / sc / 2, v = mode === 'erase' ? 0 : 255, x0 = Math.max(0, Math.floor(x - R)), x1 = Math.min(W - 1, Math.ceil(x + R)), y0 = Math.max(0, Math.floor(y - R)), y1 = Math.min(H - 1, Math.ceil(y + R));
+    for (let yy = y0; yy <= y1; yy++) for (let xx = x0; xx <= x1; xx++) { const dd = Math.hypot(xx - x, yy - y); if (dd > R) continue; const k = yy * W + xx, f = Math.min(1, (R - dd) / Math.max(1.5, R * .25)); a[k] = Math.round(mode === 'erase' ? a[k] * (1 - f) : a[k] + (255 - a[k]) * f) } }
+  function line(p, q) { const n = Math.max(1, Math.ceil(Math.hypot(q[0] - p[0], q[1] - p[1]) / Math.max(1, size / sc / 4))); for (let i = 1; i <= n; i++) dab(p[0] + (q[0] - p[0]) * i / n, p[1] + (q[1] - p[1]) * i / n) }
+  let raf = 0; const redraw = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; draw() }) };
+  cv.addEventListener('pointerdown', e => { e.preventDefault(); cv.setPointerCapture(e.pointerId); undo.push(a.slice()); if (undo.length > 20) undo.shift(); painting = true; last = at(e); dab(...last); dirty = true; redraw() });
+  cv.addEventListener('pointermove', e => { if (!painting) return; const p = at(e); line(last, p); last = p; redraw() });
+  const endP = () => { painting = false }; cv.addEventListener('pointerup', endP); cv.addEventListener('pointercancel', endP);
+  el.querySelector('input[type=range]').oninput = e => { size = +e.target.value };
+  const close = () => { el.remove(); window.removeEventListener('resize', fit) };
+  el.addEventListener('click', async e => { const b = e.target.closest('[data-p]'); if (!b) return; const p = b.dataset.p;
+    if (p === 'x') { close(); return }
+    if (p === 'erase' || p === 'restore') { mode = p; el.querySelectorAll('.seg2 button').forEach(x => x.classList.toggle('on', x.dataset.p === p)); draw(); return }
+    if (p === 'undo') { if (undo.length) { a.set(undo.pop()); draw() } return }
+    if (p === 'reset') { undo.push(a.slice()); a.set(start); draw(); return }
+    if (p === 'auto') { undo.push(a.slice()); a.set(cleanAlpha(px, W, H, a)); dirty = true; draw(); toast('Cleaned up'); return }
+    if (p === 'ok') { b.disabled = true; b.textContent = 'Saving…';
+      const res = await cutResult(orig, a); if (!res) { toast('Nothing left of the item'); b.disabled = false; b.textContent = 'Save'; return }
+      if (!it.orig) it.orig = await encode(orig, 1024, false);
+      Object.assign(it, {img:res.img, thumb:res.thumb, mask:res.mask, cut:true, rv:2}); it.color = it.color || detectColor(res.cv, true);
+      await put('items', it); dropUrls(it.id); close(); renderGrid(); toast('Photo saved'); openItem(it.id) } });
+  window.addEventListener('resize', fit); requestAnimationFrame(fit);
+}
+// Photos cut before the clean-up existed often still contain the bed or feet: clean them once (the old photo is kept in img0)
+async function cleanOldCuts() {
+  let n = 0;
+  for (const it of ITEMS) { if (!it.cut || it.rv || !it.img) continue;
+    try { const cv = await blobCanvas(it.img), W = cv.width, H = cv.height, a = alphaOf(cv), px = cv.getContext('2d', {willReadFrequently:true}).getImageData(0, 0, W, H).data, b = cleanAlpha(px, W, H, a);
+      let was = 0, now = 0; for (let k = 0; k < a.length; k++) { if (a[k] > 110) was++; if (b[k] > 110) now++ }
+      it.rv = 2;
+      if (was && now < was * .97) { const res = await cutResult(cv, b); if (res) { it.img0 = it.img; Object.assign(it, {img:res.img, thumb:res.thumb, mask:res.mask, orig:await encode(cv, 1024, false)}); n++ } }
+      await put('items', it) } catch (e) { console.warn('clean', e) } }
+  if (n) { for (const it of ITEMS) dropUrls(it.id); renderGrid(); toast(n === 1 ? '1 photo cleaned up' : n + ' photos cleaned up') }
 }
 
 /* ===================== boot ===================== */
@@ -1290,10 +1494,11 @@ async function loadAll() {
     await loadAll();
   } catch (e) { console.error(e); toast("Storage isn't available in this browser") }
   renderInstall(); show('omara'); if (LOC) loadWeather(false);
+  setTimeout(() => cleanOldCuts().catch(() => {}), 600);
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
 document.addEventListener('visibilitychange', () => { if (!document.hidden && view === 'outfit') loadWeather(false) });
-window.__omara = {addFiles, buildOutfit, makeCtx, generate, state:() => ({ITEMS, LOOKS, WORN, BG, Q}), openTag, saveTag:s => saveTag(s), setTag:(c, col) => { TAG.cat = c; if (col) TAG.color = col }, show};
+window.__omara = {cleanAlpha, cleanOldCuts, photoEditor, addFiles, buildOutfit, makeCtx, generate, state:() => ({ITEMS, LOOKS, WORN, BG, Q}), openTag, saveTag:s => saveTag(s), setTag:(c, col) => { TAG.cat = c; if (col) TAG.color = col }, show};
 </script>
 </body>
 </html>
