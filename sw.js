@@ -1,5 +1,5 @@
 // Moja Omara service worker: app works offline after the first visit.
-const V = 'omara-v8';
+const V = 'omara-v9';
 const CDN = 'omara-cdn';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 

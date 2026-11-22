@@ -68,6 +68,12 @@ header.top .num{font:600 22px var(--f-disp);letter-spacing:-.02em;line-height:1}
 .cfil button.on{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink)}
 .grid-empty{grid-column:1/-1;color:var(--ink2);font-size:14px;padding:20px 0}
 .ins{display:grid;gap:18px}
+#insBtn{position:relative}#insBtn.dotted::after{content:"";position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--bg)}
+.gaps{display:grid;gap:10px}
+.gap{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center;background:var(--surface);border-radius:16px;padding:10px 14px 10px 10px;box-shadow:0 1px 0 var(--line)}
+.gap-i{width:64px;height:64px;border-radius:12px;background:var(--tile);display:grid;place-items:center;overflow:hidden}.gap-i .sil{width:100%;height:100%}.gap-i svg{width:80%;height:80%}
+.gap b{font-weight:600;font-size:15px;margin-right:8px}.gap p{margin:3px 0 0;font-size:13px;color:var(--ink2);line-height:1.45}
+.gap-t{font:500 10px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}.gap.p1 .gap-t{color:var(--accent)}
 .ins-k{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .ins-k div{background:var(--surface);border-radius:16px;padding:12px;box-shadow:0 1px 0 var(--line)}
 .ins-k b{display:block;font:600 20px var(--f-display,var(--f-body));letter-spacing:-.01em}.ins-k small{color:var(--ink3);font-size:12px}
@@ -324,7 +330,7 @@ label.f input,label.f select{font:400 15px var(--f-body);letter-spacing:0;text-t
     <div class="tips">
       <div><b>Plain background</b>Floor or a door. Not on a messy bed.</div>
       <div><b>One item</b>Nothing else in the photo, no feet or other clothes.</div>
-      <div><b>All of it</b>Keep the whole item in frame. Shoot watches up close.</div>
+      <div><b>Flat or folded</b>Laid flat looks best, neatly folded works too. Whole item in frame, shot from above.</div>
     </div>
     <div class="setrow" style="margin-top:8px">
       <div class="t"><b>Remove background</b><small id="bgInfo">Items look like they do in an online store. 44 MB downloads the first time, then it works offline.</small><div class="bar2" id="bgBar" hidden><i></i></div></div>
@@ -599,6 +605,7 @@ function renderGrid() {
   if (FCOL) xs = xs.filter(i => i.color === FCOL);
   const qq = FQ.trim().toLowerCase();
   if (qq) xs = xs.filter(i => [i.name, i.brand, colorLabel(i.color), i.sub && subLabel(i.cat, i.sub), CAT[i.cat] && CAT[i.cat].one].filter(Boolean).join(' ').toLowerCase().includes(qq));
+  { const gp = ready().length >= 3 ? gapReport(ready()).gaps.filter(g => g.pri === 1).length : 0; $('insBtn').classList.toggle('dotted', gp > 0) }
   $('grid').innerHTML = xs.length ? xs.map(it => tile(it)).join('') : `<div class="grid-empty">Nothing matches${qq ? ' “' + esc(FQ.trim()) + '”' : ''}.</div>`;
   head();
 }
@@ -1382,6 +1389,49 @@ function renderInstall() {
 
 
 
+
+/* ===================== what's missing: basics, season, colours, occasions (rules, no AI) ===================== */
+function gapReport(all) {
+  const mo = new Date().getMonth() + 1, cold = mo >= 10 || mo <= 3, warm = mo >= 5 && mo <= 9;
+  const kind = i => colorInfo(i.color).kind, of = (c, subs) => all.filter(i => i.cat === c && (!subs || subs.includes(i.sub || '')));
+  const tees = of('majica', ['T-shirt', '']), shirts = of('majica', ['Srajca', 'Polo']), sweat = of('pulover');
+  const warmJ = of('jakna', ['Puhovka', 'Plašč']).concat(of('jakna').filter(i => +i.warmth >= 4 && !['Puhovka', 'Plašč'].includes(i.sub))), lightJ = of('jakna', ['Bomber', 'Jeans', 'Usnjena', 'Vetrovka']);
+  const jeans = of('hlace', ['Kavbojke']), smartP = of('hlace', ['Chino', 'Elegantne']), anyPants = of('hlace');
+  const sneak = of('cevlji', ['Superge']), smartS = of('cevlji', ['Chelsea', 'Elegantni', 'Mokasini']), boots = of('cevlji', ['Škornji', 'Chelsea']), shoes = of('cevlji');
+  const G = [], add = (pri, title, why, cat, color, sub) => G.push({pri, title, why, cat, color, sub});
+  if (!tees.length) add(1, 'Basic T-shirts', 'Every outfit starts with one. White, black and grey go with everything you own.', 'majica', 'bela', 'T-shirt');
+  else { if (tees.length < 3) add(2, 'One or two more T-shirts', `You have ${tees.length}. With 3–5 you won't wear the same one twice a week.`, 'majica', 'siva', 'T-shirt');
+    if (!tees.some(i => ['bela', 'črna'].includes(i.color))) add(2, 'A plain white or black T-shirt', 'The most useful top there is: works under a sweater, a jacket and on its own.', 'majica', 'bela', 'T-shirt') }
+  if (!shirts.length) add(anyPants.length ? 1 : 2, 'A shirt or polo', 'For a date, family or a night out a T-shirt is often too casual. A navy or white one fits all of them.', 'majica', 'temno modra', 'Srajca');
+  if (!sweat.length) add(cold ? 1 : 2, 'A sweater', cold ? "It's cold season and you have no sweater." : 'For cooler evenings and layering over a T-shirt.', 'pulover', 'temno modra', 'Pulover');
+  else if (!sweat.some(i => ['n', 'e'].includes(kind(i)))) add(2, 'A neutral sweater', 'Navy, grey or beige goes with every pair of pants you own.', 'pulover', 'temno modra', 'Pulover');
+  if (!warmJ.length) add(cold ? 1 : 2, 'A warm winter jacket', cold ? 'Winter is here and nothing in your closet is warm enough for freezing days.' : 'Before winter: a down jacket or a coat.', 'jakna', 'črna', 'Puhovka');
+  if (!lightJ.length) add(warm || mo === 4 || mo === 10 ? 1 : 3, 'A light jacket', 'For spring and autumn: a bomber, denim or a light windbreaker.', 'jakna', 'olivna', 'Bomber');
+  if (!jeans.length) add(1, 'Jeans', 'The pants that go with almost everything. Dark blue is the safest.', 'hlace', 'temno modra', 'Kavbojke');
+  if (!smartP.length) add(2, 'Chinos', 'Beige or navy chinos make any outfit look put together, for a date or family.', 'hlace', 'bež', 'Chino');
+  if (!shoes.length) add(1, 'Shoes', 'Add your shoes, otherwise outfits stay incomplete.', 'cevlji', 'bela', 'Superge');
+  else { if (!sneak.some(i => ['n'].includes(kind(i)))) add(2, 'Clean white sneakers', 'They go with jeans, chinos and shorts. The most worn shoes in most closets.', 'cevlji', 'bela', 'Superge');
+    if (!smartS.length) add(2, 'Smarter shoes', 'Chelsea boots or loafers for a date, family or a night out.', 'cevlji', 'rjava', 'Chelsea');
+    if (cold && !boots.length) add(2, 'Winter shoes', 'Boots or Chelsea boots for rain, snow and cold.', 'cevlji', 'rjava', 'Škornji') }
+  if (warm && !of('kratke').length) add(2, 'Shorts', "It's warm season and you have no shorts.", 'kratke', 'bež', 'Kratke');
+  if (all.length >= 6 && !all.some(i => i.style === 'športno')) add(3, 'Something for training', 'Sport outfits need a sporty top or joggers.', 'hlace', 'črna', 'Trenirka');
+  if (!of('dodatek', ['Pas']).length && anyPants.length) add(3, 'A belt', 'A brown or black belt finishes jeans and chinos.', 'dodatek', 'rjava', 'Pas');
+  if (all.length >= 8) { const n = all.filter(i => kind(i) === 'n').length / all.length;
+    if (n < .35) add(2, 'More neutral colors', `Only ${Math.round(n * 100)}% of your closet is neutral (white, black, grey, navy, beige). Neutrals make everything else combine.`, 'majica', 'siva', 'T-shirt');
+    if (!all.some(i => kind(i) === 'a')) add(3, 'One piece with color', 'Everything is neutral. One item in burgundy, olive or green livens it up.', 'pulover', 'bordo', 'Pulover') }
+  // too much of the same: don't buy another
+  const enough = [], grp = {};
+  all.forEach(i => { const k = i.cat + '|' + (i.sub || '') + '|' + i.color; (grp[k] = grp[k] || []).push(i) });
+  Object.values(grp).forEach(xs => { if (xs.length >= 3) enough.push(`${xs.length}× ${esc(colorLabel(xs[0].color).toLowerCase())} ${esc((xs[0].sub ? subLabel(xs[0].cat, xs[0].sub) : CAT[xs[0].cat].one).toLowerCase())}`) });
+  G.sort((a, b) => a.pri - b.pri);
+  return {gaps:G, enough};
+}
+function gapHtml(r) {
+  if (!r.gaps.length) return '<div class="muted" style="font-size:14px">Nothing important is missing. Your closet covers the basics for every occasion.</div>';
+  return `<div class="gaps">${r.gaps.slice(0, 8).map(g => `<div class="gap p${g.pri}"><div class="gap-i">${sil({cat:g.cat, color:g.color, sub:g.sub})}</div><div><b>${esc(g.title)}</b><span class="gap-t">${g.pri === 1 ? 'Buy first' : g.pri === 2 ? 'Worth having' : 'Nice to have'}</span><p>${g.why}</p></div></div>`).join('')}</div>` +
+    (r.enough.length ? `<div class="muted" style="font-size:13.5px;margin-top:4px">You have enough: ${r.enough.join(' · ')}. Skip those when shopping.</div>` : '');
+}
+
 /* ===================== insights: value, cost per wear, most / least worn, colours ===================== */
 function eur(v) { return '€' + (v >= 100 ? Math.round(v) : (Math.round(v * 10) / 10)).toLocaleString('en-US') }
 function openInsights() {
@@ -1394,6 +1444,7 @@ function openInsights() {
   const row = (xs, lab) => `<div class="ins-row">${xs.map(x => `<button data-id="${esc(x.it.id)}">${ph(x.it, '', 'thumb')}<small>${lab(x)}</small></button>`).join('')}</div>`;
   openSheet(`<div class="grab"></div><div class="ins">
     <div><span class="eyebrow">Insights</span><h2>Your closet</h2></div>
+    <div style="display:grid;gap:10px"><span class="eyebrow">What's missing</span>${all.length < 12 ? `<div class="muted" style="font-size:13px">Based on the ${all.length} items you've added so far. If you already own something on this list, just photograph it and it disappears from here.</div>` : ''}${gapHtml(gapReport(all))}</div>
     <div class="ins-k"><div><b>${all.length}</b><small>items</small></div><div><b>${wears}</b><small>times worn</small></div><div><b>${priced.length ? eur(value) : '–'}</b><small>${priced.length ? 'value' + (priced.length < all.length ? ' · ' + priced.length + ' priced' : '') : 'add prices'}</small></div></div>
     ${cpw != null ? `<div class="muted" style="font-size:14px">Average cost per wear <b style="color:var(--ink)">${eur(cpw)}</b>. Wear things more and it drops.</div>` : '<div class="muted" style="font-size:14px">Add a price in Edit details to see the value and cost per wear.</div>'}
     <div style="display:grid;gap:8px"><span class="eyebrow">Colors</span><div class="ins-bar">${cols.map(([c, n]) => `<i style="flex:${n};background:${colorInfo(c).hex}" title="${esc(colorLabel(c))}"></i>`).join('')}</div>
